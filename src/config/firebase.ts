@@ -1,13 +1,13 @@
 import firebase from 'firebase';
 
 const config = {
-  apiKey: 'AIzaSyCQKzJH40-IopCp3Hd8ELtEFhwNh17KF3E',
-  authDomain: 'react-game-5b6af.firebaseapp.com',
-  databaseURL: 'https://react-game-5b6af.firebaseio.com',
-  projectId: 'react-game-5b6af',
-  storageBucket: 'react-game-5b6af.appspot.com',
-  messagingSenderId: '126846160427',
-  appId: '1:126846160427:web:477c197d277b765fd5246e'
+  apiKey: "AIzaSyB7KOWyP8-pqjo-5stbSfdNjeVLJ20Sz2Y",
+  authDomain: "x-check-app.firebaseapp.com",
+  databaseURL: "https://x-check-app.firebaseio.com",
+  projectId: "x-check-app",
+  storageBucket: "x-check-app.appspot.com",
+  messagingSenderId: "652341252651",
+  appId: "1:652341252651:web:e76a07bfbee38da44bd06e"
 };
 
 firebase.initializeApp(config);
