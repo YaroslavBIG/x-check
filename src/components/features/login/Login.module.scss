@@ -1,0 +1,28 @@
+$text-color: #8c8c8c;
+
+.login {
+
+  &__container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__form {
+    flex: 0 0 auto;
+  }
+
+  &__logo, &__version {
+    flex: 1 1 0;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  &__version {
+    padding-bottom: 8px;
+    color: $text-color;
+    font-size: 12px;
+  }
+}

@@ -1,12 +1,13 @@
 import React from 'react';
+import Login from '../features/login/Login';
 
 
 const App = () => {
   return (
-    <div>
-      X-Check
-    </div>
+    <>
+      <Login/>
+    </>
   );
-}
+};
 
 export default App;
