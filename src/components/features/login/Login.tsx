@@ -83,16 +83,13 @@ export default function Login() {
             >
               <Select
                 style={{ width: '100%' }}
-                placeholder='Select a Role'
-
-              >
+                placeholder='Select a Role'>
                 {roles && Object.values(roles).map((el: Role) => el.displayName)
                   .sort()
                   .map((el: string, index: number) => <Select.Option key={index} value={el}>{el}</Select.Option>)
                 }
               </Select>
             </Form.Item>
-
             <Form.Item>
               <Button
                 type='primary'
