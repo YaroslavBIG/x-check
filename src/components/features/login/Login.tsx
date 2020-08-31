@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Card, Form, Input, Select } from 'antd';
 import { socialLoginGithub } from '../../app/firestore/firebaseService';
 import { GithubOutlined } from '@ant-design/icons';
@@ -28,8 +28,9 @@ interface LoginState {
 }
 
 export default function Login() {
+
   const roles = useSelector((state: LoginState) => state.firestore.data.roles);
-  const isLoadingRoles = useSelector((state: LoginState) => state.firestore.status.requesting.roles);
+  const [isPending, setPending] = useState(false);
 
   useFirestoreConnect([
     { collection: 'roles' }
@@ -37,8 +38,11 @@ export default function Login() {
 
   const onFinish = async (values: { role: string; displayName: string }) => {
     try {
+      setPending(true);
       await socialLoginGithub('github', values.role, values.displayName);
+      setPending(false);
     } catch (e) {
+      setPending(false);
       toast.error('Failed to Login');
     }
   };
@@ -69,7 +73,7 @@ export default function Login() {
                 },
               ]}
             >
-              <Input placeholder="Enter your name" />
+              <Input placeholder="Enter your name"/>
             </Form.Item>
             <Form.Item
               name="role"
@@ -95,7 +99,7 @@ export default function Login() {
                 type='primary'
                 htmlType="submit"
                 disabled={!(roles && Object.values(roles).length)}
-                loading={isLoadingRoles}
+                loading={isPending}
                 icon={<GithubOutlined/>}>
                 Login with Github
               </Button>
