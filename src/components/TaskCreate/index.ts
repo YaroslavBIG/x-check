@@ -1,3 +1,1 @@
-import TaskCreate from './TaskCreate';
-
-export default TaskCreate;
+export {TaskCreateDefault} from './TaskCreateDefault';

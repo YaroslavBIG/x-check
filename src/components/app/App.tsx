@@ -1,11 +1,11 @@
 import React from 'react';
-import TaskCreate from 'components/TaskCreate/';
+import {TaskCreateDefault} from 'components/TaskCreate/';
 import 'antd/dist/antd.css';
 
 const App = () => {
   return (
     <div>
-      <TaskCreate />
+      <TaskCreateDefault />
     </div>
   );
 }
