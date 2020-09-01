@@ -13,6 +13,19 @@ export const TaskCreateDefault = () => {
       })
       .catch((errorInfo) => { alert(errorInfo) });
   };
+
+  const onFinish = (values: object) => {
+    alert(`'Success:' ${JSON.stringify(values, null, 2)}`);
+  };
+
+  const onFinishFailed = (errorInfo: object) => {
+    console.log('Failed:', errorInfo);
+  };
+
+  const onReset = () => {
+    form.resetFields();
+  };
+
 	enum taskStatus {
 		DRAFT = 'Draft',
 		PUBLISHED = 'Published',
@@ -20,10 +33,15 @@ export const TaskCreateDefault = () => {
 	}
 	return (
 		<div className='task'>
-      <Form form={form}>
+      <Form
+        form={form}
+        name="Task Create"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+      >
         <div className='task-header'>
           <div className='task-block--title'>Create Task</div>
-          <Button type='primary' size='middle'>
+          <Button htmlType="button" type='primary' size='middle' onClick={onReset}>
             Cancel
           </Button>
           <Button type='default' size='middle' htmlType="submit" onSubmit={handleFormSubmit}>
@@ -57,7 +75,9 @@ export const TaskCreateDefault = () => {
         </div>
         <div className='task-description'>
           <div className='task-block--title'>Description</div>
-          <Form.Item>
+          <Form.Item
+            name='Description'
+          >
             <TextArea placeholder='Enter description here' autoSize={{minRows: 2, maxRows: 10}} />
           </Form.Item>
         </div>
