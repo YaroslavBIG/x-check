@@ -19,7 +19,7 @@ interface LoginState {
   }
 }
 
-export function LoginForm() {
+export default function LoginForm() {
   const roles = useSelector((state: LoginState) => state.firestore.data.roles);
   const [isPending, setPending] = useState(false);
   const history = useHistory();

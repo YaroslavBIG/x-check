@@ -1,10 +1,10 @@
 import React from 'react';
-import { Logo } from './Logo/Logo';
+import Logo from './Logo/Logo';
 import styles from './Login.module.scss';
 import { APP_VERSION } from '../../../config/version';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { LoginForm } from './LoginForm/LoginForm';
+import LoginForm from './LoginForm/LoginForm';
 
 export default function Login() {
 
