@@ -5,6 +5,7 @@ import { useFirestoreConnect } from 'react-redux-firebase';
 import { socialLoginGithub } from '../../../app/firestore/firebaseService';
 import { toast } from 'react-toastify';
 import { GithubOutlined } from '@ant-design/icons';
+import { useHistory } from 'react-router-dom';
 
 interface Role {
   displayName: string;
@@ -21,6 +22,7 @@ interface LoginState {
 export function LoginForm() {
   const roles = useSelector((state: LoginState) => state.firestore.data.roles);
   const [isPending, setPending] = useState(false);
+  const history = useHistory();
 
   useFirestoreConnect([
     { collection: 'roles' }
@@ -31,16 +33,12 @@ export function LoginForm() {
       setPending(true);
       await socialLoginGithub('github', values.role, values.displayName);
       setPending(false);
+      history.push('/sessions');
     } catch (e) {
       setPending(false);
       toast.error('Failed to Login');
     }
   };
-
-  const onFinishFailed = () => {
-    toast.error('Failed to Login');
-  };
-
 
   return (
     <>
@@ -48,7 +46,6 @@ export function LoginForm() {
         <Form
           name="login"
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
         >
           <Form.Item
             label="Name"
