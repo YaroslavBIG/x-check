@@ -1,12 +1,13 @@
 import React from 'react';
-import {Form, Button, Select, Input } from 'antd';
+import {Form, Select, Input } from 'antd';
+import { TaskHeader } from './TaskHeader';
 
 const { Option } = Select;
 const { TextArea } = Input;
-export const TaskCreateDefault = () => {
+export const TaskCreateDefault: React.FC = () => {
   const [form] = Form.useForm();
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = (): void => {
     form.validateFields()
       .then((values) => {
         alert(JSON.stringify(values,null, 2))
@@ -22,7 +23,7 @@ export const TaskCreateDefault = () => {
     console.log('Failed:', errorInfo);
   };
 
-  const onReset = () => {
+  const onReset = (): void => {
     form.resetFields();
   };
 
@@ -39,19 +40,11 @@ export const TaskCreateDefault = () => {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
-        <div className='task-header'>
-          <div className='task-block--title'>Create Task</div>
-          <Button htmlType="button" type='primary' size='middle' onClick={onReset}>
-            Cancel
-          </Button>
-          <Button type='default' size='middle' htmlType="submit" onSubmit={handleFormSubmit}>
-            Save
-          </Button>
-        </div>
+        <TaskHeader onReset={onReset} handleSubmit={handleFormSubmit} title='Create Task' />
         <div className='task-status'>
           <div className='task-block--title'>Status</div>
           <Form.Item
-            name='Status'
+            name='state'
             rules={[{ required: true, message: 'Please select status!' }]}
           >
             <Select placeholder='Select status' aria-required style={{ width: 120 }} onChange={() => 1}>
@@ -64,7 +57,7 @@ export const TaskCreateDefault = () => {
         <div className='task-title'>
           <div className='task-block--title'>Title</div>
           <Form.Item
-            name='Title'
+            name='id'
             rules={[{ required: true, message: 'Please input title!' }]}
           >
             <Input
@@ -82,9 +75,6 @@ export const TaskCreateDefault = () => {
           </Form.Item>
         </div>
       </Form>
-      <div className="task-add-category">
-        <Button type='default' size='middle' > Add category </Button>
-      </div>
 		</div>
 	);
 };
