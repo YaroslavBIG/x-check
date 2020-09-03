@@ -6,6 +6,7 @@ body {
   position: absolute;
   background-color: white;
   height: 100vh;
+  overflow-y: scroll;
   width: 600px;
   padding: 2rem;
 
@@ -45,6 +46,14 @@ body {
     padding-left: 40px;
   }
 
+  .ant-form-item {
+    margin-bottom: 0;
+  }
+
+  .item {
+    margin-bottom: 1rem;
+  }
+
   .requirement {
     display: flex;
     align-items: center;
@@ -76,7 +85,7 @@ body {
       }
   
       .ant-radio-group {
-        width: 175px;
+        width: 145px;
 
         .ant-radio-wrapper {
           margin-right: 0;
