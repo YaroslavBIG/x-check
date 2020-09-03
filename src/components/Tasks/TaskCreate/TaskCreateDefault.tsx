@@ -1,6 +1,9 @@
 import React from 'react';
 import {Form, Select, Input } from 'antd';
 import { TaskHeader } from './TaskHeader';
+import { taskStatus } from '../TaskInterface';
+import { taskStore } from './taskReducer/taskStore';
+import { taskReducerActions } from './taskReducer/taskReducer';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -16,7 +19,8 @@ export const TaskCreateDefault: React.FC = () => {
   };
 
   const onFinish = (values: object) => {
-    alert(`'Success:' ${JSON.stringify(values, null, 2)}`);
+    // alert(`'Success:' ${JSON.stringify(values, null, 2)}`);
+    taskStore.dispatch({ type: taskReducerActions.CHANGE })
   };
 
   const onFinishFailed = (errorInfo: object) => {
@@ -27,11 +31,7 @@ export const TaskCreateDefault: React.FC = () => {
     form.resetFields();
   };
 
-	enum taskStatus {
-		DRAFT = 'Draft',
-		PUBLISHED = 'Published',
-		ARCHIVED = 'Archived'
-	}
+
 	return (
 		<div className='task'>
       <Form

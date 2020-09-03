@@ -4,7 +4,6 @@ import { ArrowButton } from './ArrowButton';
 
 export interface TaskHeaderProps {
   arrowButton?: boolean
-  arrowButtonHandler?: () => void
   title: string
   onReset: () => void
   handleSubmit: () => void
@@ -17,13 +16,12 @@ export const TaskHeader = (props: TaskHeaderProps) => {
     handleSubmit,
     title,
     arrowButton,
-    arrowButtonHandler
   } = props;
   return (
     <span className='task-header'>
 
       {arrowButton ?
-        <ArrowButton arrowButtonHandler={arrowButtonHandler} />
+        <ArrowButton />
           :
           null
         }

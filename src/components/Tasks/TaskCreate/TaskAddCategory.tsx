@@ -4,7 +4,7 @@ import { TaskHeader } from './TaskHeader';
 
 export const TaskAddCateory: React.FC = () => {
   const [form] = Form.useForm();
-  const Option = Select;
+  const {Option} = Select;
 
   const onReset = (): void => {
     form.resetFields();
