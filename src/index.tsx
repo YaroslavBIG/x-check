@@ -26,12 +26,13 @@ const rrfProps = {
 }
 
 ReactDOM.render(
-  <Provider store={store}>
-    <ReactReduxFirebaseProvider {...rrfProps}>
-      <BrowserRouter>
+  // <Provider store={store}>
+  //   <ReactReduxFirebaseProvider {...rrfProps}>
+  //     <BrowserRouter>
         <App/>
-      </BrowserRouter>
+      /* </BrowserRouter>
     </ReactReduxFirebaseProvider>
-  </Provider>,
+  </Provider>, */
+  ,
   document.getElementById('root')
 );

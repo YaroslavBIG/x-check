@@ -4,13 +4,15 @@ import NavigationPanel from '../NavigationPanel/NavigationPanel';
 import Login from '../features/login/Login';
 import { Route } from 'react-router-dom';
 import Sessions from '../features/sessions/Sessions';
+import RequestForm from '../requestForm';
 
 const App = () => {
   return (
     <>
-      <NavigationPanel/>
+      <RequestForm />
+      {/* <NavigationPanel/>
       <Route path='/sessions' component={Sessions}/>
-      <Route exact path='/' component={Login}/>
+      <Route exact path='/' component={Login}/> */}
     </>
   );
 };

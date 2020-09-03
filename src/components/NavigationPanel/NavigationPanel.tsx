@@ -83,7 +83,7 @@ class NavigationPanel extends Component {
                                 <Route path = "/sessions" component={Sessions}/>
                                 <Route path = "/reviews" component={Reviews}/>
                                 <Route path = "/debates" component={Debates}/>
-                                <Redirect from ='/' to='/tasks'/>>
+                                <Redirect from ='/' to='/tasks'/>
                             </Switch>
                         </div>
 
