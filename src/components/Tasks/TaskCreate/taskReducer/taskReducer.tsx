@@ -1,17 +1,19 @@
+import { Task, taskStatus } from "components/Tasks/TaskInterface"
+
 export enum taskReducerActions {
   CHANGE = 'CHANGE',
   DELETE = 'DELETE',
 }
 
-const task = {
+const initialState: Task = {
   id: "",
   author: "",
-  state: "",
-  categoriesOrder: ["Basic Scope", "Extra Scope", "Fines"],
+  state: taskStatus.DRAFT,
+  categoriesOrder: [],
   items: []
 }
 
-export const taskReducer = (state = task, action: {type: taskReducerActions}): object => {
+export const taskReducer = (state = initialState, action: {type: taskReducerActions}): object => {
   const {
     CHANGE,
     DELETE
