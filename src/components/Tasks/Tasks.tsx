@@ -1,7 +1,24 @@
 import React, {Component} from 'react';
 import "./Tasks"
 
-import {Table} from 'antd';
+import {Table, Tag} from 'antd';
+
+const renderStatus = (status: string) => {
+    let color;
+    if (status === 'Published') {
+        color = 'green'
+    } else if (status === 'Draft') {
+        color = 'orange'
+    } else {
+        color = 'default'
+    }
+
+    return (
+        <Tag color={color} key={status}>
+            {status.toUpperCase()}
+        </Tag>
+    )
+}
 
 const dataSource = [
     {
@@ -9,33 +26,27 @@ const dataSource = [
         task_name: 'X-Check App',
         status: 'Published',
         due_data: '16/08',
-        requests: 9177,
         author: 'Evan Flores',
         max_score: 640,
-        actions: '...'
-    },
-    {
-        key: '2',
-        task_name: 'X-Check App',
-        status: 'Published',
-        due_data: '16/08',
-        requests: 9177,
-        author: 'Evan Flores',
-        max_score: 640,
-        actions: '...'
     },
     {
         key: '3',
         task_name: 'X-Check App',
-        status: 'Published',
+        status: 'Draft',
         due_data: '16/08',
-        requests: 9177,
         author: 'Evan Flores',
         max_score: 640,
-        actions: '...'
     },
-];
+    {
+        key: '2',
+        task_name: 'X-Check App',
+        status: 'Closed',
+        due_data: '16/08',
+        author: 'Evan Flores',
+        max_score: 640,
+    },
 
+];
 
 const columns = [
     {
@@ -47,16 +58,12 @@ const columns = [
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
+        render: (status: string) => renderStatus(status),
     },
     {
         title: 'Due Data',
         dataIndex: 'due_data',
         key: 'due_data',
-    },
-    {
-        title: '#requests',
-        dataIndex: 'requests',
-        key: 'requests',
     },
     {
         title: 'Author',
@@ -67,12 +74,7 @@ const columns = [
         title: 'Max Score',
         dataIndex: 'max_score',
         key: 'max_score',
-    },
-    {
-        title: 'Actions',
-        dataIndex: 'actions',
-        key: 'actions',
-    },
+    }
 ];
 
 class Tasks extends Component {
