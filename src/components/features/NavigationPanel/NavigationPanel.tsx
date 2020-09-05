@@ -11,7 +11,7 @@ import {
     SoundOutlined,
     UsergroupAddOutlined
 } from '@ant-design/icons';
-import { Link, Redirect, Route, Switch } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 import CustomHeader from '../CustomHeader/CustomHeader';
 import { Tasks } from '../Tasks/Tasks';
 import { Requests } from '../Requests/Requests';
