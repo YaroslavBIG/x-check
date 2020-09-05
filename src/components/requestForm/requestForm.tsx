@@ -3,10 +3,25 @@ import { Form, Button, Select, Input } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import './requestForm.scss';
+import { useSelector } from 'react-redux'
+import { useFirestoreConnect } from 'react-redux-firebase'
 
 const { Option } = Select;
 
+interface CollectionsState {
+  firestore: {
+    data: {
+      tasksList: any,
+      sessions: any
+    }
+  }
+}
+
 const RequestForm = () => {
+  useFirestoreConnect([ { collection: 'tasksList' }, { collection: 'sessions' } ]);
+  const tasks = useSelector((state : CollectionsState) => state.firestore.data.tasksList);
+  const sessions = useSelector((state : CollectionsState) => state.firestore.data.sessions);
+  console.log(typeof sessions);
   return (
     <div className="request">
       <Form name="request" layout="vertical">
@@ -29,24 +44,25 @@ const RequestForm = () => {
           ]}
         >
           <Select placeholder="Select a task">
-            <Option value="xcheck">Xcheck</Option>
-            <Option value="songbird">Songbird</Option>
+            { tasks && 
+              Object.keys(tasks).map((ind: any) => <Option key={ind} value={tasks[ind].taskName}>{tasks[ind].taskName}</Option>) 
+            }
           </Select>
         </Form.Item>
         <Form.Item
-          style={{marginTop: '1.5rem'}}
           name="session"
           label="Cross-check session"
           rules={[
             {
               required: true,
-              message: 'Please select a task',
+              message: 'Please select a cross-check session',
             },
           ]}
           >
             <Select placeholder="Select a cross-check session">
-              <Option value="xcheck">rss2020Q3react-xcheck</Option>
-              <Option value="songbird">rss2020Q3react-songbird</Option>
+              { sessions && 
+                Object.keys(sessions).map((ind: any) => <Option key={ind} value={sessions[ind].name}>{sessions[ind].name}</Option>) 
+              }
             </Select>
         </Form.Item>
         <Form.Item 
@@ -67,7 +83,7 @@ const RequestForm = () => {
           rules={[
             {
               required: true,
-              message: 'Please add Link to deployed version!',
+              message: 'Please add link to deployed version!',
             },
           ]}
         >

@@ -9,10 +9,11 @@ import RequestForm from '../requestForm';
 const App = () => {
   return (
     <>
-      <RequestForm />
-      {/* <NavigationPanel/>
-      <Route path='/sessions' component={Sessions}/>
-      <Route exact path='/' component={Login}/> */}
+      {/* <RequestForm /> */}
+      {/* <NavigationPanel/> */}
+      <Route path='/request-form' component={RequestForm}/>
+      {/* <Route path='/sessions' component={Sessions}/> */}
+      <Route exact path='/' component={Login}/>
     </>
   );
 };

@@ -86,7 +86,6 @@ class NavigationPanel extends Component {
                                 <Redirect from ='/' to='/tasks'/>
                             </Switch>
                         </div>
-
                     </Content>
                 </Layout>
             </Layout>
