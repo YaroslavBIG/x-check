@@ -20,6 +20,7 @@ import { Reviews } from '../Reviews/Reviews';
 import { Debates } from '../Debates/Debates';
 import Logo from '../login/Logo/Logo';
 import Login from '../login/Login';
+import CheckInfo from '../checkInfo';
 
 const { Header, Sider, Content } = Layout;
 
@@ -58,6 +59,11 @@ const NavigationPanel = (props: any) => {
                             <span>Debates</span>
                         </Link>
                     </Menu.Item>
+                    <Menu.Item key="6" icon={<MessageOutlined/>}>
+                        <Link to="/check-info">
+                            <span>CheckInfo</span>
+                        </Link>
+                    </Menu.Item>
                 </Menu>
             </Sider>
             <Layout className="site-layout">
@@ -77,6 +83,7 @@ const NavigationPanel = (props: any) => {
                             <Route path="/sessions" component={Sessions}/>
                             <Route path="/reviews" component={Reviews}/>
                             <Route path="/debates" component={Debates}/>
+                            <Route path="/check-info" component={CheckInfo}/>
                         </Switch>
                     </div>
 

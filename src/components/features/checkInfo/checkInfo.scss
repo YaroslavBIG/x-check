@@ -1,0 +1,61 @@
+.check-info {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: white;
+  height: 100vh;
+  overflow-y: scroll;
+  width: 600px;
+  padding: 2rem;
+  color: #595959;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+
+    button:first-child {
+      margin-right: 8px;
+    }
+  }
+
+  .ant-input, label {
+    color: #595959;
+  }
+
+  ul {
+    padding-left: 0;
+    margin: 1.5rem 0 0;
+    list-style-type: none;
+  }
+
+  .heading {
+    margin-bottom: 0;
+    color: #595959;
+  }
+
+  .info {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+    color: #595959;
+
+    .ant-avatar {
+      margin-right: 8px;
+    }
+  }
+
+  .person {
+    margin-bottom: 14px;
+  }
+
+  .check-info-button {
+    color: #595959;
+    margin-top: 3rem;
+  }
+}
