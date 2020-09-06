@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import 'antd/dist/antd.css';
 import { Route, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setDefaultPath } from './store/loginReducer';
-import Loading from './Loading';
+import { setDefaultPath } from '../features/login/loginReducer';
+import Loading from '../features/login/Loading/Loading';
 import Login from '../features/login/Login';
-import NavigationPanel from '../features/NavigationPanel/NavigationPanel';
 import { XCheckPath } from '../../enum/app-paths.enum';
 import { isLoaded } from 'react-redux-firebase';
+import NavigationPanel from '../features/main/NavigationPanel/NavigationPanel';
 
 export interface AuthRouteState {
   login: { defaultPath: string },

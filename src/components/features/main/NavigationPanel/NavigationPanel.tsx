@@ -14,12 +14,12 @@ import {
 import { Link, Switch } from 'react-router-dom';
 import CustomHeader from '../CustomHeader/CustomHeader';
 import { Tasks } from '../Tasks/Tasks';
-import Logo from '../login/Logo/Logo';
+import Logo from '../../login/Logo/Logo';
 import Sessions from '../Sessions/Sessions';
-import PrivateRoute from '../../app/ProtectedRoute';
 import { isEmpty, isLoaded } from 'react-redux-firebase';
 import { useSelector } from 'react-redux';
-import { AuthRouteState } from '../../app/App';
+import { AuthRouteState } from '../../../app/App';
+import PrivateRoute from '../../../app/PrivateRoute';
 
 const { Header, Sider, Content } = Layout;
 

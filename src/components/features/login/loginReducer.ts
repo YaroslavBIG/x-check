@@ -25,6 +25,5 @@ export default function loginReducer(state = initialState, action: LoginActionTy
       };
     default:
       return state;
-
   }
 }

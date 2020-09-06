@@ -1,5 +1,4 @@
 import React from 'react';
-import './CustomHeader.scss'
 
 const CustomHeader = (props:any) => (
     <div>

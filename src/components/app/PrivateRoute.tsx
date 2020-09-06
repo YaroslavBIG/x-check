@@ -1,7 +1,6 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 
-
 const PrivateRoute: React.FC<{
   component: React.FC;
   isAuth: boolean;

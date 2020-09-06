@@ -4,9 +4,9 @@ import { ColumnsType } from 'antd/es/table';
 import { useFirestoreConnect } from 'react-redux-firebase';
 import { useSelector } from 'react-redux';
 import styles from './Sessions.module.scss';
-import { Session } from '../../../interfaces/app-session.interface';
-import { COLORS, SessionStatus } from '../../../enum/session-status.enum';
-import { FirestoreSession } from '../../../interfaces/firestore-session.interface';
+import { Session } from '../../../../interfaces/app-session.interface';
+import { COLORS, SessionStatus } from '../../../../enum/session-status.enum';
+import { FirestoreSession } from '../../../../interfaces/firestore-session.interface';
 import SessionToolbar from './SessionToolbar/SessionToolbar';
 
 const columns: ColumnsType<Session> = [

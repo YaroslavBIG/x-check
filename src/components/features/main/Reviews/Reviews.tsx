@@ -1,7 +1,7 @@
 import React from 'react';
 import './Reviews.scss';
 
-export const Reviews = (props: any) => {
+export const Reviews = () => {
     return (
         <div>
             <h1>Reviews</h1>
