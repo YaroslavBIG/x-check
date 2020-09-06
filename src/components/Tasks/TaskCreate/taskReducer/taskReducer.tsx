@@ -5,6 +5,7 @@ export const initialTaskState: Itask = {
   id: "",
   author: "",
   state: taskStatus.DRAFT,
+  maxScore: 0,
   categoriesOrder: [],
   items: []
 }

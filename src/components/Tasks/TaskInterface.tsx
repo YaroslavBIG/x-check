@@ -6,16 +6,21 @@ export enum taskStatus {
 
 export interface ItaskItem {
   id: string,
+  title: string,
+  category: string,
   minScore: number,
   maxScore: number,
-  category: string,
-  title: string,
   description?: Isubitems
 }
 
 export interface Isubitem {
   description: string
   score: number
+}
+
+export interface categoriesOrder {
+  name: string,
+  order: number
 }
 
 export interface Isubitems extends Array<Isubitem>{}
@@ -26,6 +31,7 @@ export interface Itask {
   id: string, // Task name
   author: string, // Get author name from firebase?
   state: taskStatus,
-  categoriesOrder: Array<string>, // ["Basic Scope", "Extra Scope", "Fines"],
+  maxScore: number,
+  categoriesOrder: Array<categoriesOrder>,
   items: ItaskItems
 }

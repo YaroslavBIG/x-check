@@ -1,26 +1,38 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {Form, Select, Input } from 'antd';
 import { TaskHeader } from './TaskHeader';
-import { taskStatus } from '../TaskInterface';
-import { taskStore } from './taskReducer/taskStore';
-import { taskReducerActions } from './taskReducer/actions';
+import { taskStatus, Itask } from '../TaskInterface';
+// import { taskStore } from './taskReducer/taskStore';
+// import { taskReducerActions } from './taskReducer/actions';
+import { TaskContext } from './TaskContext';
+import { TaskAccordion } from './Accordion/TaskAccordion';
 
 const { Option } = Select;
 const { TextArea } = Input;
 export const TaskCreateDefault: React.FC = () => {
   const [form] = Form.useForm();
+  const { newTask, setNewTask } = useContext(TaskContext);
+
+  console.log(newTask);
 
   const handleFormSubmit = (): void => {
     form.validateFields()
       .then((values) => {
         alert(JSON.stringify(values,null, 2))
+        // console.log(values)
       })
       .catch((errorInfo) => { alert(errorInfo) });
   };
 
   const onFinish = (values: object) => {
     // alert(`'Success:' ${JSON.stringify(values, null, 2)}`);
-    taskStore.dispatch({ type: taskReducerActions.CHANGE })
+    // taskStore.dispatch({ type: taskReducerActions.CHANGE })
+    setNewTask((prev: Itask) => (
+      {
+        ...prev,
+        ...values
+      }
+      ))
   };
 
   const onFinishFailed = (errorInfo: object) => {
@@ -75,6 +87,9 @@ export const TaskCreateDefault: React.FC = () => {
           </Form.Item>
         </div>
       </Form>
+      <div className="accordion">
+        <TaskAccordion />
+      </div>
 		</div>
 	);
 };

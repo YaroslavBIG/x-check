@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Form, Input, InputNumber } from 'antd';
 import { TaskHeader } from './TaskHeader';
+import { TaskContext } from './TaskContext';
+import { Itask } from '../TaskInterface';
 
 
 export const TaskAddCateory: React.FC = (props) => {
   const [form] = Form.useForm();
+  const { setNewTask, addTaskToggler} = useContext(TaskContext);
 
   const onReset = (): void => {
     form.resetFields();
@@ -19,7 +22,15 @@ export const TaskAddCateory: React.FC = (props) => {
   };
 
   const onFinish = (values: object) => {
-    alert(`'Success:' ${JSON.stringify(values, null, 2)}`);
+    // alert(`'Success:' ${JSON.stringify(values, null, 2)}`);
+    setNewTask((prev: Itask) => (
+      {
+        ...prev,
+        categoriesOrder: [...prev.categoriesOrder, values]
+        .sort((prevOrder: any, nextOrder: any) => prevOrder.order > nextOrder.order ? 1 : -1 )
+      }
+    ))
+    addTaskToggler();
   };
 
   const onFinishFailed = (errorInfo: object) => {
@@ -39,7 +50,7 @@ export const TaskAddCateory: React.FC = (props) => {
         </div>
 
         <Form.Item
-          name='CatId'
+          name='name'
           rules={[{ required: true, message: 'Please input title!' }]}
         >
           <Input
@@ -48,11 +59,11 @@ export const TaskAddCateory: React.FC = (props) => {
           />
         </Form.Item>
           <Form.Item
-              name='Order'
+              name='order'
               rules={[{ required: true, message: 'Please select order!' }]}
               initialValue={1}
             >
-          <InputNumber min={1} max={10}  onChange={(value) => console.log('Order', value)} />
+          <InputNumber min={1} max={10}  onChange={() => null} />
         </Form.Item>
       </Form>
     </div>

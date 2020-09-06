@@ -5,7 +5,16 @@ export const TaskProvider = TaskContext.Provider;
 export const TaskConsumer = TaskContext.Consumer;
 
 export const TaskContextState: React.FC = (props) => {
-  const [addTask, setAddTask]= useState(false)
+  const [addTask, setAddTask] = useState(false)
+  const [newTask, setNewTask] = useState({
+    id: '',
+    author: '',
+    state: '',
+    maxScore: 0,
+    categoriesOrder: [],
+    items: []
+  })
+
 
   const addTaskToggler = () => {
     setAddTask((prevState) => !prevState)
@@ -16,8 +25,9 @@ export const TaskContextState: React.FC = (props) => {
       value={
         {
           addTask: addTask,
-          setAddTask: setAddTask,
-          addTaskToggler: addTaskToggler
+          addTaskToggler: addTaskToggler,
+          newTask: newTask,
+          setNewTask: setNewTask
         }
       }
     >
