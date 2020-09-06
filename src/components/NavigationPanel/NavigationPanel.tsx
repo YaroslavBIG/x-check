@@ -12,7 +12,7 @@ import {
     MessageOutlined
 } from '@ant-design/icons';
 import { Link, Redirect, Route, Switch } from 'react-router-dom';
-import Tasks from '../Tasks/Tasks';
+import Tasks from '../features/Tasks/Tasks';
 import Requests from '../Requests/Requests';
 import Sessions from '../Sessions/Sessions';
 import Reviews from '../Reviews/Reviews';
@@ -83,7 +83,7 @@ class NavigationPanel extends Component {
                                 <Route path = "/sessions" component={Sessions}/>
                                 <Route path = "/reviews" component={Reviews}/>
                                 <Route path = "/debates" component={Debates}/>
-                                <Redirect from ='/' to='/tasks'/>>
+                                <Redirect from ='/' to='/tasks'/>
                             </Switch>
                         </div>
 

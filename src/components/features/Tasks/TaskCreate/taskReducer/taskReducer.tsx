@@ -1,4 +1,4 @@
-import { Itask, taskStatus } from "components/Tasks/TaskInterface"
+import { Itask, taskStatus } from "components/features/Tasks/TaskInterface"
 import { taskReducerActions } from "./actions"
 
 export const initialTaskState: Itask = {
