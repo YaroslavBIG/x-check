@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import "./Tasks"
-import { SearchOutlined } from '@ant-design/icons';
+import {SearchOutlined} from '@ant-design/icons';
 import {Table, Tag, Input, Button, Space} from 'antd';
 import Highlighter from "react-highlight-words";
 
@@ -37,20 +37,17 @@ const filtersStatus = [
 ]
 
 
-
-
-
 class Tasks extends Component {
     state = {
+        selectedRowKeys: [],
         searchText: '',
         searchedColumn: '',
     };
 
 
-
     getColumnSearchProps = (dataIndex: any) => ({
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }: any) => (
-            <div style={{ padding: 8 }}>
+        filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}: any) => (
+            <div style={{padding: 8}}>
                 <Input
                     ref={node => {
                         this.searchInput = node;
@@ -59,25 +56,25 @@ class Tasks extends Component {
                     value={selectedKeys[0]}
                     onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
                     onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-                    style={{ width: 188, marginBottom: 8, display: 'block' }}
+                    style={{width: 188, marginBottom: 8, display: 'block'}}
                 />
                 <Space>
                     <Button
                         type="primary"
                         onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-                        icon={<SearchOutlined />}
+                        icon={<SearchOutlined/>}
                         size="small"
-                        style={{ width: 90 }}
+                        style={{width: 90}}
                     >
                         Search
                     </Button>
-                    <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+                    <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{width: 90}}>
                         Reset
                     </Button>
                 </Space>
             </div>
         ),
-        filterIcon: (filtered: any) => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+        filterIcon: (filtered: any) => <SearchOutlined style={{color: filtered ? '#1890ff' : undefined}}/>,
         onFilter: (value: any, record: any) =>
             record[dataIndex]
                 ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
@@ -90,7 +87,7 @@ class Tasks extends Component {
         render: (text: any) =>
             this.state.searchedColumn === dataIndex ? (
                 <Highlighter
-                    highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+                    highlightStyle={{backgroundColor: '#ffc069', padding: 0}}
                     searchWords={[this.state.searchText]}
                     autoEscape
                     textToHighlight={text ? text.toString() : ''}
@@ -110,13 +107,23 @@ class Tasks extends Component {
 
     handleReset = (clearFilters: any) => {
         clearFilters();
-        this.setState({ searchText: '' });
+        this.setState({searchText: ''});
     };
     private searchInput: any;
 
+    onSelectChange = (selectedRowKeys: any) => {
+        console.log('selectedRowKeys changed: ', selectedRowKeys);
+        this.setState({selectedRowKeys});
+    };
 
 
     render() {
+        //State
+        const {selectedRowKeys} = this.state;
+        const rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange,
+        }
         //Data
         const columns = [
             {
@@ -131,7 +138,7 @@ class Tasks extends Component {
                 key: 'status',
                 render: (status: string) => renderStatus(status),
                 filters: filtersStatus,
-                onFilter: (value:any, record:any) => record.status.indexOf(value) === 0,
+                onFilter: (value: any, record: any) => record.status.indexOf(value) === 0,
             },
             {
                 title: 'Due Data',
@@ -179,9 +186,10 @@ class Tasks extends Component {
 
         return (
             <>
-                <Table dataSource={dataSource} columns={columns} rowSelection={{
-                    type: 'checkbox'
-                }}/>
+                <Table dataSource={dataSource}
+                       columns={columns}
+                       rowSelection={rowSelection}
+                />
             </>
         );
     }
