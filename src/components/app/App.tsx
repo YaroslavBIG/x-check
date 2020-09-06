@@ -6,7 +6,7 @@ import { setDefaultPath } from './store/loginReducer';
 import Loading from './Loading';
 import Login from '../features/login/Login';
 import NavigationPanel from '../features/NavigationPanel/NavigationPanel';
-import { XCheckPath } from '../../models/app-paths.enum';
+import { XCheckPath } from '../../enum/app-paths.enum';
 import { isLoaded } from 'react-redux-firebase';
 
 export interface AuthRouteState {

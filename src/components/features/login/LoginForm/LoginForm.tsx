@@ -39,7 +39,7 @@ export default function LoginForm() {
       history.push(redirectPath);
     } catch (e) {
       setPending(false);
-      toast.error('Failed to Login');
+      toast.error('Failed to login');
     }
   };
 
