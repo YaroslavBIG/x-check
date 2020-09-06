@@ -1,11 +1,7 @@
-import { Task, taskStatus } from "components/Tasks/TaskInterface"
+import { Itask, taskStatus } from "components/Tasks/TaskInterface"
+import { taskReducerActions } from "./actions"
 
-export enum taskReducerActions {
-  CHANGE = 'CHANGE',
-  DELETE = 'DELETE',
-}
-
-const initialState: Task = {
+export const initialTaskState: Itask = {
   id: "",
   author: "",
   state: taskStatus.DRAFT,
@@ -13,11 +9,12 @@ const initialState: Task = {
   items: []
 }
 
-export const taskReducer = (state = initialState, action: {type: taskReducerActions}): object => {
+export const taskReducer = (state = initialTaskState, action: any) => {
   const {
     CHANGE,
     DELETE
   } = taskReducerActions
+
   switch (action.type) {
     case CHANGE:
      return {...state, status: CHANGE }

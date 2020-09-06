@@ -3,7 +3,7 @@ import {Form, Select, Input } from 'antd';
 import { TaskHeader } from './TaskHeader';
 import { taskStatus } from '../TaskInterface';
 import { taskStore } from './taskReducer/taskStore';
-import { taskReducerActions } from './taskReducer/taskReducer';
+import { taskReducerActions } from './taskReducer/actions';
 
 const { Option } = Select;
 const { TextArea } = Input;

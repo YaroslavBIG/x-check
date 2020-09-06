@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import {Button} from 'antd';
+import { TaskContext } from './TaskContext';
 
 
 export const ArrowButton = (props: any) => {
+  const { addTaskToggler } = useContext(TaskContext)
 
-  const backHandler = () => {
-    console.log('arrowButtonHandler')
-  }
   return (
-    <Button type="text" icon={<ArrowLeftOutlined {...props} />} onClick={backHandler}></Button>
+    <Button type="text" icon={<ArrowLeftOutlined {...props} />} onClick={addTaskToggler}></Button>
   )
 }

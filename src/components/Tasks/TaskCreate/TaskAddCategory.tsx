@@ -1,10 +1,10 @@
 import React from 'react';
-import { Form, Select, Input } from 'antd';
+import { Form, Input, InputNumber } from 'antd';
 import { TaskHeader } from './TaskHeader';
 
-export const TaskAddCateory: React.FC = () => {
+
+export const TaskAddCateory: React.FC = (props) => {
   const [form] = Form.useForm();
-  const {Option} = Select;
 
   const onReset = (): void => {
     form.resetFields();
@@ -50,14 +50,9 @@ export const TaskAddCateory: React.FC = () => {
           <Form.Item
               name='Order'
               rules={[{ required: true, message: 'Please select order!' }]}
+              initialValue={1}
             >
-          <Select placeholder='Select status' aria-required style={{ width: 120 }} onChange={() => 1}>
-            <Option value={1}>1</Option>
-            <Option value={2}>2</Option>
-            <Option value={3}>3</Option>
-            <Option value={4}>4</Option>
-            <Option value={5}>5</Option>
-          </Select>
+          <InputNumber min={1} max={10}  onChange={(value) => console.log('Order', value)} />
         </Form.Item>
       </Form>
     </div>

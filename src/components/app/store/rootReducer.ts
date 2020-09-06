@@ -7,7 +7,7 @@ import { taskReducer } from 'components/Tasks/TaskCreate/taskReducer/taskReducer
 const rootReducer = combineReducers({
   firestore: firestoreReducer,
   firebase: firebaseReducer,
-  taskReducer: taskReducer
+  taskStore: taskReducer
 });
 
 export default rootReducer;
