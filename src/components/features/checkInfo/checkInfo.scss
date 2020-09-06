@@ -9,21 +9,6 @@
   padding: 2rem;
   color: #595959;
 
-  &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  &__buttons {
-    display: flex;
-    justify-content: space-between;
-
-    button:first-child {
-      margin-right: 8px;
-    }
-  }
-
   .ant-input, label {
     color: #595959;
   }
