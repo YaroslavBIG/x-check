@@ -1,74 +1,95 @@
-import React, {Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import "./Tasks"
 import {SearchOutlined} from '@ant-design/icons';
 import {Table, Tag, Input, Button, Space} from 'antd';
 import Highlighter from "react-highlight-words";
+import firebase from "firebase";
 
-const renderStatus = (status: string) => {
-    let color;
-    if (status === 'Published') {
-        color = 'green'
-    } else if (status === 'Draft') {
-        color = 'orange'
-    } else {
-        color = 'default'
-    }
+const Tasks = () => {
+    //Tasks block
+    const [tasks, setTasks] = useState([])
 
-    return (
-        <Tag color={color} key={status}>
-            {status.toUpperCase()}
-        </Tag>
-    )
-}
+    useEffect(() => {
+        const db = firebase.firestore();
 
-const filtersStatus = [
-    {
-        text: 'Published',
-        value: 'Published',
-    },
-    {
-        text: 'Draft',
-        value: 'Draft',
-    },
-    {
-        text: 'Closed',
-        value: 'Closed',
-    },
-]
+        let tasks: any = []
+
+        db.collection('tasks').get()
+            .then((query) => {
+                query.forEach((doc) => {
+                    tasks = [...tasks, doc.data()]
+                })
+
+                setTasks(tasks)
+            })
 
 
-class Tasks extends Component {
-    state = {
-        selectedRowKeys: [],
-        searchText: '',
-        searchedColumn: '',
+    }, [])
+
+    //Block of Selected row logic
+    const [selectedRowKeys, setSelectedRowKeys] = useState([])
+
+    const onSelectChange = (selectedRowKeys: any) => {
+        console.log('selectedRowKeys changed: ', selectedRowKeys);
+        setSelectedRowKeys(selectedRowKeys)
     };
 
+    const rowSelection = {
+        selectedRowKeys,
+        onChange: onSelectChange,
+    }
 
-    getColumnSearchProps = (dataIndex: any) => ({
+    //Block of search logic
+    const [search, setSearch] = useState({
+        searchText: '',
+        searchedColumn: '',
+    })
+    const {searchText, searchedColumn} = search;
+
+    const handleSearch = (selectedKeys: any, confirm: any, dataIndex: any) => {
+        confirm();
+        setSearch({
+            searchText: selectedKeys[0],
+            searchedColumn: dataIndex,
+        });
+    };
+
+    const handleReset = (clearFilters: any) => {
+        clearFilters();
+        setSearch((prevState: { searchText: string, searchedColumn: string }) => {
+            return {
+                ...prevState,
+                searchText: ''
+            }
+        });
+    };
+
+    let searchInput: any;
+
+    const getColumnSearchProps = (dataIndex: any) => ({
         filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}: any) => (
             <div style={{padding: 8}}>
                 <Input
                     ref={node => {
-                        this.searchInput = node;
+                        searchInput = node;
                     }}
                     placeholder={`Search ${dataIndex}`}
                     value={selectedKeys[0]}
                     onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                    onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+                    onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
                     style={{width: 188, marginBottom: 8, display: 'block'}}
                 />
                 <Space>
                     <Button
                         type="primary"
-                        onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
                         icon={<SearchOutlined/>}
                         size="small"
                         style={{width: 90}}
                     >
                         Search
                     </Button>
-                    <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{width: 90}}>
+                    <Button onClick={() => handleReset(clearFilters)} size="small" style={{width: 90}}>
                         Reset
                     </Button>
                 </Space>
@@ -81,14 +102,14 @@ class Tasks extends Component {
                 : '',
         onFilterDropdownVisibleChange: (visible: any) => {
             if (visible) {
-                setTimeout(() => this.searchInput.select(), 100);
+                setTimeout(() => searchInput.select(), 100);
             }
         },
         render: (text: any) =>
-            this.state.searchedColumn === dataIndex ? (
+            searchedColumn === dataIndex ? (
                 <Highlighter
                     highlightStyle={{backgroundColor: '#ffc069', padding: 0}}
-                    searchWords={[this.state.searchText]}
+                    searchWords={[searchText]}
                     autoEscape
                     textToHighlight={text ? text.toString() : ''}
                 />
@@ -97,102 +118,108 @@ class Tasks extends Component {
             ),
     });
 
-    handleSearch = (selectedKeys: any, confirm: any, dataIndex: any) => {
-        confirm();
-        this.setState({
-            searchText: selectedKeys[0],
-            searchedColumn: dataIndex,
-        });
-    };
-
-    handleReset = (clearFilters: any) => {
-        clearFilters();
-        this.setState({searchText: ''});
-    };
-    private searchInput: any;
-
-    onSelectChange = (selectedRowKeys: any) => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
-        this.setState({selectedRowKeys});
-    };
+    //Side-effect Block
 
 
-    render() {
-        //State
-        const {selectedRowKeys} = this.state;
-        const rowSelection = {
-            selectedRowKeys,
-            onChange: this.onSelectChange,
+    // render-function for column-status
+    const renderStatus = (status: string) => {
+        let color;
+        if (status === 'Published') {
+            color = 'green'
+        } else if (status === 'Draft') {
+            color = 'orange'
+        } else {
+            color = 'default'
         }
-        //Data
-        const columns = [
-            {
-                title: 'Task Name',
-                dataIndex: 'task_name',
-                key: 'task_name',
-                ...this.getColumnSearchProps('task_name'),
-            },
-            {
-                title: 'Status',
-                dataIndex: 'status',
-                key: 'status',
-                render: (status: string) => renderStatus(status),
-                filters: filtersStatus,
-                onFilter: (value: any, record: any) => record.status.indexOf(value) === 0,
-            },
-            {
-                title: 'Due Data',
-                dataIndex: 'due_data',
-                key: 'due_data',
-            },
-            {
-                title: 'Author',
-                dataIndex: 'author',
-                key: 'author',
-            },
-            {
-                title: 'Max Score',
-                dataIndex: 'max_score',
-                key: 'max_score',
-            }
-        ];
-        const dataSource = [
-            {
-                key: '0',
-                task_name: 'X-Check App',
-                status: 'Published',
-                due_data: '16/08',
-                author: 'Evan Flores',
-                max_score: 640,
-            },
-            {
-                key: '3',
-                task_name: 'SongBird',
-                status: 'Draft',
-                due_data: '16/08',
-                author: 'Evan Flores',
-                max_score: 640,
-            },
-            {
-                key: '2',
-                task_name: 'X-Check App',
-                status: 'Closed',
-                due_data: '16/08',
-                author: 'Evan Flores',
-                max_score: 640,
-            },
-
-        ];
 
         return (
-            <>
-                <Table dataSource={dataSource}
-                       columns={columns}
-                       rowSelection={rowSelection}
-                />
-            </>
-        );
+            <Tag color={color} key={status}>
+                {status.toUpperCase()}
+            </Tag>
+        )
     }
+    // collection of status for column-status
+    const filtersStatus = [
+        {
+            text: 'Published',
+            value: 'Published',
+        },
+        {
+            text: 'Draft',
+            value: 'Draft',
+        },
+        {
+            text: 'Closed',
+            value: 'Closed',
+        },
+    ]
+
+    const columns = [
+        {
+            title: 'Task Name',
+            dataIndex: 'task_name',
+            key: 'task_name',
+            ...getColumnSearchProps('task_name'),
+        },
+        {
+            title: 'Status',
+            dataIndex: 'status',
+            key: 'status',
+            render: (status: string) => renderStatus(status),
+            filters: filtersStatus,
+            onFilter: (value: any, record: any) => record.status.indexOf(value) === 0,
+        },
+        {
+            title: 'Due Data',
+            dataIndex: 'due_data',
+            key: 'due_data',
+        },
+        {
+            title: 'Author',
+            dataIndex: 'author',
+            key: 'author',
+        },
+        {
+            title: 'Max Score',
+            dataIndex: 'max_score',
+            key: 'max_score',
+        }
+    ];
+    const dataSource = [
+        {
+            key: '0',
+            task_name: 'X-Check App',
+            status: 'Published',
+            due_data: '16/08',
+            author: 'Evan Flores',
+            max_score: 640,
+        },
+        {
+            key: '3',
+            task_name: 'SongBird',
+            status: 'Draft',
+            due_data: '16/08',
+            author: 'Evan Flores',
+            max_score: 640,
+        },
+        {
+            key: '2',
+            task_name: 'X-Check App',
+            status: 'Closed',
+            due_data: '16/08',
+            author: 'Evan Flores',
+            max_score: 640,
+        },
+
+    ];
+    return (
+        <>
+            <Table dataSource={dataSource}
+                   columns={columns}
+                   rowSelection={rowSelection}
+            />
+        </>
+    );
 }
 
 export default Tasks;
