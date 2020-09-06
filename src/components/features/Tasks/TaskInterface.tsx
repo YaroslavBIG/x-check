@@ -10,20 +10,22 @@ export interface ItaskItem {
   category: string,
   minScore: number,
   maxScore: number,
-  description?: Isubitems
+  description?: string
 }
 
 export interface Isubitem {
   description: string
-  score: number
+  minScore: number,
+  maxScore: number,
 }
 
 export interface categoriesOrder {
   name: string,
   order: number
+  items?: Array<Isubitem>
 }
 
-export interface Isubitems extends Array<Isubitem>{}
+// export interface Isubitems extends Array<Isubitem>{}
 
 export interface ItaskItems extends Array<ItaskItem>{}
 
@@ -33,5 +35,5 @@ export interface Itask {
   state: taskStatus,
   maxScore: number,
   categoriesOrder: Array<categoriesOrder>,
-  items: ItaskItems
+  items?: ItaskItems // Dont need?
 }

@@ -47,6 +47,7 @@ export const TaskCreateDefault: React.FC = () => {
 	return (
 		<div className='task'>
       <Form
+        layout="vertical"
         form={form}
         name="Task Create"
         onFinish={onFinish}
@@ -54,8 +55,8 @@ export const TaskCreateDefault: React.FC = () => {
       >
         <TaskHeader onReset={onReset} handleSubmit={handleFormSubmit} title='Create Task' />
         <div className='task-status'>
-          <div className='task-block--title'>Status</div>
           <Form.Item
+            label='Satus'
             name='state'
             rules={[{ required: true, message: 'Please select status!' }]}
           >
@@ -67,8 +68,8 @@ export const TaskCreateDefault: React.FC = () => {
           </Form.Item>
         </div>
         <div className='task-title'>
-          <div className='task-block--title'>Title</div>
           <Form.Item
+            label='Title'
             name='id'
             rules={[{ required: true, message: 'Please input title!' }]}
           >
@@ -79,16 +80,16 @@ export const TaskCreateDefault: React.FC = () => {
           </Form.Item>
         </div>
         <div className='task-description'>
-          <div className='task-block--title'>Description</div>
           <Form.Item
-            name='Description'
+            label='Description'
+            name='description'
           >
             <TextArea placeholder='Enter description here' autoSize={{minRows: 2, maxRows: 10}} />
           </Form.Item>
         </div>
       </Form>
       <div className="accordion">
-        <TaskAccordion />
+        {newTask.categoriesOrder.length ? <TaskAccordion /> : null}
       </div>
 		</div>
 	);

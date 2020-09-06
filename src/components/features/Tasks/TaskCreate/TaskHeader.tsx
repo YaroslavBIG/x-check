@@ -30,11 +30,11 @@ export const TaskHeader = (props: TaskHeaderProps) => {
 
       <Button htmlType="button" type='primary' size='middle' onClick={onReset}>
         Cancel
-          </Button>
+      </Button>
 
       <Button type='default' size='middle' htmlType="submit" onSubmit={handleSubmit}>
         Save
-          </Button>
+      </Button>
     </span>
   )
 }

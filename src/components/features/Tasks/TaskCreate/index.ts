@@ -5,3 +5,4 @@ export {TaskHeader} from './TaskHeader';
 export {TaskContextState, TaskConsumer, TaskProvider, TaskContext} from './TaskContext';
 export {TaskLayout} from './TaskLayout';
 export { TaskAccordion } from './Accordion/TaskAccordion';
+export { AddTaskItem } from './TaskItems/AddTaskItem';
