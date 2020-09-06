@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import 'antd/dist/antd.css';
-import { Route, useLocation } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setDefaultPath } from '../features/login/loginReducer';
 import Loading from '../features/login/Loading/Loading';
@@ -37,11 +37,13 @@ const App = () => {
     <>
       {isLoaded(auth) ?
         <>
-          <Route exact path="/" component={Login}/>
-          <Route exact path='/login' component={Login}/>
-          <Route path={'/(.+)'} render={() => (
-            <NavigationPanel/>
-          )}/>
+          <Switch>
+            <Route exact path="/" component={Login}/>
+            <Route exact path='/login' component={Login}/>
+            <Route path={'/(.+)'} render={() => (
+              <NavigationPanel/>
+            )}/>
+          </Switch>
         </>
         :
         <Loading/>

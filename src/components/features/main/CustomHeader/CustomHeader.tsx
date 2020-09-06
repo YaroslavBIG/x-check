@@ -1,9 +1,15 @@
 import React from 'react';
+import { Button } from 'antd';
+import { useFirebase } from 'react-redux-firebase';
 
-const CustomHeader = (props:any) => (
+const CustomHeader = () => {
+  const firebase = useFirebase();
+
+  return (
     <div>
-        <h1>{props.title}</h1>
+      <Button onClick={() => firebase.logout()}>Sign out</Button>
     </div>
-)
+  );
+};
 
-export default CustomHeader
+export default CustomHeader;

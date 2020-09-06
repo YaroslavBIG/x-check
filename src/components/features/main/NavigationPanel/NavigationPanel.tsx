@@ -72,7 +72,7 @@ const NavigationPanel = () => {
             className: 'trigger',
             onClick: onToggleHandler,
           })}
-          <CustomHeader title="Header"/>
+          <CustomHeader/>
         </Header>
         <Content className="site-layout-background">
           <div>
