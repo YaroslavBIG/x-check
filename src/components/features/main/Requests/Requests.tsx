@@ -1,7 +1,6 @@
 import React from 'react';
-import './Requests.scss';
 
-export const Requests = (props: any) => {
+export const Requests = () => {
     return (
         <div>
             <h1>Requests</h1>
