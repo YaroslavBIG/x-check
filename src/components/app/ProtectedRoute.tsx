@@ -4,9 +4,9 @@ import { Redirect, Route } from 'react-router-dom';
 
 const PrivateRoute: React.FC<{
   component: React.FC;
-  path: string;
-  exact: boolean;
   isAuth: boolean;
+  path: string;
+  exact?: boolean;
 }> = (props) => {
 
   return (props.isAuth) ? (<Route path={props.path} exact={props.exact} component={props.component}/>) :
