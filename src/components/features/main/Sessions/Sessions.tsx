@@ -93,7 +93,7 @@ export default function Sessions() {
       <div className={styles.main}>
         <Table columns={columns} style={{ width: '100%' }}
                dataSource={getModifiedSessionData()}
-               pagination={{ pageSize: 3 }}
+               pagination={{ pageSize: 20 }}
                rowSelection={{
                  type: 'checkbox'
                }}

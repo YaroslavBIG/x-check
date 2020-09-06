@@ -20,6 +20,9 @@ import { isEmpty, isLoaded } from 'react-redux-firebase';
 import { useSelector } from 'react-redux';
 import { AuthRouteState } from '../../../app/App';
 import PrivateRoute from '../../../app/PrivateRoute';
+import { Reviews } from '../Reviews/Reviews';
+import { Requests } from '../Requests/Requests';
+import { Debates } from '../Debates/Debates';
 
 const { Header, Sider, Content } = Layout;
 
@@ -81,11 +84,11 @@ const NavigationPanel = () => {
                             exact/>
               <PrivateRoute isAuth={isLoaded(auth) && !isEmpty(auth)} path="/sessions" component={Sessions}
                             exact/>
-              <PrivateRoute isAuth={isLoaded(auth) && !isEmpty(auth)} path="/requests" component={Tasks}
+              <PrivateRoute isAuth={isLoaded(auth) && !isEmpty(auth)} path="/requests" component={Requests}
                             exact/>
-              <PrivateRoute isAuth={isLoaded(auth) && !isEmpty(auth)} path="/reviews" component={Sessions}
+              <PrivateRoute isAuth={isLoaded(auth) && !isEmpty(auth)} path="/reviews" component={Reviews}
                             exact/>
-              <PrivateRoute isAuth={isLoaded(auth) && !isEmpty(auth)} path="/debates" component={Sessions}
+              <PrivateRoute isAuth={isLoaded(auth) && !isEmpty(auth)} path="/debates" component={Debates}
                             exact/>
               <PrivateRoute isAuth={isLoaded(auth) && !isEmpty(auth)} path="*" component={Sessions}
                             exact={false}/>
