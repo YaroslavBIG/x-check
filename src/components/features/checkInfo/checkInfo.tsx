@@ -8,10 +8,20 @@ import CheckInfoListItem from './listItem/listItem';
 
 const { Option } = Select;
 
+export enum CheckStatus {
+  DRAFT = 'Draft',
+  PUBLISHED = 'Published',
+  COMPLETED = 'Completed'
+}
+
 const CheckInfo = () => {
+  const onFinish = (values: any) => {
+    console.log('Received values of form: ', values);
+  };
+
   return (
     <div className={styles['check-info']}>
-      <Form name={styles['check-info']} layout="vertical">
+      <Form name={styles['check-info']} layout="vertical" onFinish={onFinish}>
         <FormHeader title="Create/edit request"/>
         <ul>
           <CheckInfoListItem heading="Task" info="Songbird"/>
@@ -23,12 +33,12 @@ const CheckInfo = () => {
             <a href="https://www.netlify.com/" target="_blank" rel="noopener noreferrer">https://me.netlify.app</a>
           </CheckInfoListItem>
           <CheckInfoListItem heading="Student">
-            <Avatar className={styles.avatar} src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+            <Avatar className={styles.avatar} icon={<UserOutlined />} />
             <span>Evan Flores</span>
           </CheckInfoListItem>
           <CheckInfoListItem heading="Reviewer">
-              <Avatar className={styles.avatar} icon={<UserOutlined />} />
-              <span>Jennie Cooper</span>
+            <Avatar className={styles.avatar} icon={<UserOutlined />} />
+            <span>Jennie Cooper</span>
           </CheckInfoListItem>
         </ul>
         <Form.Item
@@ -42,9 +52,9 @@ const CheckInfo = () => {
           ]}
         >
           <Select placeholder="Select a status" className={styles.select}>
-            <Option value="draft">Draft</Option>
-            <Option value="published">Published</Option>
-            <Option value="completed">Completed</Option>
+            <Option value={CheckStatus.DRAFT}>{CheckStatus.DRAFT}</Option>
+            <Option value={CheckStatus.PUBLISHED}>{CheckStatus.PUBLISHED}</Option>
+            <Option value={CheckStatus.COMPLETED}>{CheckStatus.COMPLETED}</Option>
           </Select>
         </Form.Item>
         <Button className={styles["check-info__button"]} size="large">

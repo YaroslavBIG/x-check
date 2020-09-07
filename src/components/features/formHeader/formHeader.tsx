@@ -4,7 +4,8 @@ import 'antd/dist/antd.css';
 import './formHeader.scss';
 
 interface FormHeaderProps {
-  title: string
+  title: string,
+  // onFinish: (values: any) => void
 }
 
 const FormHeader = (props: FormHeaderProps) => { 
