@@ -6,7 +6,7 @@ import { useFirestore } from 'react-redux-firebase';
 import cuid from 'cuid';
 import { useSelector } from 'react-redux';
 
-interface UserState {
+interface SessionToolbarState {
   sessions: {
     rows: ReactText[]
   }
@@ -25,9 +25,9 @@ const { confirm } = Modal;
 
 export default function SessionToolbar() {
   const firestore = useFirestore();
-  const currentUserData = useSelector((state: UserState) => state.firebase.profile);
-  const currentUserId = useSelector((state: UserState) => state.firebase.auth.uid);
-  const selectedRows = useSelector((state: UserState) => state.sessions.rows);
+  const currentUserData = useSelector((state: SessionToolbarState) => state.firebase.profile);
+  const currentUserId = useSelector((state: SessionToolbarState) => state.firebase.auth.uid);
+  const selectedRows = useSelector((state: SessionToolbarState) => state.sessions.rows);
 
   function showConfirm() {
     confirm({
