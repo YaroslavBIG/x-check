@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { ReactText, useEffect } from 'react';
 import { Avatar, Table, Tag } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { useFirestoreConnect } from 'react-redux-firebase';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './Sessions.module.scss';
 import { Session } from '../../../../interfaces/app-session.interface';
 import { COLORS, FRIENDLY_STATUS, SessionStatus } from '../../../../enum/session-status.enum';
 import { FirestoreSession } from '../../../../interfaces/firestore-session.interface';
 import SessionToolbar from './SessionToolbar/SessionToolbar';
 import { UserOutlined } from '@ant-design/icons/lib';
+import { setRowSelection } from './SessionsReducer';
 
 export interface UserProfileData {
   photoURL: string;
@@ -101,8 +102,15 @@ export interface SessionState {
 }
 
 export default function Sessions() {
+  const dispatch = useDispatch();
   const sessions: SessionsRecord = useSelector((state: SessionState) => state.firestore.data.sessions);
   const isLoadingData: boolean = useSelector((state: SessionState) => state.firestore.status.requesting.sessions);
+
+  useEffect(() => {
+    return function cleanup() {
+      dispatch(setRowSelection([]));
+    };
+  });
 
   useFirestoreConnect([
     { collection: 'sessions' }
@@ -138,7 +146,9 @@ export default function Sessions() {
                dataSource={getModifiedSessionData()}
                pagination={{ pageSize: 7 }}
                rowSelection={{
-                 type: 'checkbox'
+                 onChange: (selectedRowKeys: ReactText[]) => {
+                   dispatch(setRowSelection(selectedRowKeys));
+                 }
                }}
         />
       </div>
