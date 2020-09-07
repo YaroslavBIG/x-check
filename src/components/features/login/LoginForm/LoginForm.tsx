@@ -12,6 +12,7 @@ interface Role {
 }
 
 interface LoginState {
+  login: { defaultPath: string },
   firestore: {
     data: {
       roles: Role
@@ -23,6 +24,8 @@ export default function LoginForm() {
   const roles = useSelector((state: LoginState) => state.firestore.data.roles);
   const [isPending, setPending] = useState(false);
   const history = useHistory();
+  const redirectPath = useSelector((state: LoginState) => state.login.defaultPath);
+
 
   useFirestoreConnect([
     { collection: 'roles' }
@@ -33,10 +36,10 @@ export default function LoginForm() {
       setPending(true);
       await socialLoginGithub('github', values.role, values.displayName);
       setPending(false);
-      history.push('/sessions');
+      history.push(redirectPath);
     } catch (e) {
       setPending(false);
-      toast.error('Failed to Login');
+      toast.error('Failed to login');
     }
   };
 
@@ -57,7 +60,7 @@ export default function LoginForm() {
               },
             ]}
           >
-            <Input placeholder="Enter your name"/>
+            <Input placeholder="Enter your Name"/>
           </Form.Item>
           <Form.Item
             name="role"
