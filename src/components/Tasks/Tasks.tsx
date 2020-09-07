@@ -80,6 +80,7 @@ const Tasks = () => {
                 setTasks(tasks)
             })
 
+
     }, [])
 
     //Block of Selected row logic
