@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import 'components/features/checkInfo/node_modules/antd/dist/antd.css';
+import 'antd/dist/antd.css';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setDefaultPath } from '../features/login/loginReducer';

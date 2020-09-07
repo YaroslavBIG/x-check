@@ -22,7 +22,7 @@ const CheckInfo = () => {
   return (
     <div className={styles['check-info']}>
       <Form name={styles['check-info']} layout="vertical" onFinish={onFinish}>
-        <FormHeader title="Create/edit request"/>
+        <FormHeader title="Create/edit review"/>
         <ul>
           <CheckInfoListItem heading="Task" info="Songbird"/>
           <CheckInfoListItem heading="Cross-check session" info="rss2020Q3react-xcheck"/>
