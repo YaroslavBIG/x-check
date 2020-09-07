@@ -9,3 +9,12 @@
   display: flex;
 }
 
+.user {
+  display: flex;
+  align-items: center;
+
+  &__avatar {
+    margin-right: 4px;
+  }
+
+}
