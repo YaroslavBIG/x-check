@@ -5,7 +5,6 @@ import './formHeader.scss';
 
 interface FormHeaderProps {
   title: string,
-  // onFinish: (values: any) => void
 }
 
 const FormHeader = (props: FormHeaderProps) => { 
