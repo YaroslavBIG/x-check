@@ -9,7 +9,7 @@
   padding: 2rem;
   color: #595959;
 
-  .ant-input, label {
+  .select, label {
     color: #595959;
   }
 
@@ -19,27 +19,18 @@
     list-style-type: none;
   }
 
-  .heading {
-    margin-bottom: 0;
-    color: #595959;
-  }
-
   .info {
     display: flex;
     align-items: center;
     margin-left: 8px;
     color: #595959;
-
-    .ant-avatar {
-      margin-right: 8px;
-    }
   }
 
-  .person {
-    margin-bottom: 14px;
+  .avatar {
+    margin-right: 8px;
   }
 
-  .check-info-button {
+  &__button {
     color: #595959;
     margin-top: 3rem;
   }
