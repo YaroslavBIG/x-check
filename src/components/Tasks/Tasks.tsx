@@ -5,6 +5,63 @@ import {Table, Tag, Input, Button, Space} from 'antd';
 import Highlighter from "react-highlight-words";
 import firebase from "firebase";
 
+// Test static data
+const dataSource = [
+    {
+        key: '0',
+        task_name: 'X-Check App',
+        status: 'Published',
+        due_data: '16/08',
+        author: 'Evan Flores',
+        max_score: 640,
+    },
+    {
+        key: '3',
+        task_name: 'SongBird',
+        status: 'Draft',
+        due_data: '16/08',
+        author: 'Evan Flores',
+        max_score: 640,
+    },
+    {
+        key: '2',
+        task_name: 'X-Check App',
+        status: 'Closed',
+        due_data: '16/08',
+        author: 'Evan Flores',
+        max_score: 640,
+    },
+
+];
+
+// TS-Interface
+interface Tasks {
+    key: string | number,
+    task_name: string,
+    status: string,
+    due_data: string,
+    author: string,
+    max_score: number,
+}
+
+// Network
+const transformTasks = (tasks: any) => {
+
+    const {id, status, update_data, author, items, task_name} = tasks;
+    return ({
+        key: id,
+        task_name,
+        status,
+        update_data,
+        author,
+        max_score: items.reduce((acc: any, cur: any) => {
+            return acc + cur.maxScore
+        }, 0)
+    })
+}
+
+/*<Tasks[]>*/
+
 const Tasks = () => {
     //Tasks block
     const [tasks, setTasks] = useState([])
@@ -17,12 +74,11 @@ const Tasks = () => {
         db.collection('tasks').get()
             .then((query) => {
                 query.forEach((doc) => {
-                    tasks = [...tasks, doc.data()]
+                    console.log(doc.data())
+                    tasks = [...tasks, transformTasks(doc.data())]
                 })
-
                 setTasks(tasks)
             })
-
 
     }, [])
 
@@ -46,7 +102,7 @@ const Tasks = () => {
     })
     const {searchText, searchedColumn} = search;
 
-    const handleSearch = (selectedKeys: any, confirm: any, dataIndex: any) => {
+    const handleSearch = (selectedKeys: string, confirm: any, dataIndex: string) => {
         confirm();
         setSearch({
             searchText: selectedKeys[0],
@@ -118,9 +174,6 @@ const Tasks = () => {
             ),
     });
 
-    //Side-effect Block
-
-
     // render-function for column-status
     const renderStatus = (status: string) => {
         let color;
@@ -170,9 +223,9 @@ const Tasks = () => {
             onFilter: (value: any, record: any) => record.status.indexOf(value) === 0,
         },
         {
-            title: 'Due Data',
-            dataIndex: 'due_data',
-            key: 'due_data',
+            title: 'Last Update',
+            dataIndex: 'update_data',
+            key: 'update_data',
         },
         {
             title: 'Author',
@@ -185,36 +238,10 @@ const Tasks = () => {
             key: 'max_score',
         }
     ];
-    const dataSource = [
-        {
-            key: '0',
-            task_name: 'X-Check App',
-            status: 'Published',
-            due_data: '16/08',
-            author: 'Evan Flores',
-            max_score: 640,
-        },
-        {
-            key: '3',
-            task_name: 'SongBird',
-            status: 'Draft',
-            due_data: '16/08',
-            author: 'Evan Flores',
-            max_score: 640,
-        },
-        {
-            key: '2',
-            task_name: 'X-Check App',
-            status: 'Closed',
-            due_data: '16/08',
-            author: 'Evan Flores',
-            max_score: 640,
-        },
 
-    ];
     return (
         <>
-            <Table dataSource={dataSource}
+            <Table dataSource={tasks}
                    columns={columns}
                    rowSelection={rowSelection}
             />
