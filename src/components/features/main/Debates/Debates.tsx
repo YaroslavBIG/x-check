@@ -1,7 +1,6 @@
 import React from 'react';
-import './Debates.scss';
 
-export const Debates = (props:any) => {
+export const Debates = () => {
     return (
         <div>
             <h1>Debates</h1>
