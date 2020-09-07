@@ -1,13 +1,51 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Dropdown, Menu } from 'antd';
 import { useFirebase } from 'react-redux-firebase';
+import styles from './CustomHeader.module.scss';
+import { useSelector } from 'react-redux';
+
+interface IProfileState {
+  firebase: {
+    profile: {
+      displayName: string;
+      email: string
+      photoURL: string;
+      role: string
+    }
+  }
+}
 
 const CustomHeader = () => {
   const firebase = useFirebase();
+  const profile = useSelector((state: IProfileState) => state.firebase.profile);
+
+  const menu = (
+    <Menu className={styles.profileContainer}>
+      <Menu.Item className={styles.name}>
+        <div>
+          {profile.displayName}
+        </div>
+      </Menu.Item>
+      <Menu.Item>
+        <div>
+          **{profile.role}
+        </div>
+      </Menu.Item>
+      <Menu.Item className={styles.name}>
+        <a href="" onClick={() => firebase.logout()}>Sign out</a>
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
-    <div>
-      <Button onClick={() => firebase.logout()}>Sign out</Button>
+    <div className={styles.header}>
+      <Dropdown overlay={menu} placement="bottomLeft">
+        <div
+          className={styles.avatar}
+          style={{ backgroundImage: `url(${profile.photoURL})` }}
+        >
+        </div>
+      </Dropdown>
     </div>
   );
 };
