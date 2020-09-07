@@ -144,7 +144,7 @@ export default function Sessions() {
       <div className={styles.main}>
         <Table loading={isLoadingData} columns={columns} style={{ width: '100%' }}
                dataSource={getModifiedSessionData()}
-               pagination={{ pageSize: 7 }}
+               pagination={{ pageSize: 10 }}
                rowSelection={{
                  onChange: (selectedRowKeys: ReactText[]) => {
                    dispatch(setRowSelection(selectedRowKeys));

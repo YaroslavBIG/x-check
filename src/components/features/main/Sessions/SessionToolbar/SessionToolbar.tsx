@@ -1,12 +1,15 @@
-import React from 'react';
-import { Button } from 'antd';
+import React, { ReactText } from 'react';
+import { Button, Modal } from 'antd';
 import styles from './SessionToolbar.module.scss';
-import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons/lib';
+import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons/lib';
 import { useFirestore } from 'react-redux-firebase';
 import cuid from 'cuid';
 import { useSelector } from 'react-redux';
 
 interface UserState {
+  sessions: {
+    rows: ReactText[]
+  }
   firebase: {
     auth: {
       uid: string;
@@ -18,10 +21,24 @@ interface UserState {
   }
 }
 
+const { confirm } = Modal;
+
 export default function SessionToolbar() {
   const firestore = useFirestore();
   const currentUserData = useSelector((state: UserState) => state.firebase.profile);
   const currentUserId = useSelector((state: UserState) => state.firebase.auth.uid);
+  const selectedRows = useSelector((state: UserState) => state.sessions.rows);
+
+  function showConfirm() {
+    confirm({
+      title: 'Delete Sessions',
+      icon: <ExclamationCircleOutlined/>,
+      content: 'Are you sure you want to delete the selected sessions?',
+      onOk() {
+        deleteSession();
+      }
+    });
+  }
 
   function addSession() {
     const exampleSession = {
@@ -40,10 +57,21 @@ export default function SessionToolbar() {
     return firestore.collection('sessions').add(exampleSession);
   }
 
+  function updateSession() {
+
+  }
+
+  function deleteSession(): void {
+    selectedRows.forEach((row) => {
+      firestore.delete({ collection: 'sessions', doc: row as string });
+    });
+  }
+
   return (
     <>
-      <Button icon={<EditOutlined/>}>Edit</Button>
-      <Button icon={<DeleteOutlined/>} className={styles.button}>Delete</Button>
+      <Button icon={<EditOutlined/>} disabled={selectedRows?.length !== 1} onClick={() => updateSession()}>Edit</Button>
+      <Button icon={<DeleteOutlined/>} disabled={!selectedRows?.length} className={styles.button}
+              onClick={showConfirm}>Delete</Button>
       <Button type='primary' icon={<PlusOutlined/>} onClick={() => addSession()}
               className={styles.button}>Add</Button>
     </>
