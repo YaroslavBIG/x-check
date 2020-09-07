@@ -5,6 +5,9 @@ import {Table, Tag, Input, Button, Space} from 'antd';
 import Highlighter from "react-highlight-words";
 import firebase from "firebase";
 
+
+// TODO remove comment
+/*
 // Test static data
 const dataSource = [
     {
@@ -33,6 +36,7 @@ const dataSource = [
     },
 
 ];
+*/
 
 // TS-Interface
 interface Tasks {
