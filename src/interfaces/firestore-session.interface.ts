@@ -1,4 +1,5 @@
 import { Attendee } from './attendee.interface';
+import { UserProfileData } from '../components/features/main/Sessions/Sessions';
 
 export interface FirestoreSession {
   name: string;
@@ -15,4 +16,5 @@ export interface FirestoreSession {
   desiredReviewersAmount: number;
   attendeeIds: string[];
   attendees: Attendee[];
+  host: UserProfileData;
 }
