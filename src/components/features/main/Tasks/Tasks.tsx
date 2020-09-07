@@ -5,8 +5,9 @@ import {Table, Tag, Input, Button, Space} from 'antd';
 import Highlighter from "react-highlight-words";
 import firebase from "firebase";
 
+// TODO change any-type to actual-type
+// TODO remove comments
 
-// TODO remove comment
 /*
 // Test static data
 const dataSource = [
@@ -41,24 +42,24 @@ const dataSource = [
 // TS-Interface
 interface Tasks {
     key: string | number,
-    task_name: string,
+    taskName: string,
     status: string,
-    due_data: string,
+    updateTime: string,
     author: string,
-    max_score: number,
+    maxScore: number,
 }
 
 // Network
 const transformTasks = (tasks: any) => {
 
-    const {id, status, update_data, author, items, task_name} = tasks;
+    const {id, status, updateTime, author, items, taskName} = tasks;
     return ({
         key: id,
-        task_name,
+        taskName,
         status,
-        update_data,
+        updateTime,
         author,
-        max_score: items.reduce((acc: any, cur: any) => {
+        maxScore: items.reduce((acc: any, cur: any) => {
             return acc + cur.maxScore
         }, 0)
     })
@@ -68,7 +69,7 @@ const transformTasks = (tasks: any) => {
 
 const Tasks = () => {
     //Tasks block
-    const [tasks, setTasks] = useState([])
+    const [tasks, setTasks] = useState<Tasks[]>([])
 
     useEffect(() => {
         const db = firebase.firestore();
@@ -215,9 +216,9 @@ const Tasks = () => {
     const columns = [
         {
             title: 'Task Name',
-            dataIndex: 'task_name',
-            key: 'task_name',
-            ...getColumnSearchProps('task_name'),
+            dataIndex: 'taskName',
+            key: 'taskName',
+            ...getColumnSearchProps('taskName'),
         },
         {
             title: 'Status',
@@ -229,8 +230,8 @@ const Tasks = () => {
         },
         {
             title: 'Last Update',
-            dataIndex: 'update_data',
-            key: 'update_data',
+            dataIndex: 'updateTime',
+            key: 'updateTime',
         },
         {
             title: 'Author',
@@ -239,8 +240,8 @@ const Tasks = () => {
         },
         {
             title: 'Max Score',
-            dataIndex: 'max_score',
-            key: 'max_score',
+            dataIndex: 'maxScore',
+            key: 'maxScore',
         }
     ];
 
