@@ -38,7 +38,7 @@ const CustomHeader = () => {
         </div>
       </Menu.Item>
       <Menu.Item className={styles.name}>
-        <a href="" onClick={() => firebase.logout()}>Sign out</a>
+        <a href="/" onClick={() => firebase.logout()}>Sign out</a>
       </Menu.Item>
     </Menu>
   );
