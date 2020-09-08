@@ -5,9 +5,22 @@ import { TaskContext } from './TaskContext';
 
 
 export const ArrowButton = (props: any) => {
-  const { addTaskToggler } = useContext(TaskContext)
+  const { setItemAddPage, itemAddPage, setAddTask, addTask } = useContext(TaskContext)
+
+  const toTaskCreateHandler = () => {
+    setAddTask(false);
+    setItemAddPage(false)
+  }
+
+  const arrowButtonHandler = () => {
+    if(itemAddPage || addTask) {
+      toTaskCreateHandler()
+    } else {
+      setAddTask(true)
+    }
+  }
 
   return (
-    <Button type="text" icon={<ArrowLeftOutlined {...props} />} onClick={addTaskToggler}></Button>
+    <Button type="text" icon={<ArrowLeftOutlined {...props} />} onClick={arrowButtonHandler}></Button>
   )
 }

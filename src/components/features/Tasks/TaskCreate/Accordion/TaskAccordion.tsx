@@ -1,21 +1,20 @@
 import React, { useContext } from 'react';
 import { TaskContext } from '../TaskContext';
-import { Collapse } from 'antd';
-import { addCheck } from '../TaskItems/addCheck';
-import { AddTaskItem } from '../TaskItems/AddTaskItem';
+import { Collapse, Empty } from 'antd';
+import { AddCheckButton } from '../TaskItems/AddCheckButton';
 
 export const TaskAccordion = () => {
   const { Panel } = Collapse;
-  const { newTask } = useContext(TaskContext);
+  const { newTask, setCollapsePanelNum } = useContext(TaskContext);
 
   const categotes = newTask.categoriesOrder.map((el: any, idx: number) => (
-    <Panel header={el.name} key={el.order + idx} extra={addCheck()}>
-      <AddTaskItem />
+    <Panel header={el.name} key={idx} id={el.order} extra={<AddCheckButton />}>
+      {newTask.items[idx] ? null : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
     </Panel>
   ))
 
   return (
-    <Collapse accordion>
+    <Collapse accordion onChange={(key) => setCollapsePanelNum(Number(key))}>
       {categotes}
     </Collapse>
   )

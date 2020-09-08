@@ -5,7 +5,9 @@ export const TaskProvider = TaskContext.Provider;
 export const TaskConsumer = TaskContext.Consumer;
 
 export const TaskContextState: React.FC = (props) => {
-  const [addTask, setAddTask] = useState(false)
+  const [addTask, setAddTask] = useState(false);
+  const [itemAddPage, setItemAddPage] = useState(false);
+  const [collapsePanelNum, setCollapsePanelNum] = useState(0);
   const [newTask, setNewTask] = useState({
     id: '',
     author: '',
@@ -17,7 +19,13 @@ export const TaskContextState: React.FC = (props) => {
 
 
   const addTaskToggler = () => {
-    setAddTask((prevState) => !prevState)
+    setAddTask((prevState) => !prevState);
+    setItemAddPage(false)
+  }
+
+  const addItemToggler = () => {
+    setItemAddPage((prevState) => !prevState);
+    setAddTask(false)
   }
 
   return (
@@ -25,7 +33,13 @@ export const TaskContextState: React.FC = (props) => {
       value={
         {
           addTask: addTask,
+          setAddTask: setAddTask,
+          collapsePanelNum: collapsePanelNum,
+          setCollapsePanelNum: setCollapsePanelNum,
           addTaskToggler: addTaskToggler,
+          itemAddPage: itemAddPage,
+          setItemAddPage: setItemAddPage,
+          addItemToggler: addItemToggler,
           newTask: newTask,
           setNewTask: setNewTask
         }

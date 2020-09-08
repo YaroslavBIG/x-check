@@ -1,15 +1,15 @@
 import React, { useContext } from "react"
 import {TaskContext} from '../index';
 import { Itask } from "../../TaskInterface";
-import { Form, Input, InputNumber, Button, Checkbox } from "antd";
-import { DeleteOutlined, SaveOutlined } from "@ant-design/icons";
+import { Form, Input, InputNumber, Checkbox } from "antd";
+import { TaskHeader } from "../TaskHeader";
+import update from 'immutability-helper';
 
-export const AddTaskItem = (props: any) => {
+export const AddTaskItem = () => {
   const [form] = Form.useForm();
-  const {catId} = props;
-  const { newTask, setNewTask } = useContext(TaskContext);
+  const { newTask, setNewTask, collapsePanelNum } = useContext(TaskContext);
 
-  console.log(catId)
+  console.log(typeof collapsePanelNum, collapsePanelNum)
   const onReset = (): void => {
     form.resetFields();
   };
@@ -22,11 +22,18 @@ export const AddTaskItem = (props: any) => {
       .catch((errorInfo) => { alert(errorInfo) });
   };
 
-  const onFinish = (values: object) => {
-    // alert(`'Success:' ${JSON.stringify(values, null, 2)}`);
+  const onFinish = (values: any) => {
+    alert(`'Success:' ${JSON.stringify(values, null, 2)}`);
     setNewTask((prev: Itask) => (
       {
         ...prev,
+        items: [{
+          ...prev.items,
+          [collapsePanelNum]: {...values}}
+          // update(prev.items, {[collapsePanelNum]: { items: {$set: values}}})
+
+        // items: {...values}
+        ]
       }
     ))
   };
@@ -38,7 +45,6 @@ export const AddTaskItem = (props: any) => {
 
   return (
     <div className="task-item">
-      <h1>{catId}</h1>
       <Form
         form={form}
         layout="vertical"
@@ -47,8 +53,7 @@ export const AddTaskItem = (props: any) => {
         onFinishFailed={onFinishFailed}
       >
         <div className="task-item--header">
-          <Button icon={<SaveOutlined />} size='middle' htmlType="submit" onSubmit={handleItemSubmit} />
-          <Button htmlType="button" icon={<DeleteOutlined />} size='middle' onClick={onReset} />
+          <TaskHeader onReset={onReset} handleSubmit={handleItemSubmit} arrowButton={true} title='Add (Edit Check)' />
         </div>
 
         <Form.Item
