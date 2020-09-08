@@ -1,3 +1,3 @@
-import CheckInfo from "./checkInfo";
+import CheckInfo from './CheckInfo';
 
 export default CheckInfo;

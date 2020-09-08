@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Button, Select, Avatar } from 'antd';
 import { EditOutlined,UserOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css';
-import styles from './checkInfo.module.scss';
+import styles from './CheckInfo.module.scss';
 import FormHeader from '../formHeader';
 import CheckInfoListItem from './listItem/listItem';
 
