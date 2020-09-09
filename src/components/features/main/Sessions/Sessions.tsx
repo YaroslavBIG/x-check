@@ -1,4 +1,4 @@
-import React, { ReactText, useEffect } from 'react';
+import React, { ReactText } from 'react';
 import { Avatar, Table, Tag } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { useFirestoreConnect } from 'react-redux-firebase';
@@ -6,15 +6,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import styles from './Sessions.module.scss';
 import { Session } from '../../../../interfaces/app-session.interface';
 import { COLORS, FRIENDLY_STATUS, SessionStatus } from '../../../../enum/session-status.enum';
-import { FirestoreSession } from '../../../../interfaces/firestore-session.interface';
+import { FirestoreSessionData } from '../../../../interfaces/firestore-session.interface';
 import SessionToolbar from './SessionToolbar/SessionToolbar';
 import { UserOutlined } from '@ant-design/icons/lib';
 import { setRowSelection } from './SessionsReducer';
-
-export interface UserProfileData {
-  photoURL: string;
-  displayName: string;
-}
+import { SessionHost } from '../../../../interfaces/session-host.interface';
+import SessionForm from './SessionForm/SessionForm';
+import { SessionsRecord, SessionsState } from '../../../../interfaces/sessions-state.interface';
 
 const columns: ColumnsType<Session> = [
   {
@@ -74,7 +72,7 @@ const columns: ColumnsType<Session> = [
       const y = b.user?.displayName || 'Anonymous';
       return x < y ? -1 : x > y ? 1 : 0;
     },
-    render: (user: UserProfileData) => (
+    render: (user: SessionHost) => (
       <div className={styles.user}>
         {user?.photoURL ? <Avatar src={user.photoURL} className={styles.user__avatar}/> :
           <Avatar icon={<UserOutlined/>} className={styles.user__avatar}/>}
@@ -84,36 +82,21 @@ const columns: ColumnsType<Session> = [
   }
 ];
 
-export interface SessionsRecord {
-  [P: string]: FirestoreSession;
-}
-
-export interface SessionState {
-  firestore: {
-    status: {
-      requesting: {
-        sessions: boolean;
-      }
-    }
-    data: {
-      sessions: SessionsRecord
-    }
-  }
-}
-
 export default function Sessions() {
   const dispatch = useDispatch();
-  const sessions: SessionsRecord = useSelector((state: SessionState) => state.firestore.data.sessions);
-  const isLoadingData: boolean = useSelector((state: SessionState) => state.firestore.status.requesting.sessions);
-
-  useEffect(() => {
-    return function cleanup() {
-      dispatch(setRowSelection([]));
-    };
-  });
+  const sessions: SessionsRecord = useSelector((state: SessionsState) => state.firestore.data.sessions);
+  const isLoadingData: boolean = useSelector((state: SessionsState) => state.firestore.status.requesting.sessions);
 
   useFirestoreConnect([
-    { collection: 'sessions' }
+    {
+      collection: 'tasks',
+      where: [
+        ['status', '==', 'PUBLISHED']
+      ],
+      storeAs: 'publishedTasks'
+    }, {
+      collection: 'sessions'
+    }
   ]);
 
   function getModifiedSessionData(): Session[] {
@@ -121,14 +104,15 @@ export default function Sessions() {
     if (sessions) {
       Object.keys(sessions).forEach((el: string) => {
         if (sessions[el]) {
-          const values: FirestoreSession = sessions[el];
+          const values: FirestoreSessionData = sessions[el];
           modifiedData.push({
             key: el,
             sessionName: values?.name,
             taskName: values?.task?.taskName,
-            qty: values?.attendees?.length,
+            qty: values?.attendees?.length || 0,
             status: FRIENDLY_STATUS[values?.status as SessionStatus],
-            user: values?.host
+            user: values?.host,
+            task: values.task
           });
         }
       });
@@ -144,6 +128,7 @@ export default function Sessions() {
       <div className={styles.main}>
         <Table loading={isLoadingData} columns={columns} style={{ width: '100%' }}
                dataSource={getModifiedSessionData()}
+               showSorterTooltip={false}
                pagination={{ pageSize: 10 }}
                rowSelection={{
                  onChange: (selectedRowKeys: ReactText[]) => {
@@ -152,6 +137,7 @@ export default function Sessions() {
                }}
         />
       </div>
+      <SessionForm/>
     </div>
   );
 }
