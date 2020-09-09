@@ -59,9 +59,9 @@ const transformTasks = (tasks: any) => {
         status,
         updateTime,
         author,
-        maxScore: items.reduce((acc: any, cur: any) => {
+        maxScore: items ? items.reduce((acc: any, cur: any) => {
             return acc + cur.maxScore
-        }, 0)
+        }, 0) : []
     })
 }
 
