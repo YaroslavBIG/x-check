@@ -1,29 +1,61 @@
 import { ReactText } from 'react';
 
-const SET_SELECTED_ROWS = 'SET_SELECTED_ROWS';
+enum SESSION_TYPES {
+  SET_SELECTED_ROWS,
+  OPEN_SESSION_FORM,
+  CLOSE_SESSION_FORM
+}
 
 export function setRowSelection(payload: ReactText[]) {
   return {
-    type: SET_SELECTED_ROWS,
+    type: SESSION_TYPES.SET_SELECTED_ROWS,
     payload
   };
 }
 
+export function openSessionForm(payload: any) {
+  return {
+    type: SESSION_TYPES.OPEN_SESSION_FORM,
+    payload
+  };
+}
+
+export function closeSessionForm() {
+  return {
+    type: SESSION_TYPES.CLOSE_SESSION_FORM,
+  };
+}
+
 const initialState = {
-  rows: []
+  rows: [],
+  isFormOpen: false,
+  publishedTasks: [],
+  currentSession: null
 };
 
 interface SessionActionType {
-  type: typeof SET_SELECTED_ROWS,
+  type: SESSION_TYPES;
   payload: string;
 }
 
 export default function SessionsReducer(state = initialState, action: SessionActionType) {
   switch (action.type) {
-    case SET_SELECTED_ROWS:
+    case SESSION_TYPES.SET_SELECTED_ROWS:
       return {
         ...state,
         rows: action.payload
+      };
+    case SESSION_TYPES.CLOSE_SESSION_FORM:
+      return {
+        ...state,
+        isFormOpen: false,
+        currentSession: null
+      };
+    case SESSION_TYPES.OPEN_SESSION_FORM:
+      return {
+        ...state,
+        isFormOpen: true,
+        currentSession: action.payload
       };
     default:
       return state;

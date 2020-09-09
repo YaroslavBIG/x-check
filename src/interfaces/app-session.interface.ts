@@ -1,4 +1,4 @@
-import { UserProfileData } from '../components/features/main/Sessions/Sessions';
+import { SessionHost } from './session-host.interface';
 
 export interface Session {
   key: string;
@@ -6,5 +6,5 @@ export interface Session {
   taskName: string;
   status: string;
   qty: number;
-  user: UserProfileData;
+  user: SessionHost;
 }

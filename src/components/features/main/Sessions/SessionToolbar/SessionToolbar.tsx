@@ -3,12 +3,16 @@ import { Button, Modal } from 'antd';
 import styles from './SessionToolbar.module.scss';
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons/lib';
 import { useFirestore } from 'react-redux-firebase';
-import cuid from 'cuid';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { openSessionForm } from '../SessionsReducer';
+import { SessionsRecord, SessionsState } from '../Sessions';
 
-interface SessionToolbarState {
+export interface SessionToolbarState {
   sessions: {
-    rows: ReactText[]
+    rows: ReactText[];
+    isFormOpen: boolean;
+    currentSession: any;
   }
   firebase: {
     auth: {
@@ -25,9 +29,9 @@ const { confirm } = Modal;
 
 export default function SessionToolbar() {
   const firestore = useFirestore();
-  const currentUserData = useSelector((state: SessionToolbarState) => state.firebase.profile);
-  const currentUserId = useSelector((state: SessionToolbarState) => state.firebase.auth.uid);
+  const dispatch = useDispatch();
   const selectedRows = useSelector((state: SessionToolbarState) => state.sessions.rows);
+  const sessions: SessionsRecord = useSelector((state: SessionsState) => state.firestore.data.sessions);
 
   function showConfirm() {
     confirm({
@@ -41,30 +45,39 @@ export default function SessionToolbar() {
   }
 
   function addSession() {
-    const exampleSession = {
-      name: 'New session Name',
-      task: { taskId: cuid(), taskName: 'This is Task Name which is very long to check if it looks properly' },
-      createdBy: currentUserId,
-      host: {
-        photoURL: currentUserData.photoURL,
-        displayName: currentUserData.displayName
-      },
-      status: 'COMPLETED',
-      coefficient: 0.7,
-      attendees: [],
-      attendeeIds: []
-    };
-    return firestore.collection('sessions').add(exampleSession);
+    dispatch(openSessionForm(null));
   }
 
   function updateSession() {
-
+    if (selectedRows && selectedRows[0]) {
+      console.log(selectedRows[0]);
+      console.log(sessions[selectedRows[0]]);
+      dispatch(openSessionForm(sessions[selectedRows[0]]));
+      // firestore.set({ collection: 'sessions', doc: selectedRows[0] as string }, {
+      //   name: 'UPDATED SESSION',
+      //   task: { taskId: cuid(), taskName: 'UPDATED TASK1' },
+      //   // createdBy: currentUserId,
+      //   // host: {
+      //   //   photoURL: currentUserData.photoURL,
+      //   //   displayName: currentUserData.displayName
+      //   // },
+      //   status: 'CROSS_CHECK',
+      //   coefficient: 0.9,
+      //   attendees: [],
+      //   attendeeIds: []
+      // })
+      //   .then(() => toast.info('Session successfully updated'))
+      //   .catch((e) => toast.error(e));
+    }
   }
 
-  function deleteSession(): void {
-    selectedRows.forEach((row) => {
-      firestore.delete({ collection: 'sessions', doc: row as string });
-    });
+  async function deleteSession() {
+    try {
+      await selectedRows.forEach((row: ReactText) => firestore.delete({ collection: 'sessions', doc: row as string }));
+      toast.info('Sessions successfully removed');
+    } catch (e) {
+      toast.error(e);
+    }
   }
 
   return (

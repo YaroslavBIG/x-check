@@ -1,4 +1,4 @@
-import React, { ReactText, useEffect } from 'react';
+import React, { ReactText } from 'react';
 import { Avatar, Table, Tag } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { useFirestoreConnect } from 'react-redux-firebase';
@@ -10,11 +10,8 @@ import { FirestoreSession } from '../../../../interfaces/firestore-session.inter
 import SessionToolbar from './SessionToolbar/SessionToolbar';
 import { UserOutlined } from '@ant-design/icons/lib';
 import { setRowSelection } from './SessionsReducer';
-
-export interface UserProfileData {
-  photoURL: string;
-  displayName: string;
-}
+import { SessionHost } from '../../../../interfaces/session-host.interface';
+import SessionForm from './SessionForm/SessionForm';
 
 const columns: ColumnsType<Session> = [
   {
@@ -74,7 +71,7 @@ const columns: ColumnsType<Session> = [
       const y = b.user?.displayName || 'Anonymous';
       return x < y ? -1 : x > y ? 1 : 0;
     },
-    render: (user: UserProfileData) => (
+    render: (user: SessionHost) => (
       <div className={styles.user}>
         {user?.photoURL ? <Avatar src={user.photoURL} className={styles.user__avatar}/> :
           <Avatar icon={<UserOutlined/>} className={styles.user__avatar}/>}
@@ -88,7 +85,7 @@ export interface SessionsRecord {
   [P: string]: FirestoreSession;
 }
 
-export interface SessionState {
+export interface SessionsState {
   firestore: {
     status: {
       requesting: {
@@ -96,24 +93,27 @@ export interface SessionState {
       }
     }
     data: {
-      sessions: SessionsRecord
+      sessions: SessionsRecord;
+      publishedTasks: any[]
     }
   }
 }
 
 export default function Sessions() {
   const dispatch = useDispatch();
-  const sessions: SessionsRecord = useSelector((state: SessionState) => state.firestore.data.sessions);
-  const isLoadingData: boolean = useSelector((state: SessionState) => state.firestore.status.requesting.sessions);
-
-  useEffect(() => {
-    return function cleanup() {
-      dispatch(setRowSelection([]));
-    };
-  });
+  const sessions: SessionsRecord = useSelector((state: SessionsState) => state.firestore.data.sessions);
+  const isLoadingData: boolean = useSelector((state: SessionsState) => state.firestore.status.requesting.sessions);
 
   useFirestoreConnect([
-    { collection: 'sessions' }
+    {
+      collection: 'tasks',
+      where: [
+        ['status', '==', 'PUBLISHED']
+      ],
+      storeAs: 'publishedTasks'
+    }, {
+      collection: 'sessions'
+    }
   ]);
 
   function getModifiedSessionData(): Session[] {
@@ -144,6 +144,7 @@ export default function Sessions() {
       <div className={styles.main}>
         <Table loading={isLoadingData} columns={columns} style={{ width: '100%' }}
                dataSource={getModifiedSessionData()}
+               showSorterTooltip={false}
                pagination={{ pageSize: 10 }}
                rowSelection={{
                  onChange: (selectedRowKeys: ReactText[]) => {
@@ -152,6 +153,7 @@ export default function Sessions() {
                }}
         />
       </div>
+      <SessionForm/>
     </div>
   );
 }

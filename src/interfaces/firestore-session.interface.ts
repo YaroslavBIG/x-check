@@ -1,10 +1,11 @@
 import { Attendee } from './attendee.interface';
-import { UserProfileData } from '../components/features/main/Sessions/Sessions';
+import { SessionHost } from './session-host.interface';
 
 export interface FirestoreSession {
   name: string;
   status: string;
   createdBy: string;
+  description?: string;
   task: {
     taskId: string;
     taskName: string;
@@ -16,5 +17,5 @@ export interface FirestoreSession {
   desiredReviewersAmount: number;
   attendeeIds: string[];
   attendees: Attendee[];
-  host: UserProfileData;
+  host: SessionHost;
 }
