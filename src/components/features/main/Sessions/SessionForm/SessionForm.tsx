@@ -13,11 +13,12 @@ import { SessionsState } from '../../../../../interfaces/sessions-state.interfac
 
 export default function SessionForm() {
   const firestore = useFirestore();
+  const dispatch = useDispatch();
+  const [form] = Form.useForm();
+
   const isVisible = useSelector((state: SessionsState) => state.sessions.isFormOpen);
   const currentSession = useSelector((state: SessionsState) => state.sessions.currentSession);
-  const dispatch = useDispatch();
   const publishedTasks = useSelector((state: SessionsState) => state.firestore.data.publishedTasks);
-  const [form] = Form.useForm();
   const currentUserData = useSelector((state: SessionsState) => state.firebase.profile);
   const currentUserId = useSelector((state: SessionsState) => state.firebase.auth.uid);
 
@@ -28,47 +29,55 @@ export default function SessionForm() {
 
   useEffect(() => {
     if (currentSession) {
-      const e = {
-        description: 'abc',
-        name: '111',
-        coefficient: 0.7,
-        discardMaxScore: true,
-        task: currentSession.task.taskName
+      const initialData = {
+        ...currentSession,
+        task: currentSession.task?.taskId,
+        status: currentSession.status as SessionStatus
       };
       form.setFieldsValue({
-        ...e
+        ...initialData
       });
     }
   }, [form, currentSession]);
 
-  function onSubmit(values: any) {
-    const valuesForFF = {
+  async function onSubmit(values: any) {
+    let valuesForFirebase = {
       ...values,
       task: {
-        taskId: values.task as string,
+        taskId: values?.task as string,
         taskName: publishedTasks[values.task]?.taskName
-      },
-      createdBy: currentUserId,
-      host: {
-        photoURL: currentUserData.photoURL,
-        displayName: currentUserData.displayName
-      },
-      attendees: [],
-      attendeeIds: [],
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }
     };
-
-    firestore.collection('sessions').add(valuesForFF)
-      .then(() => {
-        toast.info('Session has been successfully added');
+    if (!currentSession) {
+      valuesForFirebase = {
+        ...valuesForFirebase,
+        createdBy: currentUserId,
+        host: {
+          photoURL: currentUserData.photoURL,
+          displayName: currentUserData.displayName
+        },
+        attendees: [],
+        attendeeIds: [],
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+      try {
+        await firestore.collection('sessions').add(valuesForFirebase);
         form.resetFields();
         dispatch(closeSessionForm());
-      })
-      .catch((e) => {
+        toast.info('Session successfully added');
+      } catch (e) {
         toast.error(e);
+      }
+    } else {
+      try {
+        await firestore.update({ collection: 'sessions', doc: currentSession.id }, valuesForFirebase);
         form.resetFields();
         dispatch(closeSessionForm());
-      });
+        toast.info('Session successfully added');
+      } catch (e) {
+        toast.error(e);
+      }
+    }
   }
 
   function getModifiedTaskData(): any[] {

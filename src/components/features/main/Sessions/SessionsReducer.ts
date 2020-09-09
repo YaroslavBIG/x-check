@@ -1,4 +1,5 @@
 import { ReactText } from 'react';
+import { FirestoreSession } from '../../../../interfaces/firestore-session.interface';
 
 enum SESSION_TYPES {
   SET_SELECTED_ROWS,
@@ -13,7 +14,7 @@ export function setRowSelection(payload: ReactText[]) {
   };
 }
 
-export function openSessionForm(payload: any) {
+export function openSessionForm(payload: FirestoreSession | null) {
   return {
     type: SESSION_TYPES.OPEN_SESSION_FORM,
     payload
@@ -29,7 +30,6 @@ export function closeSessionForm() {
 const initialState = {
   rows: [],
   isFormOpen: false,
-  publishedTasks: [],
   currentSession: null
 };
 

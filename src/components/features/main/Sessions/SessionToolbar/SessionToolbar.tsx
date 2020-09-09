@@ -33,7 +33,10 @@ export default function SessionToolbar() {
 
   function updateSession() {
     if (selectedRows && selectedRows[0]) {
-      dispatch(openSessionForm(sessions[selectedRows[0]]));
+      const dataForForm = {
+        ...sessions[selectedRows[0]], id: selectedRows[0]
+      };
+      dispatch(openSessionForm(dataForForm));
     }
   }
 
