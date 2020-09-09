@@ -12,12 +12,6 @@ import { useFirestore } from 'react-redux-firebase';
 import { toast } from 'react-toastify';
 import firebase from '../../../../../config/firebase';
 
-// todo edit and how to add data to form??
-// todo loading/disable while firestore being initializing
-// todo delete ONLY if 0 attendees
-// todo statuses change order
-// todo edit PUBLISHED disabled when > 0 attendees
-
 export default function SessionForm() {
   const firestore = useFirestore();
   const isVisible = useSelector((state: SessionToolbarState) => state.sessions.isFormOpen);
@@ -29,13 +23,11 @@ export default function SessionForm() {
   const currentUserId = useSelector((state: SessionToolbarState) => state.firebase.auth.uid);
 
   function onClose() {
-    console.log(currentSession);
     dispatch(closeSessionForm());
     form.resetFields();
   }
 
   useEffect(() => {
-
     if (currentSession) {
       const e = {
         description: 'abc',
@@ -44,9 +36,6 @@ export default function SessionForm() {
         discardMaxScore: true,
         task: currentSession.task.taskName
       }
-      // console.log({
-      //   description: currentSession.description
-      // });
       form.setFieldsValue({
         ...e
       });
@@ -218,6 +207,5 @@ export default function SessionForm() {
         </Form>
       </Drawer>
     </>
-  )
-    ;
+  );
 }
