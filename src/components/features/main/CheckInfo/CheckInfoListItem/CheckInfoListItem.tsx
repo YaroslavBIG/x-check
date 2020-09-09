@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import styles from './ListItem.module.scss';
+import styles from './CheckInfoListItem.module.scss';
 
 interface ListItemProps {
   heading: string,

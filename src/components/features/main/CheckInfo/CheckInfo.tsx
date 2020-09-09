@@ -4,7 +4,7 @@ import { EditOutlined,UserOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import styles from './CheckInfo.module.scss';
 import FormHeader from '../FormHeader';
-import CheckInfoListItem from './ListItem/ListItem';
+import CheckInfoListItem from './CheckInfoListItem/CheckInfoListItem';
 
 const { Option } = Select;
 
