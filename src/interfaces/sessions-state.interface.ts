@@ -1,15 +1,17 @@
-import { FirestoreSession } from './firestore-session.interface';
+import { FirestoreSessionData } from './firestore-session.interface';
 import { ReactText } from 'react';
+import { Session } from './app-session.interface';
+import { TaskRecord } from './task.interface';
 
 export interface SessionsRecord {
-  [P: string]: FirestoreSession;
+  [P: string]: FirestoreSessionData;
 }
 
 export interface SessionsState {
   sessions: {
     rows: ReactText[];
     isFormOpen: boolean;
-    currentSession: any;
+    currentSession: Session;
   },
   firebase: {
     auth: {
@@ -28,7 +30,7 @@ export interface SessionsState {
     }
     data: {
       sessions: SessionsRecord;
-      publishedTasks: any
+      publishedTasks: TaskRecord;
     }
   }
 }

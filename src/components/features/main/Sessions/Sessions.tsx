@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styles from './Sessions.module.scss';
 import { Session } from '../../../../interfaces/app-session.interface';
 import { COLORS, FRIENDLY_STATUS, SessionStatus } from '../../../../enum/session-status.enum';
-import { FirestoreSession } from '../../../../interfaces/firestore-session.interface';
+import { FirestoreSessionData } from '../../../../interfaces/firestore-session.interface';
 import SessionToolbar from './SessionToolbar/SessionToolbar';
 import { UserOutlined } from '@ant-design/icons/lib';
 import { setRowSelection } from './SessionsReducer';
@@ -104,14 +104,15 @@ export default function Sessions() {
     if (sessions) {
       Object.keys(sessions).forEach((el: string) => {
         if (sessions[el]) {
-          const values: FirestoreSession = sessions[el];
+          const values: FirestoreSessionData = sessions[el];
           modifiedData.push({
             key: el,
             sessionName: values?.name,
             taskName: values?.task?.taskName,
-            qty: values?.attendees?.length,
+            qty: values?.attendees?.length || 0,
             status: FRIENDLY_STATUS[values?.status as SessionStatus],
-            user: values?.host
+            user: values?.host,
+            task: values.task
           });
         }
       });

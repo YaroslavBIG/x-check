@@ -10,8 +10,11 @@ import { useFirestore } from 'react-redux-firebase';
 import { toast } from 'react-toastify';
 import firebase from '../../../../../config/firebase';
 import { SessionsState } from '../../../../../interfaces/sessions-state.interface';
+import { Task } from '../../../../../interfaces/task.interface';
+import { FirestoreSessionData } from '../../../../../interfaces/firestore-session.interface';
 
-interface SessionForm {
+interface SessionFormData {
+  name: string;
   minReviewsAmount: number;
   desiredReviewersAmount: number;
   coefficient: number;
@@ -60,7 +63,7 @@ export default function SessionForm() {
     }
   }, [form, currentSession]);
 
-  function onSubmit(values: SessionForm) {
+  function onSubmit(values: SessionFormData) {
     let valuesForFirebase = {
       ...values,
       task: {
@@ -75,7 +78,7 @@ export default function SessionForm() {
     }
   }
 
-  async function addNewSession(valuesForFirebase: any) {
+  async function addNewSession(valuesForFirebase: Partial<FirestoreSessionData>) {
     let newSessionAttributes = {
       ...valuesForFirebase,
       createdBy: currentUserId,
@@ -97,7 +100,7 @@ export default function SessionForm() {
     }
   }
 
-  async function updateSession(valuesForFirebase: any) {
+  async function updateSession(valuesForFirebase: Partial<FirestoreSessionData>) {
     try {
       await firestore.update({ collection: 'sessions', doc: currentSession.id }, valuesForFirebase);
       form.resetFields();
@@ -108,10 +111,10 @@ export default function SessionForm() {
     }
   }
 
-  function getModifiedTaskData(): any[] {
-    const modifiedData: any[] = [];
+  function getModifiedTaskData(): Task[] {
+    const modifiedData: Task[] = [];
     if (publishedTasks) {
-      Object.keys(publishedTasks).forEach((el: any) => {
+      Object.keys(publishedTasks).forEach((el: string) => {
         if (publishedTasks[el]) {
           const values = publishedTasks[el];
           modifiedData.push({

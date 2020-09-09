@@ -1,10 +1,10 @@
 import { Attendee } from './attendee.interface';
 import { SessionHost } from './session-host.interface';
 
-export interface FirestoreSession {
+export interface FirestoreSessionData {
   name: string;
   status: string;
-  createdBy: string;
+  createdBy?: string;
   description?: string;
   task: {
     taskId: string;
@@ -15,7 +15,7 @@ export interface FirestoreSession {
   discardMaxScore: boolean;
   minReviewsAmount: number;
   desiredReviewersAmount: number;
-  attendeeIds: string[];
-  attendees: Attendee[];
+  attendeeIds?: string[];
+  attendees?: Attendee[];
   host: SessionHost;
 }
