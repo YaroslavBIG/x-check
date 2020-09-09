@@ -8,6 +8,8 @@ import Login from '../features/login/Login';
 import { XCheckPath } from '../../enum/app-paths.enum';
 import { isLoaded } from 'react-redux-firebase';
 import NavigationPanel from '../features/main/NavigationPanel/NavigationPanel';
+import { setRowSelection } from '../features/main/Sessions/SessionsReducer';
+import { ToastContainer } from 'react-toastify';
 
 export interface AuthRouteState {
   login: { defaultPath: string },
@@ -30,6 +32,7 @@ const App = () => {
     const possiblePaths = Object.values(XCheckPath) as string[];
     if (initialPath && possiblePaths.includes(initialPath)) {
       dispatch(setDefaultPath(initialPath));
+      dispatch(setRowSelection([]));
     }
   }, [dispatch, location.pathname]);
 
@@ -48,6 +51,7 @@ const App = () => {
         :
         <Loading/>
       }
+      <ToastContainer position='bottom-right' hideProgressBar/>
     </>
   );
 };
