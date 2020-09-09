@@ -12,6 +12,7 @@ import { UserOutlined } from '@ant-design/icons/lib';
 import { setRowSelection } from './SessionsReducer';
 import { SessionHost } from '../../../../interfaces/session-host.interface';
 import SessionForm from './SessionForm/SessionForm';
+import { SessionsRecord, SessionsState } from '../../../../interfaces/sessions-state.interface';
 
 const columns: ColumnsType<Session> = [
   {
@@ -80,24 +81,6 @@ const columns: ColumnsType<Session> = [
     )
   }
 ];
-
-export interface SessionsRecord {
-  [P: string]: FirestoreSession;
-}
-
-export interface SessionsState {
-  firestore: {
-    status: {
-      requesting: {
-        sessions: boolean;
-      }
-    }
-    data: {
-      sessions: SessionsRecord;
-      publishedTasks: any[]
-    }
-  }
-}
 
 export default function Sessions() {
   const dispatch = useDispatch();

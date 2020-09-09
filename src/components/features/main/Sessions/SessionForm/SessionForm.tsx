@@ -1,26 +1,25 @@
 import React, { useEffect } from 'react';
 import { Button, Divider, Drawer, Form, Input, Select, Switch, Tooltip } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { SessionToolbarState } from '../SessionToolbar/SessionToolbar';
 import { closeSessionForm } from '../SessionsReducer';
 import styles from './SessionForm.module.scss';
 import { InputNumber } from 'antd/es';
 import { QuestionCircleOutlined } from '@ant-design/icons/lib';
 import { FRIENDLY_STATUS, SessionStatus } from '../../../../../enum/session-status.enum';
-import { SessionsState } from '../Sessions';
 import { useFirestore } from 'react-redux-firebase';
 import { toast } from 'react-toastify';
 import firebase from '../../../../../config/firebase';
+import { SessionsState } from '../../../../../interfaces/sessions-state.interface';
 
 export default function SessionForm() {
   const firestore = useFirestore();
-  const isVisible = useSelector((state: SessionToolbarState) => state.sessions.isFormOpen);
-  const currentSession = useSelector((state: SessionToolbarState) => state.sessions.currentSession);
+  const isVisible = useSelector((state: SessionsState) => state.sessions.isFormOpen);
+  const currentSession = useSelector((state: SessionsState) => state.sessions.currentSession);
   const dispatch = useDispatch();
   const publishedTasks = useSelector((state: SessionsState) => state.firestore.data.publishedTasks);
   const [form] = Form.useForm();
-  const currentUserData = useSelector((state: SessionToolbarState) => state.firebase.profile);
-  const currentUserId = useSelector((state: SessionToolbarState) => state.firebase.auth.uid);
+  const currentUserData = useSelector((state: SessionsState) => state.firebase.profile);
+  const currentUserId = useSelector((state: SessionsState) => state.firebase.auth.uid);
 
   function onClose() {
     dispatch(closeSessionForm());
@@ -35,7 +34,7 @@ export default function SessionForm() {
         coefficient: 0.7,
         discardMaxScore: true,
         task: currentSession.task.taskName
-      }
+      };
       form.setFieldsValue({
         ...e
       });

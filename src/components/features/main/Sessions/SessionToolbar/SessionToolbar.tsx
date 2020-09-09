@@ -6,31 +6,14 @@ import { useFirestore } from 'react-redux-firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { openSessionForm } from '../SessionsReducer';
-import { SessionsRecord, SessionsState } from '../Sessions';
-
-export interface SessionToolbarState {
-  sessions: {
-    rows: ReactText[];
-    isFormOpen: boolean;
-    currentSession: any;
-  }
-  firebase: {
-    auth: {
-      uid: string;
-    }
-    profile: {
-      displayName: string;
-      photoURL: string;
-    }
-  }
-}
+import { SessionsRecord, SessionsState } from '../../../../../interfaces/sessions-state.interface';
 
 const { confirm } = Modal;
 
 export default function SessionToolbar() {
   const firestore = useFirestore();
   const dispatch = useDispatch();
-  const selectedRows = useSelector((state: SessionToolbarState) => state.sessions.rows);
+  const selectedRows = useSelector((state: SessionsState) => state.sessions.rows);
   const sessions: SessionsRecord = useSelector((state: SessionsState) => state.firestore.data.sessions);
 
   function showConfirm() {
@@ -50,24 +33,7 @@ export default function SessionToolbar() {
 
   function updateSession() {
     if (selectedRows && selectedRows[0]) {
-      console.log(selectedRows[0]);
-      console.log(sessions[selectedRows[0]]);
       dispatch(openSessionForm(sessions[selectedRows[0]]));
-      // firestore.set({ collection: 'sessions', doc: selectedRows[0] as string }, {
-      //   name: 'UPDATED SESSION',
-      //   task: { taskId: cuid(), taskName: 'UPDATED TASK1' },
-      //   // createdBy: currentUserId,
-      //   // host: {
-      //   //   photoURL: currentUserData.photoURL,
-      //   //   displayName: currentUserData.displayName
-      //   // },
-      //   status: 'CROSS_CHECK',
-      //   coefficient: 0.9,
-      //   attendees: [],
-      //   attendeeIds: []
-      // })
-      //   .then(() => toast.info('Session successfully updated'))
-      //   .catch((e) => toast.error(e));
     }
   }
 
