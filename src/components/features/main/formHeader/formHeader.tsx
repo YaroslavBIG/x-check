@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import 'antd/dist/antd.css';
-import './formHeader.scss';
+import './FormHeader.scss';
 
 interface FormHeaderProps {
   title: string,

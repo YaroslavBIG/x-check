@@ -1,3 +1,3 @@
-import FormHeader from "./formHeader";
+import FormHeader from "./FormHeader";
 
 export default FormHeader;
