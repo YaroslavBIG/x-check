@@ -11,6 +11,26 @@ import { toast } from 'react-toastify';
 import firebase from '../../../../../config/firebase';
 import { SessionsState } from '../../../../../interfaces/sessions-state.interface';
 
+interface SessionForm {
+  minReviewsAmount: number;
+  desiredReviewersAmount: number;
+  coefficient: number;
+  discardMinScore: boolean;
+  discardMaxScore: boolean;
+  description: string;
+  status: string;
+  task: string;
+}
+
+const initialFormValues = {
+  minReviewsAmount: 1,
+  desiredReviewersAmount: 4,
+  coefficient: 0.7,
+  discardMinScore: false,
+  discardMaxScore: false,
+  description: '',
+};
+
 export default function SessionForm() {
   const firestore = useFirestore();
   const dispatch = useDispatch();
@@ -40,7 +60,7 @@ export default function SessionForm() {
     }
   }, [form, currentSession]);
 
-  async function onSubmit(values: any) {
+  function onSubmit(values: SessionForm) {
     let valuesForFirebase = {
       ...values,
       task: {
@@ -49,34 +69,42 @@ export default function SessionForm() {
       }
     };
     if (!currentSession) {
-      valuesForFirebase = {
-        ...valuesForFirebase,
-        createdBy: currentUserId,
-        host: {
-          photoURL: currentUserData.photoURL,
-          displayName: currentUserData.displayName
-        },
-        attendees: [],
-        attendeeIds: [],
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      };
-      try {
-        await firestore.collection('sessions').add(valuesForFirebase);
-        form.resetFields();
-        dispatch(closeSessionForm());
-        toast.info('Session successfully added');
-      } catch (e) {
-        toast.error(e);
-      }
+      addNewSession(valuesForFirebase);
     } else {
-      try {
-        await firestore.update({ collection: 'sessions', doc: currentSession.id }, valuesForFirebase);
-        form.resetFields();
-        dispatch(closeSessionForm());
-        toast.info('Session successfully added');
-      } catch (e) {
-        toast.error(e);
-      }
+      updateSession(valuesForFirebase);
+    }
+  }
+
+  async function addNewSession(valuesForFirebase: any) {
+    let newSessionAttributes = {
+      ...valuesForFirebase,
+      createdBy: currentUserId,
+      host: {
+        photoURL: currentUserData.photoURL,
+        displayName: currentUserData.displayName
+      },
+      attendees: [],
+      attendeeIds: [],
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    try {
+      await firestore.collection('sessions').add(newSessionAttributes);
+      form.resetFields();
+      dispatch(closeSessionForm());
+      toast.info('Session has been successfully added');
+    } catch (e) {
+      toast.error(e);
+    }
+  }
+
+  async function updateSession(valuesForFirebase: any) {
+    try {
+      await firestore.update({ collection: 'sessions', doc: currentSession.id }, valuesForFirebase);
+      form.resetFields();
+      dispatch(closeSessionForm());
+      toast.info('Session has been successfully updated');
+    } catch (e) {
+      toast.error(e);
     }
   }
 
@@ -108,10 +136,10 @@ export default function SessionForm() {
           <div className={styles.header}>
             <span className={styles.header__title}>{currentSession ? 'Edit' : 'Create'} Session</span>
             <div>
-              <Button onClick={() => onClose()} style={{ marginRight: 8 }}>
+              <Button onClick={() => onClose()}>
                 Cancel
               </Button>
-              <Button onClick={form.submit} type="primary">
+              <Button onClick={form.submit} type="primary" className={styles.session__button}>
                 Submit
               </Button>
             </div>
@@ -121,17 +149,11 @@ export default function SessionForm() {
         <Form layout="vertical"
               form={form}
               onFinish={onSubmit}
-              initialValues={{
-                minReviewsAmount: 1,
-                desiredReviewersAmount: 4,
-                coefficient: 0.7,
-                discardMinScore: false,
-                discardMaxScore: false,
-                description: ''
-              }}>
+              initialValues={initialFormValues}
+        >
           <div className={styles.session__row}>
             <Form.Item
-              className={styles.session__item}
+              className={styles.session__section}
               name="task"
               label="Task"
               rules={[{ required: true, message: 'Please choose the task' }]}
@@ -142,7 +164,7 @@ export default function SessionForm() {
               </Select>
             </Form.Item>
             <Form.Item
-              className={styles.session__item}
+              className={styles.session__section}
               name="status"
               label="Session Status"
               rules={[{ required: true, message: 'Please choose the status' }]}
@@ -178,15 +200,15 @@ export default function SessionForm() {
           <Divider orientation="left">
             Score Settings
             <Tooltip title="Discard score settings will be applied in case min 3 reviews are available">
-              <QuestionCircleOutlined style={{ marginLeft: 8 }}/>
+              <QuestionCircleOutlined className={styles.session__button}/>
             </Tooltip>
           </Divider>
           <div className={styles.session__setting}>
-            <Form.Item style={{ marginRight: 16 }} name="discardMinScore" label="Discard Min Score"
+            <Form.Item className={styles.session__item} name="discardMinScore" label="Discard Min Score"
                        valuePropName="checked">
-              <Switch defaultChecked={false}/>
+              <Switch/>
             </Form.Item>
-            <Form.Item style={{ marginRight: 16 }} name="discardMaxScore" label="Discard Max Score"
+            <Form.Item className={styles.session__item} name="discardMaxScore" label="Discard Max Score"
                        valuePropName="checked">
               <Switch/>
             </Form.Item>
@@ -200,13 +222,12 @@ export default function SessionForm() {
             Reviews Settings
           </Divider>
           <div className={styles.session__setting}>
-            <Form.Item style={{ marginRight: 16 }} label="# Min"
-                       className={styles['session__settings-item']}>
+            <Form.Item className={styles.session__item} label="# Min">
               <Form.Item name="minReviewsAmount" noStyle>
                 <InputNumber min={1} max={10}/>
               </Form.Item>
             </Form.Item>
-            <Form.Item style={{ marginRight: 16 }} label="# Optimal">
+            <Form.Item className={styles.session__item} label="# Optimal">
               <Form.Item name="desiredReviewersAmount" noStyle>
                 <InputNumber min={1} max={10}/>
               </Form.Item>

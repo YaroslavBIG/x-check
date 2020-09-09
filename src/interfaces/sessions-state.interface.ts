@@ -28,7 +28,7 @@ export interface SessionsState {
     }
     data: {
       sessions: SessionsRecord;
-      publishedTasks: any[]
+      publishedTasks: any
     }
   }
 }

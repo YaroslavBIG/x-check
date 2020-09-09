@@ -21,10 +21,17 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    //justify-content: space-between;
+  }
+
+  &__section {
+    width: calc(50% - 16px);
   }
 
   &__item {
-    width: calc(50% - 16px);
+    margin-right: 16px;
+  }
+
+  &__button {
+    margin-left: 8px;
   }
 }
