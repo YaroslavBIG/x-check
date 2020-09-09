@@ -19,10 +19,12 @@
   margin: 24px 16px;
   padding: 24px;
   min-height: 280px;
+  overflow: auto;
 }
 
 aside.ant-layout-sider.ant-layout-sider-dark {
   background: inherit;
+  box-shadow: grey 10px 0px 10px;
 }
 
 ul.ant-menu.ant-menu-light.ant-menu-root.ant-menu-inline {
