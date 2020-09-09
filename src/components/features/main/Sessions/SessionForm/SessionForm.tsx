@@ -67,7 +67,7 @@ export default function SessionForm() {
     let valuesForFirebase = {
       ...values,
       task: {
-        taskId: values?.task as string,
+        taskId: values?.task,
         taskName: publishedTasks[values.task]?.taskName
       }
     };
