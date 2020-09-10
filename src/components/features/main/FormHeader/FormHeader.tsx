@@ -5,15 +5,16 @@ import './FormHeader.scss';
 
 interface FormHeaderProps {
   title: string,
+  onClose: () => void
 }
 
 const FormHeader = (props: FormHeaderProps) => { 
   return (
     <div className="form__header">
-      <h2>{props.title}</h2>
+      <h2 className="form__title">{props.title}</h2>
       <div className="form__buttons"> 
-        <Button size="large">Cancel</Button>
-        <Button htmlType="submit" type="primary" size="large">Save</Button>
+        <Button size="large" onClick={props.onClose}>Cancel</Button>
+        <Button htmlType="submit" type="primary" size="large" onClick={props.onClose}>Save</Button>
       </div>
     </div>
   );

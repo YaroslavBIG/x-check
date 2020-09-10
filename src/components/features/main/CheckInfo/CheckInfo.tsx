@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Select, Avatar } from 'antd';
+import { Drawer, Form, Button, Select, Avatar } from 'antd';
 import { EditOutlined,UserOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 import styles from './CheckInfo.module.scss';
@@ -14,15 +14,28 @@ export enum CheckStatus {
   COMPLETED = 'Completed'
 }
 
-const CheckInfo = () => {
+interface CheckInfoProps {
+  isVisible: boolean,
+  onClose: () => void
+}
+
+const CheckInfo = (props: CheckInfoProps) => {
   const onFinish = (values: any) => {
     console.log('Received values: ', values);
   };
 
   return (
-    <div className={styles['check-info']}>
+    <Drawer 
+      closable={false}
+      visible={props.isVisible}
+      placement='left'
+      width={600}
+      title={
+        <FormHeader title="Review" onClose={props.onClose}/>
+      }
+    >
       <Form name={styles['check-info']} layout="vertical" onFinish={onFinish}>
-        <FormHeader title="Create/edit review"/>
+        <div className={styles['check-info']}>
         <ul>
           <CheckInfoListItem heading="Task" info="Songbird"/>
           <CheckInfoListItem heading="Cross-check session" info="rss2020Q3react-xcheck"/>
@@ -60,8 +73,9 @@ const CheckInfo = () => {
         <Button className={styles["check-info__button"]} size="large">
           <EditOutlined />Check
         </Button>
+        </div>
       </Form>
-    </div>
+    </Drawer>
   );
 }
 

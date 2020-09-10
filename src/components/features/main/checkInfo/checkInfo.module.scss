@@ -1,15 +1,15 @@
 $text-color: #595959;
 
 .check-info {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: white;
-  height: 100vh;
-  overflow-y: scroll;
-  width: 600px;
-  padding: 2rem;
-  color: $text-color;
+  // position: absolute;
+  // top: 0;
+  // left: 0;
+  // background-color: white;
+  // height: 100vh;
+  // overflow-y: scroll;
+  // width: 600px;
+  // padding: 2rem;
+  // color: $text-color;
 
   .select, label {
     color: $text-color;
@@ -17,15 +17,7 @@ $text-color: #595959;
 
   ul {
     padding-left: 0;
-    margin: 1.5rem 0 0;
     list-style-type: none;
-  }
-
-  .info {
-    display: flex;
-    align-items: center;
-    margin-left: 8px;
-    color: $text-color
   }
 
   .avatar {
