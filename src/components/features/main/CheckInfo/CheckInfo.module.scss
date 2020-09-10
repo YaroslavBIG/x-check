@@ -1,0 +1,22 @@
+$text-color: #595959;
+
+.check-info {
+
+  .select, label {
+    color: $text-color;
+  }
+
+  ul {
+    padding-left: 0;
+    list-style-type: none;
+  }
+
+  .avatar {
+    margin-right: 8px;
+  }
+
+  &__button {
+    color: $text-color;
+    margin-top: 3rem;
+  }
+}
