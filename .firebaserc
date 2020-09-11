@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "x-check-app"
+    "default": "app-x-check",
+    "app-x-check": "app-x-check"
   }
 }
