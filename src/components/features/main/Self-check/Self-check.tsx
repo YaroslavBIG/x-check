@@ -65,8 +65,10 @@ const Selfcheck = (props: SelfcheckProps) => {
                     </Form.Item>
                   </div>
                 </div>
-                <p className="comment">Add comment</p>
-                <TextArea name="textarea-1" placeholder="Press Ctrl + Enter to save." autoSize />
+                <p className="comment">Add comment</p>         
+                <Form.Item name="textarea-1">
+                  <TextArea placeholder="Press Ctrl + Enter to save." autoSize />
+                </Form.Item>
               </div>
               <div className="item">
                 <div className="requirement">
@@ -93,7 +95,9 @@ const Selfcheck = (props: SelfcheckProps) => {
                   </div>
                 </div>
                 <p className="comment">Add comment</p>
-                <TextArea  name="textarea-2" placeholder="Press Ctrl + Enter to save." autoSize />
+                <Form.Item name="textarea-2">
+                  <TextArea placeholder="Press Ctrl + Enter to save." autoSize />
+                </Form.Item>
               </div>
             </Panel>
             <Panel header="Advanced Scope" key="2">Advanced Scope</Panel>

@@ -1,23 +1,6 @@
-body {
-  background-color: grey;
-}
+$accent-color: #1890ff;
 
 .self-check {
-
-  &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  &__buttons {
-    display: flex;
-    justify-content: space-between;
-
-    button:first-child {
-      margin-right: 8px;
-    }
-  }
 
   &__current-values {
     display: flex;
@@ -25,7 +8,7 @@ body {
     margin: 1.5rem 0;
 
     h3 {
-      color: #1890ff;
+      color: $accent-color;
       margin-bottom: 0;
     }
   }
@@ -93,7 +76,7 @@ body {
   }
 
   .comment {
-    color: #1890ff;
+    color: $accent-color;
     font-size: 0.75rem;
     margin-bottom: 0;
     margin-left: 28px;
