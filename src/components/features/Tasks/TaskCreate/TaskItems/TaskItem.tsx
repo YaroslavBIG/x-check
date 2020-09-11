@@ -1,8 +1,8 @@
 import React from 'react';
-import { Isubitem } from "../../TaskInterface";
+import { Iitem } from "../../TaskInterface";
 import { Button } from 'antd';
 import { SaveOutlined, DeleteOutlined } from '@ant-design/icons';
-export const TaskItem = (props: Isubitem) => {
+export const TaskItem = (props: Iitem) => {
   const {
     title,
     description,

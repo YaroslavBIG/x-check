@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import {TaskContext} from '../index';
-import { Itask, Isubitem } from "../../TaskInterface";
+import { Iitem, Itask } from "../../TaskInterface";
 import { Form, Input, InputNumber, Checkbox } from "antd";
 import { TaskHeader } from "../TaskHeader";
 import update from 'immutability-helper';
@@ -23,7 +23,7 @@ export const AddTaskItem = () => {
   };
   const panelNum = Number(collapsePanelNum)
 
-  const onFinish = (values: Isubitem) => {
+  const onFinish = (values: Iitem) => {
     setNewTask((prev: Itask) => (
 
         // ...prev,
