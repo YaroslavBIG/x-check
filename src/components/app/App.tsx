@@ -1,17 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import 'antd/dist/antd.css';
-import { Route, Switch, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { setDefaultPath } from '../features/login/loginReducer';
-import Loading from '../features/login/Loading/Loading';
-import Login from '../features/login/Login';
-import { XCheckPath } from '../../enum/app-paths.enum';
-import { isLoaded } from 'react-redux-firebase';
-import NavigationPanel from '../features/main/NavigationPanel/NavigationPanel';
-import { setRowSelection } from '../features/main/Sessions/SessionsReducer';
-import { ToastContainer } from 'react-toastify';
 
-export interface AuthRouteState {
+import {Tasks} from "../features/main/Tasks/Tasks";
+
+const App = () => {
+    return (
+        <>
+            <h1>Come back Project</h1>
+            <h1>If you see this label - it mean that test-script.yml <b>work, congratulations with it!</b></h1>
+            <Tasks/>
+        </>
+    )
+}
+
+/*export interface AuthRouteState {
   login: { defaultPath: string },
   firebase: {
     auth: {
@@ -54,6 +56,6 @@ const App = () => {
       <ToastContainer position='bottom-right' hideProgressBar/>
     </>
   );
-};
+};*/
 
 export default App;
