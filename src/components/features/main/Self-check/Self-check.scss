@@ -3,12 +3,6 @@ body {
 }
 
 .self-check {
-  position: absolute;
-  background-color: white;
-  height: 100vh;
-  overflow-y: scroll;
-  width: 600px;
-  padding: 2rem;
 
   &__header {
     display: flex;

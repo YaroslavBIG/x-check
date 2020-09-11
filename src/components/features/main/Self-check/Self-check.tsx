@@ -1,13 +1,20 @@
 import React from 'react';
-import { Form, Button, Collapse, Tag, Tooltip, InputNumber, Radio, Input } from 'antd';
+import { Drawer, Form, Collapse, Tag, Tooltip, InputNumber, Radio, Input } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css';
-import './self-check.scss';
+import './Self-check.scss';
+import FormHeader from '../FormHeader/FormHeader';
 
 const { Panel } = Collapse;
 const { TextArea } = Input;
 
-const Selfcheck = () => {
+interface SelfcheckProps {
+  isVisible: boolean,
+  onClose: () => void,
+  form: any
+}
+
+const Selfcheck = (props: SelfcheckProps) => {
   const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
   };
@@ -17,15 +24,17 @@ const Selfcheck = () => {
   }
 
   return (
+    <Drawer 
+      closable={false}
+      visible={props.isVisible}
+      placement='left'
+      width={600}
+      title={
+        <FormHeader title="Self-check" onClose={props.onClose}/>
+    }
+    >
     <div className="self-check">
-        <Form name="self-check" onFinish={onFinish}>
-          <div className="self-check__header">
-            <h2>Self-check</h2>
-            <div className="self-check__buttons"> 
-              <Button size="large">Cancel</Button>
-              <Button htmlType="submit" type="primary" size="large">Save</Button>
-            </div>
-          </div>
+        <Form name="self-check" form={props.form} onFinish={onFinish}>
           <div className="self-check__current-values">
               <h3>Total points: 80/600</h3>
               <h3>Checked requirements: 10/20</h3>
@@ -92,6 +101,7 @@ const Selfcheck = () => {
           </Collapse>
         </Form>
     </div>
+    </Drawer>
   );
 }
 
