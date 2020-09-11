@@ -1,0 +1,68 @@
+.trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+
+.trigger:hover {
+  color: #1890ff
+}
+
+.site-layout .site-layout-background {
+  background: #fff
+}
+
+.site-layout-background {
+  margin: 24px 16px;
+  padding: 24px;
+  min-height: 280px;
+  overflow: auto;
+}
+
+aside.ant-layout-sider.ant-layout-sider-dark {
+  background: inherit;
+  box-shadow: rgb(204, 204, 204) 3px 3px 4px 2px;
+}
+
+ul.ant-menu.ant-menu-light.ant-menu-root.ant-menu-inline {
+  background: inherit;
+}
+
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background: lightgray;
+}
+
+ul.ant-menu.ant-menu-light.ant-menu-inline-collapsed.ant-menu-root.ant-menu-vertical {
+  background: inherit;
+}
+
+header.ant-layout-header.site-layout-background {
+  padding: 0;
+}
+
+main.ant-layout-content.site-layout-background {
+  margin: 24px 16px;
+  padding: 24px;
+  min-height: 280px;
+}
+
+header.ant-layout-header.site-layout-background {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 0;
+}
+
+.logo {
+  margin-top: 5px;
+  text-align: center;
+
+  &.collapsed img {
+    width: 80px;
+    height: 80px;
+    transition: all 300ms ease-in-out;
+  }
+}
