@@ -4,6 +4,31 @@ export enum taskStatus {
   ARCHIVED = 'Archived'
 }
 
+const task = {
+  id: "simple-task-v1",
+  author: "cardamo",
+  state: "DRAFT", // enum [DRAFT, PUBLISHED, ARCHIVED]
+  categoriesOrder: ["Basic Scope", "Extra Scope", "Fines"],
+  items: [
+    {
+      id: "basic_p1",
+      minScore: 0,
+      maxScore: 20,
+      category: "Basic Scope",
+      title: "Basic things",
+      description: "You need to make things right, not wrong"
+    },
+    {
+      id: "basic_p2",
+      minScore: 0,
+      maxScore: 50,
+      category: "Basic Scope",
+      title: "Basic things",
+      description: "You need to make things right, not wrong"
+    }
+  ]
+}
+
 export interface ItaskItem {
   id: string,
   title: string,
@@ -18,7 +43,8 @@ export interface Isubitem {
   description: string,
   order: number,
   minScore: number,
-  maxScore: number
+  maxScore: number,
+  mentorOnly: boolean | undefined
 }
 
 export interface categoriesOrder {
@@ -27,15 +53,13 @@ export interface categoriesOrder {
   items?: Array<Isubitem>
 }
 
-// export interface Isubitems extends Array<Isubitem>{}
-
-export interface ItaskItems extends Array<ItaskItem>{}
+export interface IsubitemsKeys extends Array<Isubitem>{}
 
 export interface Itask {
   id: string, // Task name
   author: string, // Get author name from firebase?
   state: taskStatus,
-  maxScore: number,
+  maxScore?: number,
   categoriesOrder: Array<categoriesOrder>,
-  items?: ItaskItems
+  items?: Array<Isubitem>
 }

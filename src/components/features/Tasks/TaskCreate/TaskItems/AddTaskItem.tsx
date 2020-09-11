@@ -1,13 +1,13 @@
 import React, { useContext } from "react"
 import {TaskContext} from '../index';
-import { Itask } from "../../TaskInterface";
+import { Itask, Isubitem } from "../../TaskInterface";
 import { Form, Input, InputNumber, Checkbox } from "antd";
 import { TaskHeader } from "../TaskHeader";
 import update from 'immutability-helper';
 
 export const AddTaskItem = () => {
   const [form] = Form.useForm();
-  const { newTask, setNewTask, collapsePanelNum } = useContext(TaskContext);
+  const { setNewTask, collapsePanelNum } = useContext(TaskContext);
 
   console.log(typeof collapsePanelNum, collapsePanelNum)
   const onReset = (): void => {
@@ -21,23 +21,34 @@ export const AddTaskItem = () => {
       })
       .catch((errorInfo) => { alert(errorInfo) });
   };
+  const panelNum = Number(collapsePanelNum)
 
-  const onFinish = (values: any) => {
-    alert(`'Success:' ${JSON.stringify(values, null, 2)}`);
+  const onFinish = (values: Isubitem) => {
     setNewTask((prev: Itask) => (
-      {
-        ...prev,
-        items: [{
-          ...prev.items,
-          [collapsePanelNum]: {...values}}
-          // update(prev.items, {[collapsePanelNum]: { items: {$set: values}}})
+
+        // ...prev,
+        // items: [{
+        //   ...prev.items,
+      update(prev, {items:
+             {$set: {
+                [panelNum]: [
+                  values
+                ]
+                }
+              }
+             })
+      // update(prev, {
+      //   items:{ $set:
+      //     {[panelNum]: { $push: values }}}
+
+
+
+      // })
 
         // items: {...values}
-        ]
-      }
-    ))
-  };
-
+        // }]
+      ));
+    };
   const onFinishFailed = (errorInfo: object) => {
     console.log('Failed:', errorInfo);
   };
@@ -101,7 +112,9 @@ export const AddTaskItem = () => {
           <InputNumber min={0} max={1000} onChange={() => null} />
         </Form.Item>
         </div>
-        <Checkbox >Verify by a Mentor only</Checkbox>
+        <Form.Item name="mentorOnly" valuePropName="checked">
+          <Checkbox >Verify by a Mentor only</Checkbox>
+        </Form.Item>
       </Form>
     </div>
   )

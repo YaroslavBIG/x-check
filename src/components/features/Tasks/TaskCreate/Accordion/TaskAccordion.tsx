@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { TaskContext } from '../TaskContext';
 import { Collapse, Empty } from 'antd';
 import { AddCheckButton } from '../TaskItems/AddCheckButton';
+import { ItemsList } from '../TaskItems/ItemsList';
 
 export const TaskAccordion = () => {
   const { Panel } = Collapse;
@@ -9,7 +10,7 @@ export const TaskAccordion = () => {
 
   const categotes = newTask.categoriesOrder.map((el: any, idx: number) => (
     <Panel header={el.name} key={idx} id={el.order} extra={<AddCheckButton />}>
-      {newTask.items[idx] ? null : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
+      {newTask.items[idx] ? <ItemsList /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
     </Panel>
   ))
 

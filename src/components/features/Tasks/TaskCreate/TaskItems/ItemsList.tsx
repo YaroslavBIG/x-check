@@ -1,13 +1,18 @@
-import React from 'react';
-import { Button } from 'antd';
-import { SaveOutlined, DeleteOutlined } from '@ant-design/icons';
+import React, { useContext } from 'react';
+import { TaskContext } from '../TaskContext';
+import { TaskItem } from './TaskItem';
+import { Isubitem } from '../../TaskInterface';
 
 export const ItemsList = () => {
+  const { newTask, collapsePanelNum } = useContext(TaskContext);
 
   return (
     <>
-      <Button icon={<SaveOutlined />} size='middle' htmlType="submit" onSubmit={() => "handleItemSubmit"} />
-      <Button htmlType="button" icon={<DeleteOutlined />} size='middle' onClick={() => "onReset"} />
-    </>
+    {newTask.items[collapsePanelNum] ?
+        newTask.items[collapsePanelNum].map((el: Isubitem, idx: number) =>
+        <TaskItem {...el} key={idx} />
+      ) : null
+    }
+  </>
   )
 }
