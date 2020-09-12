@@ -2,14 +2,11 @@ import React from 'react';
 import 'antd/dist/antd.css';
 
 import {Tasks} from "../features/main/Tasks/Tasks";
+import NavigationPanel from '../features/main/NavigationPanel/NavigationPanel';
 
 const App = () => {
     return (
-        <>
-            <h1>Come back Project</h1>
-            <h1>If you see this label - it mean that test-script.yml <b>work, congratulations with it!</b></h1>
-            <Tasks/>
-        </>
+        <NavigationPanel/>
     )
 }
 

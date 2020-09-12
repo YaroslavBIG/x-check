@@ -11,7 +11,7 @@ import {
   SoundOutlined,
   UsergroupAddOutlined
 } from '@ant-design/icons';
-import { Link, Switch } from 'react-router-dom';
+import { Link, Switch, Route } from 'react-router-dom';
 import CustomHeader from '../CustomHeader/CustomHeader';
 import { Tasks } from '../Tasks/Tasks';
 import Logo from '../../login/Logo/Logo';
@@ -34,7 +34,7 @@ interface SelectedTabState {
 const NavigationPanel = () => {
   const [status, setStatus] = useState(false);
   const auth = false; /*useSelector((state: AuthRouteState) => state.firebase.auth);*/
-  const defaultPath: string = useSelector((state: SelectedTabState) => state.login.defaultPath);
+  // const defaultPath: string = useSelector((state: SelectedTabState) => state.login.defaultPath);
 
   const onToggleHandler = () => {
     setStatus(!status);
@@ -46,7 +46,7 @@ const NavigationPanel = () => {
         <div className={!status ? 'logo' : 'logo collapsed'}>
           <Logo/>
         </div>
-        <Menu mode="inline" defaultSelectedKeys={[PathMap[defaultPath]]}>
+        <Menu mode="inline" /*defaultSelectedKeys={[PathMap[defaultPath]]}*/>
 
           <Menu.Item key="1" icon={<AuditOutlined/>}>
             <Link to={XCheckPath.TASKS}>
@@ -86,6 +86,14 @@ const NavigationPanel = () => {
         <Content className="site-layout-background">
           <div>
             <Switch>
+              <Route exact path="/tasks" component={Tasks}/>
+              <Route exact path="/requests" component={Requests}/>
+              {/*<Route exact path="/sessions" component={Sessions}/>*/}
+              <Route exact path="/reviews" component={Reviews}/>
+              <Route exact path="/debates" component={Debates}/>
+              )}/>
+            </Switch>
+            {/*<Switch>
               <PrivateRoute isAuth={isLoaded(auth) && !isEmpty(auth)} path={XCheckPath.TASKS} component={Tasks}
                             exact/>
               <PrivateRoute isAuth={isLoaded(auth) && !isEmpty(auth)} path={XCheckPath.SESSIONS}
@@ -100,7 +108,7 @@ const NavigationPanel = () => {
                             exact/>
               <PrivateRoute isAuth={isLoaded(auth) && !isEmpty(auth)} path="*" component={Sessions}
                             exact={false}/>
-            </Switch>
+            </Switch>*/}
           </div>
         </Content>
       </Layout>
