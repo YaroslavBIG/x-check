@@ -6,7 +6,7 @@ import { TaskHeader } from "../TaskHeader";
 
 export const AddTaskItem = () => {
   const [form] = Form.useForm();
-  const { newTask, setNewItems, collapsePanelNum } = useContext(TaskContext);
+  const { newTask, setNewItems, collapsePanelNum, addItemToggler } = useContext(TaskContext);
 
   console.log(typeof collapsePanelNum, collapsePanelNum)
   const onReset = (): void => {
@@ -15,9 +15,6 @@ export const AddTaskItem = () => {
 
   const handleItemSubmit = () => {
     form.validateFields()
-      .then((values) => {
-        alert(JSON.stringify(values, null, 2))
-      })
       .catch((errorInfo) => { alert(errorInfo) });
   };
   const panelNum = Number(collapsePanelNum)
@@ -31,6 +28,7 @@ export const AddTaskItem = () => {
           }
         ]
       ));
+    addItemToggler()
     };
   const onFinishFailed = (errorInfo: object) => {
     console.log('Failed:', errorInfo);
