@@ -8,7 +8,7 @@ import { insertToArrayByIndex } from 'utils/insertToArrayByIndex';
 
 export const TaskAddCateory: React.FC = (props) => {
   const [form] = Form.useForm();
-  const { setNewTask, addTaskToggler} = useContext(TaskContext);
+  const { setNewTask, addTaskToggler, newTask } = useContext(TaskContext);
 
   const onReset = (): void => {
     form.resetFields();
@@ -23,7 +23,6 @@ export const TaskAddCateory: React.FC = (props) => {
   };
 
   const onFinish = (values: ItaskCategoryValues) => {
-    // alert(`'Success:' ${JSON.stringify(values, null, 2)}`);
     setNewTask((prev: Itask) => (
       {
         ...prev,
@@ -36,6 +35,8 @@ export const TaskAddCateory: React.FC = (props) => {
   const onFinishFailed = (errorInfo: object) => {
     console.log('Failed:', errorInfo);
   };
+
+  console.log("newTask.categoriesOrder.length", newTask.categoriesOrder.length)
 
   return (
     <div className="task-category">
@@ -61,7 +62,7 @@ export const TaskAddCateory: React.FC = (props) => {
           <Form.Item
               name='order'
               rules={[{ required: true, message: 'Please select order!' }]}
-              initialValue={1}
+              initialValue={newTask.categoriesOrder.length + 1}
             >
           <InputNumber min={1} max={100}  onChange={() => null} />
         </Form.Item>

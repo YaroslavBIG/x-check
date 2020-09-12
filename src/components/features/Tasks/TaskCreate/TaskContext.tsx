@@ -21,7 +21,7 @@ export const TaskContextState: React.FC = (props) => {
     });
 
   const [items, setNewItems] = useState<Array<Iitem> | Array<undefined>>([]);
-
+  const [newTaskForSubmit, setNewTaskForSubmit] = useState({});
 
   const addTaskToggler = () => {
     setAddTask((prevState) => !prevState);
@@ -50,7 +50,9 @@ export const TaskContextState: React.FC = (props) => {
           newTask: newTask,
           setNewTask: setNewTask,
           items: items,
-          setNewItems: setNewItems
+          setNewItems: setNewItems,
+          newTaskForSubmit: newTaskForSubmit,
+          setNewTaskForSubmit: setNewTaskForSubmit
         }
       }
     >

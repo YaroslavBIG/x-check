@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {Form, Select, Input } from 'antd';
 import { TaskHeader } from './TaskHeader';
 import { taskStatus, Itask, Iitem } from '../TaskInterface';
@@ -9,8 +9,8 @@ const { Option } = Select;
 const { TextArea } = Input;
 export const TaskCreateDefault: React.FC = () => {
   const [form] = Form.useForm();
-  const { newTask, setNewTask, items } = useContext(TaskContext);
-  const [ newTaskForSubmit, setNewTaskForSubmit  ]= useState({});
+  const { newTask, setNewTask, items, newTaskForSubmit, setNewTaskForSubmit } = useContext(TaskContext);
+
 
   console.log('newTask',newTask)
   console.log('ForSubmit',newTaskForSubmit);
@@ -50,6 +50,18 @@ export const TaskCreateDefault: React.FC = () => {
     form.resetFields();
   };
 
+  useEffect(() => {
+    form.setFieldsValue(newTaskForSubmit)
+  }, [form, newTaskForSubmit]);
+
+  useEffect(() => {
+    setNewTaskForSubmit((prev: Itask) => ({
+      ...prev,
+      categoriesOrder: newTask.categoriesOrder,
+      items: items
+    }))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newTask, items]);
 
 	return (
 		<div className='task'>

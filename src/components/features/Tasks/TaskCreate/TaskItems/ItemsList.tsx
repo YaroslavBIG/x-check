@@ -8,7 +8,7 @@ export const ItemsList = () => {
   const { newTask, items, collapsePanelNum } = useContext(TaskContext);
   const category = newTask.categoriesOrder[collapsePanelNum];
   const selectedCategoryItems = items.filter((item: Iitem) =>
-    item.id === `${category.replace(/\s+/g, '')}_p${collapsePanelNum}`)
+    item.category === category)
 
   return (
     <>
