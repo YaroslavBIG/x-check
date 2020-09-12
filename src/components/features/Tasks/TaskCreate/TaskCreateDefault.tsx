@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {Form, Select, Input } from 'antd';
 import { TaskHeader } from './TaskHeader';
 import { taskStatus, Itask, Iitem } from '../TaskInterface';
@@ -12,9 +12,9 @@ export const TaskCreateDefault: React.FC = () => {
   const { newTask, setNewTask, items, newTaskForSubmit, setNewTaskForSubmit } = useContext(TaskContext);
 
 
-  console.log('newTask',newTask)
-  console.log('ForSubmit',newTaskForSubmit);
-  console.log('items', items)
+
+  console.log('ForSubmit',JSON.stringify(newTaskForSubmit, null, 2));
+
 
   const handleFormSubmit = (): void => {
     form.validateFields()

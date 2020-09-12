@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { Iitem, Itask, taskStatus } from '../TaskInterface';
+import { Iitem, Itask, ITaskLayoutProps, taskStatus } from '../TaskInterface';
 
 export const TaskContext: any = React.createContext(false);
 export const TaskProvider = TaskContext.Provider;
 export const TaskConsumer = TaskContext.Consumer;
 
-export const TaskContextState: React.FC = (props) => {
+export const TaskContextState = (props: ITaskLayoutProps) => {
   const [addTask, setAddTask] = useState(false);
   const [itemAddPage, setItemAddPage] = useState(false);
   const [collapsePanelNum, setCollapsePanelNum] = useState<number>(0);
   const [collapsPanetId, setCollapsPanelId] = useState<string | undefined>(undefined)
-  const [newTask, setNewTask] = useState<Itask | undefined>(
+  const [newTask, setNewTask] = useState<Itask | undefined>(props.inicialState ||
     {
       id: '',
       author: '',
@@ -19,9 +19,9 @@ export const TaskContextState: React.FC = (props) => {
       categoriesOrder: [],
       items: []
     });
-
-  const [items, setNewItems] = useState<Array<Iitem> | Array<undefined>>([]);
-  const [newTaskForSubmit, setNewTaskForSubmit] = useState({});
+  console.log(props)
+  const [items, setNewItems] = useState<Array<Iitem> | Array<undefined>>(props.inicialState?.items || []);
+  const [newTaskForSubmit, setNewTaskForSubmit] = useState(props.inicialState || {});
 
   const addTaskToggler = () => {
     setAddTask((prevState) => !prevState);
