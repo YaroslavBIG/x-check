@@ -1,12 +1,11 @@
 import React from 'react';
 import { Iitem } from "../../TaskInterface";
-import { Button } from 'antd';
-import { SaveOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Button, Popover, Tag } from 'antd';
+import { SaveOutlined, DeleteOutlined, InfoCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 export const TaskItem = (props: Iitem) => {
   const {
     title,
     description,
-    order,
     minScore,
     maxScore,
     mentorOnly
@@ -14,12 +13,27 @@ export const TaskItem = (props: Iitem) => {
 
   return (
     <div className="task--item">
-      <div className="item--ico">ico</div>
+      <div className="item--ico">
+        <Popover content={description} title="Title">
+          <Button type='text' icon={<InfoCircleOutlined />} />
+        </Popover>
+      </div>
       <div className="task--title">{title}</div>
-      <div className="task--min-score">{minScore}</div>
-      <div className="task--max-score">{maxScore}</div>
-      <Button icon={<SaveOutlined />} size='middle' htmlType="submit" onSubmit={() => "handleItemSubmit"} />
-      <Button htmlType="button" icon={<DeleteOutlined />} size='middle' onClick={() => "onReset"} />
+      <div className="task--min-score">
+        <Tag color="error">{minScore}</Tag>
+        <Tag color="success">{maxScore}</Tag>
+        {mentorOnly ?
+          <Tag icon={<CheckCircleOutlined />} color="warning">
+          Mentor only
+          </Tag>
+          :
+          null
+        }
+      </div>
+      <div className="task--control-buttons">
+        <Button type='text' icon={<SaveOutlined />} size='middle' htmlType="submit" onSubmit={() => "handleItemSubmit"} />
+        <Button type='text' htmlType="button" icon={<DeleteOutlined />} size='middle' onClick={() => "onReset"} />
+      </div>
     </div>
   )
 }
