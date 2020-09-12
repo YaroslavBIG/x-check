@@ -18,23 +18,30 @@ export const TaskHeader = (props: TaskHeaderProps) => {
     arrowButton,
   } = props;
   return (
-    <span className='task-header'>
+    <div className='task-header'>
+      <div className="task-header--title">
+        <div className="header-title--arrow-button">
+          {arrowButton ?
+            <ArrowButton />
+            :
+            null
+          }
+        </div>
+        <div className="header-title--title">
+          {title}
+        </div>
+      </div>
 
-      {arrowButton ?
-        <ArrowButton />
-          :
-          null
-        }
+      <div className="task-header--buttons-control">
+        <Button htmlType="button" type='primary' size='middle' onClick={onReset}>
+          Cancel
+        </Button>
 
-        {title}
+        <Button type='default' size='middle' htmlType="submit" onSubmit={handleSubmit}>
+          Save
+        </Button>
+      </div>
 
-      <Button htmlType="button" type='primary' size='middle' onClick={onReset}>
-        Cancel
-      </Button>
-
-      <Button type='default' size='middle' htmlType="submit" onSubmit={handleSubmit}>
-        Save
-      </Button>
-    </span>
+    </div>
   )
 }

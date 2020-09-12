@@ -1,0 +1,31 @@
+.task-add-category {
+  margin-top: 15px;
+}
+
+
+.task--item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+
+  &--title {
+    display: flex;
+  }
+
+  .header-title {
+    &--arrow-button {
+      width: 30px;
+    }
+
+    &--title {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+}
