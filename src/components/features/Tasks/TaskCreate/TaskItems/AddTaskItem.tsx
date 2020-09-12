@@ -6,9 +6,8 @@ import { TaskHeader } from "../TaskHeader";
 
 export const AddTaskItem = () => {
   const [form] = Form.useForm();
-  const { newTask, setNewItems, collapsePanelNum, addItemToggler } = useContext(TaskContext);
+  const { newTask, setNewItems, collapsePanelNum, collapsPanetId, addItemToggler } = useContext(TaskContext);
 
-  console.log(typeof collapsePanelNum, collapsePanelNum)
   const onReset = (): void => {
     form.resetFields();
   };
@@ -23,7 +22,7 @@ export const AddTaskItem = () => {
     setNewItems((prev: Array<Iitem>) => (
         [ ...prev,
           {...values,
-            id: `${newTask.categoriesOrder[panelNum].replace(/\s+/g, '')}_p${values.order}`,
+            id: collapsPanetId, //.replace(/_\w\d/g, '')}_p${collapsePanelNum}
             category: newTask.categoriesOrder[panelNum]
           }
         ]

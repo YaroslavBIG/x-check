@@ -6,15 +6,15 @@ import { Empty } from 'antd';
 
 export const ItemsList = () => {
   const { newTask, items, collapsePanelNum } = useContext(TaskContext);
-  console.log(items)
+  const category = newTask.categoriesOrder[collapsePanelNum];
   const selectedCategoryItems = items.filter((item: Iitem) =>
-    item.category === newTask.categoriesOrder[collapsePanelNum])
+    item.id === `${category.replace(/\s+/g, '')}_p${collapsePanelNum}`)
 
   return (
     <>
     {selectedCategoryItems.length ?
         selectedCategoryItems.map((el: Iitem, idx: number) =>
-        <TaskItem {...el} key={items.id + idx} />)
+        <TaskItem {...el} key={idx + 100} />)
         :
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
     }

@@ -17,7 +17,6 @@ export const TaskCreateDefault: React.FC = () => {
     form.validateFields()
       .then((values) => {
         alert(JSON.stringify(values,null, 2))
-        // console.log(values)
       })
       .catch((errorInfo) => { alert(errorInfo) });
   };

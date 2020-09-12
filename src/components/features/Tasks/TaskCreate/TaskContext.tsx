@@ -9,6 +9,7 @@ export const TaskContextState: React.FC = (props) => {
   const [addTask, setAddTask] = useState(false);
   const [itemAddPage, setItemAddPage] = useState(false);
   const [collapsePanelNum, setCollapsePanelNum] = useState<number>(0);
+  const [collapsPanetId, setCollapsPanelId] = useState<string | undefined>(undefined)
   const [newTask, setNewTask] = useState<Itask | undefined>(
     {
       id: '',
@@ -40,6 +41,8 @@ export const TaskContextState: React.FC = (props) => {
           setAddTask: setAddTask,
           collapsePanelNum: collapsePanelNum,
           setCollapsePanelNum: setCollapsePanelNum,
+          collapsPanetId: collapsPanetId,
+          setCollapsPanelId: setCollapsPanelId,
           addTaskToggler: addTaskToggler,
           itemAddPage: itemAddPage,
           setItemAddPage: setItemAddPage,
