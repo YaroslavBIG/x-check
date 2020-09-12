@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {Form, Select, Input } from 'antd';
 import { TaskHeader } from './TaskHeader';
-import { taskStatus, Itask } from '../TaskInterface';
+import { taskStatus, Itask, Iitem } from '../TaskInterface';
 import { TaskContext } from './TaskContext';
 import { TaskAccordion } from './Accordion/TaskAccordion';
 
@@ -9,15 +9,15 @@ const { Option } = Select;
 const { TextArea } = Input;
 export const TaskCreateDefault: React.FC = () => {
   const [form] = Form.useForm();
-  const { newTask, setNewTask } = useContext(TaskContext);
+  const { newTask, setNewTask, items } = useContext(TaskContext);
+  const [ newTaskForSubmit, setNewTaskForSubmit  ]= useState({});
 
-  console.log(newTask);
+  console.log('newTask',newTask)
+  console.log('ForSubmit',newTaskForSubmit);
+  console.log('items', items)
 
   const handleFormSubmit = (): void => {
     form.validateFields()
-      .then((values) => {
-        alert(JSON.stringify(values,null, 2))
-      })
       .catch((errorInfo) => { alert(errorInfo) });
   };
 
@@ -27,9 +27,19 @@ export const TaskCreateDefault: React.FC = () => {
     setNewTask((prev: Itask) => (
       {
         ...prev,
-        ...values
+        ...values,
+        items: items
       }
       ))
+    setNewTaskForSubmit((prev: Itask) => ({
+      ...prev,
+      ...values,
+      author: 'Get Name from login', // TODO: 'Get Name from login'
+      maxScore: items.reduce((acc: number, item: Iitem) => {return acc + item.maxScore}, 0),
+      categoriesOrder: newTask.categoriesOrder,
+      items: items
+
+    }))
   };
 
   const onFinishFailed = (errorInfo: object) => {
