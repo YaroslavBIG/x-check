@@ -183,9 +183,9 @@ const Tasks = () => {
     // render-function for column-status
     const renderStatus = (status: string) => {
         let color;
-        if (status === 'Published') {
+        if (status === 'published') {
             color = 'green'
-        } else if (status === 'Draft') {
+        } else if (status === 'draft') {
             color = 'orange'
         } else {
             color = 'default'

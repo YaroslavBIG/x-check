@@ -18,7 +18,7 @@ import Logo from '../../login/Logo/Logo';
 import Sessions from '../Sessions/Sessions';
 import { isEmpty, isLoaded } from 'react-redux-firebase';
 import { useSelector } from 'react-redux';
-import { AuthRouteState } from '../../../app/App';
+/*import { AuthRouteState } from '../../../app/App';*/
 import PrivateRoute from '../../../app/PrivateRoute';
 import { Reviews } from '../Reviews/Reviews';
 import { Requests } from '../Requests/Requests';
@@ -33,7 +33,7 @@ interface SelectedTabState {
 
 const NavigationPanel = () => {
   const [status, setStatus] = useState(false);
-  const auth = useSelector((state: AuthRouteState) => state.firebase.auth);
+  const auth = false; /*useSelector((state: AuthRouteState) => state.firebase.auth);*/
   const defaultPath: string = useSelector((state: SelectedTabState) => state.login.defaultPath);
 
   const onToggleHandler = () => {
