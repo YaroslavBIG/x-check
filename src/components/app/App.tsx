@@ -1,7 +1,6 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 
-import {Tasks} from "../features/main/Tasks/Tasks";
 import NavigationPanel from '../features/main/NavigationPanel/NavigationPanel';
 
 const App = () => {

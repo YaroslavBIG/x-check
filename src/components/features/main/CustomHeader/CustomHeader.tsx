@@ -1,8 +1,4 @@
 import React from 'react';
-import { Dropdown, Menu } from 'antd';
-import { useFirebase } from 'react-redux-firebase';
-import styles from './CustomHeader.module.scss';
-import { useSelector } from 'react-redux';
 
 interface IProfileState {
   firebase: {

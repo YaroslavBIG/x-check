@@ -15,15 +15,10 @@ import { Link, Switch, Route } from 'react-router-dom';
 import CustomHeader from '../CustomHeader/CustomHeader';
 import { Tasks } from '../Tasks/Tasks';
 import Logo from '../../login/Logo/Logo';
-import Sessions from '../Sessions/Sessions';
-import { isEmpty, isLoaded } from 'react-redux-firebase';
-import { useSelector } from 'react-redux';
-/*import { AuthRouteState } from '../../../app/App';*/
-import PrivateRoute from '../../../app/PrivateRoute';
 import { Reviews } from '../Reviews/Reviews';
 import { Requests } from '../Requests/Requests';
 import { Debates } from '../Debates/Debates';
-import { PathMap, XCheckPath } from '../../../../enum/app-paths.enum';
+import { XCheckPath } from '../../../../enum/app-paths.enum';
 
 const { Header, Sider, Content } = Layout;
 
@@ -33,7 +28,7 @@ interface SelectedTabState {
 
 const NavigationPanel = () => {
   const [status, setStatus] = useState(false);
-  const auth = false; /*useSelector((state: AuthRouteState) => state.firebase.auth);*/
+  // const auth = false; /*useSelector((state: AuthRouteState) => state.firebase.auth);*/
   // const defaultPath: string = useSelector((state: SelectedTabState) => state.login.defaultPath);
 
   const onToggleHandler = () => {
