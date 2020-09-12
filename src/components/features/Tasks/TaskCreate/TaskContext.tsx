@@ -8,7 +8,7 @@ export const TaskConsumer = TaskContext.Consumer;
 export const TaskContextState: React.FC = (props) => {
   const [addTask, setAddTask] = useState(false);
   const [itemAddPage, setItemAddPage] = useState(false);
-  const [collapsePanelNum, setCollapsePanelNum] = useState(0);
+  const [collapsePanelNum, setCollapsePanelNum] = useState<number>(0);
   const [newTask, setNewTask] = useState<Itask | undefined>(
     {
       id: '',
@@ -19,16 +19,7 @@ export const TaskContextState: React.FC = (props) => {
       items: []
     });
 
-  const [items, setNewItems] = useState<Iitem | undefined>(
-    {
-      id: '',
-      title: '',
-      description: '',
-      order: 0,
-      minScore: 0,
-      maxScore: 0,
-      mentorOnly: undefined,
-    });
+  const [items, setNewItems] = useState<Array<Iitem> | Array<undefined>>([]);
 
 
   const addTaskToggler = () => {

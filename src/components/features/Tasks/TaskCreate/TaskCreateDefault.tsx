@@ -2,8 +2,6 @@ import React, { useContext } from 'react';
 import {Form, Select, Input } from 'antd';
 import { TaskHeader } from './TaskHeader';
 import { taskStatus, Itask } from '../TaskInterface';
-// import { taskStore } from './taskReducer/taskStore';
-// import { taskReducerActions } from './taskReducer/actions';
 import { TaskContext } from './TaskContext';
 import { TaskAccordion } from './Accordion/TaskAccordion';
 

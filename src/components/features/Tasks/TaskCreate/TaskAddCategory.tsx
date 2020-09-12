@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 import { Form, Input, InputNumber } from 'antd';
 import { TaskHeader } from './TaskHeader';
 import { TaskContext } from './TaskContext';
-import { Itask } from '../TaskInterface';
+import { Itask, ItaskCategoryValues } from '../TaskInterface';
+import { insertToArrayByIndex } from 'utils/insertToArrayByIndex';
 
 
 export const TaskAddCateory: React.FC = (props) => {
@@ -21,13 +22,12 @@ export const TaskAddCateory: React.FC = (props) => {
       .catch((errorInfo) => { alert(errorInfo) });
   };
 
-  const onFinish = (values: object) => {
+  const onFinish = (values: ItaskCategoryValues) => {
     // alert(`'Success:' ${JSON.stringify(values, null, 2)}`);
     setNewTask((prev: Itask) => (
       {
         ...prev,
-        categoriesOrder: [...prev.categoriesOrder, values]
-        .sort((prevOrder: any, nextOrder: any) => prevOrder.order > nextOrder.order ? 1 : -1 )
+        categoriesOrder: insertToArrayByIndex(prev.categoriesOrder, values.order - 1, values.name)
       }
     ))
     addTaskToggler();
@@ -63,7 +63,7 @@ export const TaskAddCateory: React.FC = (props) => {
               rules={[{ required: true, message: 'Please select order!' }]}
               initialValue={1}
             >
-          <InputNumber min={1} max={10}  onChange={() => null} />
+          <InputNumber min={1} max={100}  onChange={() => null} />
         </Form.Item>
       </Form>
     </div>

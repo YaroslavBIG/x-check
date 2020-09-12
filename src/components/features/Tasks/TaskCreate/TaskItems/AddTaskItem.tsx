@@ -1,13 +1,12 @@
 import React, { useContext } from "react"
 import {TaskContext} from '../index';
-import { Iitem, Itask } from "../../TaskInterface";
+import { Iitem } from "../../TaskInterface";
 import { Form, Input, InputNumber, Checkbox } from "antd";
 import { TaskHeader } from "../TaskHeader";
-import update from 'immutability-helper';
 
 export const AddTaskItem = () => {
   const [form] = Form.useForm();
-  const { setNewTask, collapsePanelNum } = useContext(TaskContext);
+  const { newTask, setNewItems, collapsePanelNum } = useContext(TaskContext);
 
   console.log(typeof collapsePanelNum, collapsePanelNum)
   const onReset = (): void => {
@@ -24,29 +23,13 @@ export const AddTaskItem = () => {
   const panelNum = Number(collapsePanelNum)
 
   const onFinish = (values: Iitem) => {
-    setNewTask((prev: Itask) => (
-
-        // ...prev,
-        // items: [{
-        //   ...prev.items,
-      update(prev, {items:
-             {$set: {
-                [panelNum]: [
-                  values
-                ]
-                }
-              }
-             })
-      // update(prev, {
-      //   items:{ $set:
-      //     {[panelNum]: { $push: values }}}
-
-
-
-      // })
-
-        // items: {...values}
-        // }]
+    setNewItems((prev: Array<Iitem>) => (
+        [ ...prev,
+          {...values,
+            id: `${newTask.categoriesOrder[panelNum].replace(/\s+/g, '')}_p${values.order}`,
+            category: newTask.categoriesOrder[panelNum]
+          }
+        ]
       ));
     };
   const onFinishFailed = (errorInfo: object) => {
