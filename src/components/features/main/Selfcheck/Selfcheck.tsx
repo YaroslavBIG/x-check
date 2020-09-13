@@ -4,7 +4,7 @@ import 'antd/dist/antd.css';
 import './Selfcheck.scss';
 import FormHeader from '../FormHeader/FormHeader';
 import { useSelector } from 'react-redux';
-import { useFirestoreConnect } from 'react-redux-firebase';
+import { useFirestoreConnect, useFirestore } from 'react-redux-firebase';
 import CategoryItem, { TaskItem } from './CategoryItem';
 
 const { Panel } = Collapse;
@@ -25,21 +25,33 @@ interface TasksState {
 }
 
 const initialFormValues = {
- radioGroups: []
+  values: {}
 };
 
 const Selfcheck = (props: SelfcheckProps) => {
-  const onFinish = (values: any) => {
+
+  const onFinish = (values: object) => {
     console.log('Received values of form: ', values);
     props.onFormSubmit();
+    addSelfGrade(values);
   };
 
   const onValuesChange = (changedValues: object, allValues: object) : void => {
     console.log(changedValues, allValues);
-    props.form.setFieldsValue({...allValues});
-    console.log(props.form.getFieldsValue(allValues));
+    props.form.setFieldsValue(allValues);
+    console.log(props.form.getFieldValue());
   }
 
+  const addSelfGrade = (values: any) => {
+    Object.keys(values).forEach((key: string) => {
+      if (values[key] === undefined){
+        delete values[key];
+      }
+    });
+    firestore.collection('selfGrades').add(values);
+  }
+
+  const firestore = useFirestore();
   useFirestoreConnect([{ collection: 'tasks' }]);
   const tasks = useSelector((state : TasksState) => state.firestore.data.tasks);
   console.log(tasks && Object.keys(tasks));

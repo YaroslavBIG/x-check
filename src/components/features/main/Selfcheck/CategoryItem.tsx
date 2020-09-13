@@ -51,7 +51,7 @@ const CategoryItem = (props: CategoryItemProps) => {
       </div>
       <p className="comment">Add comment</p>         
       <Form.Item name={`textarea-${item.id}`}>
-        <TextArea placeholder="Press Ctrl + Enter to save." autoSize />
+        <TextArea name="textarea" placeholder="Press Ctrl + Enter to save." autoSize />
       </Form.Item>
     </div>
   );
