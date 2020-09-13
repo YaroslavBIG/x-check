@@ -12,6 +12,7 @@ const { Panel } = Collapse;
 interface SelfcheckProps {
   isVisible: boolean,
   onClose: () => void,
+  onFormSubmit: () => void,
   form: any
 }
 
@@ -23,14 +24,21 @@ interface TasksState {
   }
 }
 
+const initialFormValues = {
+ radioGroups: []
+};
+
 const Selfcheck = (props: SelfcheckProps) => {
   const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
+    props.onFormSubmit();
   };
 
-  // const handleRadioChange = (event: any) => {
-  //   console.log(event);
-  // }
+  const onValuesChange = (changedValues: object, allValues: object) : void => {
+    console.log(changedValues, allValues);
+    props.form.setFieldsValue({...allValues});
+    console.log(props.form.getFieldsValue(allValues));
+  }
 
   useFirestoreConnect([{ collection: 'tasks' }]);
   const tasks = useSelector((state : TasksState) => state.firestore.data.tasks);
@@ -43,11 +51,11 @@ const Selfcheck = (props: SelfcheckProps) => {
       placement='left'
       width={600}
       title={
-        <FormHeader title="Self-check" onClose={props.onClose}/>
+        <FormHeader title="Self-check" onClose={props.onClose} form={props.form}/>
     }
     >
     <div className="self-check">
-        <Form name="self-check" form={props.form} onFinish={onFinish}>
+        <Form name="self-check" form={props.form} onFinish={onFinish} onValuesChange={onValuesChange} initialValues={initialFormValues} >
           <div className="self-check__current-values">
               <h3>Total points: 80/600</h3>
               <h3>Checked requirements: 10/20</h3>

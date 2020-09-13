@@ -37,7 +37,7 @@ const CategoryItem = (props: CategoryItemProps) => {
           {item.mentorOnly && <Tag color='warning'>M</Tag>}
         </div>
         <div className="mark">
-          <Form.Item name={`input-number-${item.id}`}>
+          <Form.Item name={`radio-group-${item.id}`}>
             <InputNumber size="small" min={item.minScore} max={item.maxScore}/>
           </Form.Item>
           <Form.Item name={`radio-group-${item.id}`}>

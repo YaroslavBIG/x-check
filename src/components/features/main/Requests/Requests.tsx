@@ -25,7 +25,7 @@ export const Requests = () => {
             <Button icon={<EditOutlined/>} onClick={() => setCheckInfoVisibility(true)}>Show check info form</Button>
             <Button icon={<EditOutlined/>} onClick={() => setSelfCheckVisibility(true)}>Show self check form</Button>
             <CheckInfo isVisible={isCheckInfoVisible} onClose={onCheckInfoClose} form={form}/>
-            <Selfcheck isVisible={isSelfCheckVisible} onClose={onSelfCheckClose} form={form}/>
+            <Selfcheck isVisible={isSelfCheckVisible} onClose={onSelfCheckClose} onFormSubmit={() => setSelfCheckVisibility(false)} form={form}/>
         </div>
     );
 };
