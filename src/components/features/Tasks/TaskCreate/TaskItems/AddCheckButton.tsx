@@ -41,7 +41,7 @@ export const AddCheckButton = (props: addCheckButtonProps) => {
 				data-id={props.elId}
 				icon={<PlusOutlined />}
 			>
-				add check
+				Add check
 			</Button>
 			<Dropdown overlay={menu}>
 				<Button type='text' icon={<MoreOutlined />} />

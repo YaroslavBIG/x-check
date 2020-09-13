@@ -12,19 +12,17 @@ export const TaskAccordion = () => {
 		if (!!panelNum) setCollapsePanelNum(panelNum);
 	};
 
-	const categores = newTask.categoriesOrder.map((el: string, idx: number) => (
-		<Panel
-			header={el}
-			key={idx}
-			extra={<AddCheckButton panelNum={idx} elId={`${el.replace(/\s+/g, '')}_p${idx}`} />}
-		>
-			<ItemsList />
-		</Panel>
-	));
-
 	return (
-		<Collapse accordion onChange={(key) => collapseHandler(key)}>
-			{categores}
+		<Collapse onChange={(key) => collapseHandler(key)}>
+			{newTask.categoriesOrder.map((el: string, idx: number) => (
+				<Panel
+					header={el}
+					key={idx}
+					extra={<AddCheckButton panelNum={idx} elId={`${el.replace(/\s+/g, '')}_p${idx}`} />}
+				>
+					<ItemsList />
+				</Panel>
+			))}
 		</Collapse>
 	);
 };

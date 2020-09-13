@@ -16,6 +16,13 @@
     display: flex;
   }
 
+  &--buttons-control {
+    button {
+      margin-right: 5px;
+      min-width: 75px;
+    }
+  }
+
   .header-title {
     &--arrow-button {
       width: 30px;

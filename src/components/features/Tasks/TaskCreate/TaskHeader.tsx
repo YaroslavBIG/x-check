@@ -20,11 +20,11 @@ export const TaskHeader = (props: TaskHeaderProps) => {
 			</div>
 
 			<div className='task-header--buttons-control'>
-				<Button htmlType='button' type='primary' size='middle' onClick={onReset}>
+				<Button htmlType='button' type='default' size='middle' onClick={onReset}>
 					Cancel
 				</Button>
 
-				<Button type='default' size='middle' htmlType='submit' onClick={handleSubmit}>
+				<Button type='primary' size='middle' htmlType='submit' onClick={handleSubmit}>
 					Save
 				</Button>
 			</div>
