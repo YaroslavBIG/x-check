@@ -37,7 +37,7 @@ export const TaskHeader = (props: TaskHeaderProps) => {
           Cancel
         </Button>
 
-        <Button type='default' size='middle' htmlType="submit" onSubmit={handleSubmit}>
+        <Button type='default' size='middle' htmlType="submit" onClick={handleSubmit}>
           Save
         </Button>
       </div>

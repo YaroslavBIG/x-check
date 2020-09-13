@@ -15,20 +15,16 @@ export const TaskAddCateory: React.FC = (props) => {
   };
 
   const handleCatSubmit = () => {
-    form.validateFields()
-      .then((values) => {
-        alert(JSON.stringify(values, null, 2))
-      })
-      .catch((errorInfo) => { alert(errorInfo) });
-  };
-
-  const onFinish = (values: ItaskCategoryValues) => {
+    const values = form.getFieldsValue();
     setNewTask((prev: Itask) => (
       {
         ...prev,
         categoriesOrder: insertToArrayByIndex(prev.categoriesOrder, values.order - 1, values.name)
       }
     ))
+  };
+
+  const onFinish = (values: ItaskCategoryValues) => {
     addTaskToggler();
   };
 

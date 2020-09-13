@@ -13,7 +13,7 @@ export interface Iitem {
   order: number,
   minScore: number,
   maxScore: number,
-  mentorOnly?: boolean | undefined
+  mentorOnly?: boolean | null
 }
 
 export interface Itask {

@@ -20,13 +20,13 @@ export const TaskCreate: React.FC = () => {
           :
           (addTask ? <TaskAddCateory /> : <TaskCreateDefault />)
         }
-        <div className="task-add-category">
+        {/* <div className="task-add-category">
           {addTask || itemAddPage ?
         null
         :
           <Button type='default' size='middle' onClick={addTaskToggler} icon={<PlusOutlined />} > Add category </Button>
         }
-        </div>
+        </div> */}
       </div>
     )
 }

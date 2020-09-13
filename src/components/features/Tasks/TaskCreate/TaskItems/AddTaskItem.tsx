@@ -23,7 +23,9 @@ export const AddTaskItem = () => {
         [ ...prev,
           {...values,
             id: collapsPanetId, //.replace(/_\w\d/g, '')}_p${collapsePanelNum}
-            category: newTask.categoriesOrder[panelNum]
+            category: newTask.categoriesOrder[panelNum],
+            mentorOnly: values.mentorOnly || null,
+            description: values.description || ''
           }
         ]
       ));
@@ -60,6 +62,7 @@ export const AddTaskItem = () => {
         <Form.Item
           label='Description'
           name='description'
+          initialValue=''
         >
           <Input
             placeholder='Enter description here'

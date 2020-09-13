@@ -1,45 +1,81 @@
 import React, { useContext, useEffect } from 'react';
-import {Form, Select, Input } from 'antd';
+import {Form, Select, Input, Button } from 'antd';
 import { TaskHeader } from './TaskHeader';
 import { taskStatus, Itask, Iitem } from '../TaskInterface';
 import { TaskContext } from './TaskContext';
 import { TaskAccordion } from './Accordion/TaskAccordion';
+import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
+import { useSelector } from 'react-redux';
+import { taskStore } from './taskReducer/taskStore';
+import { toast } from 'react-toastify';
+import { PlusOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 const { TextArea } = Input;
 export const TaskCreateDefault: React.FC = () => {
   const [form] = Form.useForm();
-  const { newTask, setNewTask, items, newTaskForSubmit, setNewTaskForSubmit } = useContext(TaskContext);
+  const { newTask, setNewTask, items, newTaskForSubmit, setNewTaskForSubmit, addTaskToggler } = useContext(TaskContext);
 
+  useFirestoreConnect ([
+    { collection: 'demoTasks' }
+  ]);
 
+  // interface taskStore {
+  //   firestore: {
+  //     data: {
+  //       demoTasks: Itask
+  //     }
+  //   }
+  // }
 
+  // const allTask = useSelector((taskStore: taskStore) => taskStore.firestore.data.demoTasks)
+
+  // console.log('all!!', allTask)
   console.log('ForSubmit',JSON.stringify(newTaskForSubmit, null, 2));
 
+  const updFirestore = useFirestore();
 
-  const handleFormSubmit = (): void => {
-    form.validateFields()
-      .catch((errorInfo) => { alert(errorInfo) });
-  };
-
-  const onFinish = (values: object) => {
-    // alert(`'Success:' ${JSON.stringify(values, null, 2)}`);
-    // taskStore.dispatch({ type: taskReducerActions.CHANGE })
+  const updateSubmitStore = (values: any) => {
     setNewTask((prev: Itask) => (
       {
         ...prev,
         ...values,
         items: items
       }
-      ))
+    ))
+
     setNewTaskForSubmit((prev: Itask) => ({
       ...prev,
       ...values,
       author: 'Get Name from login', // TODO: 'Get Name from login'
-      maxScore: items.reduce((acc: number, item: Iitem) => {return acc + item.maxScore}, 0),
+      maxScore: items.reduce((acc: number, item: Iitem) => { return acc + item.maxScore }, 0),
       categoriesOrder: newTask.categoriesOrder,
       items: items
-
     }))
+  }
+
+  const handleAddCategory = () => {
+    const values = form.getFieldsValue();
+
+    updateSubmitStore(values)
+
+    addTaskToggler()
+  }
+
+
+  const handleFormSubmit = async () => {
+    const values = form.getFieldsValue();
+    await updateSubmitStore(values)
+  };
+
+  const onFinish = async (values: object) => {
+
+    const submitOnFireBase = async () => {
+      const toSubmit = () => newTaskForSubmit;
+      return await updFirestore.collection('demoTasks').add(toSubmit())
+    }
+
+    await submitOnFireBase();
   };
 
   const onFinishFailed = (errorInfo: object) => {
@@ -60,8 +96,7 @@ export const TaskCreateDefault: React.FC = () => {
       categoriesOrder: newTask.categoriesOrder,
       items: items
     }))
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newTask, items]);
+  }, [newTask, items, setNewTaskForSubmit]);
 
 	return (
 		<div className='task'>
@@ -73,6 +108,7 @@ export const TaskCreateDefault: React.FC = () => {
         onFinishFailed={onFinishFailed}
       >
         <TaskHeader onReset={onReset} handleSubmit={handleFormSubmit} title='Create Task' />
+        {/* <Button htmlType='submit' onClick={handleFormSubmit} type='primary' > Submit </Button > */}
         <div className='task-status'>
           <Form.Item
             label='Satus'
@@ -109,6 +145,9 @@ export const TaskCreateDefault: React.FC = () => {
       </Form>
       <div className="accordion">
         {newTask.categoriesOrder.length ? <TaskAccordion /> : null}
+      </div>
+      <div className="task-add-category">
+        <Button type='default' size='middle' onClick={handleAddCategory} icon={<PlusOutlined />} > Add category </Button>
       </div>
 		</div>
 	);
