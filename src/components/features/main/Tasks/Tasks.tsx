@@ -193,7 +193,7 @@ const Tasks = () => {
 
         return (
             <Tag color={color} key={status}>
-                {status.toUpperCase()}
+                {status?.toUpperCase()}
             </Tag>
         )
     }
