@@ -7,6 +7,7 @@ import { TaskAccordion } from './Accordion/TaskAccordion';
 import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
 import { toast } from 'react-toastify';
 import { PlusOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -20,9 +21,44 @@ export const TaskCreateDefault: React.FC = () => {
 
 	const updFirestore = useFirestore();
 
+	useFirestoreConnect([ { collection: 'demoTasks' } ]);
+
+	interface taskStore {
+		firestore: {
+			data: {
+				demoTasks: { [key: string]: Itask };
+			};
+		};
+	}
+
+  const allTask = useSelector((taskStore: taskStore) => taskStore.firestore.data.demoTasks);
+
+  const submitNewTaskInfirebase = async () => {
+    try {
+      await updFirestore.collection('demoTasks').add(newTaskForSubmit)
+    } catch {
+      toast.error('something went wrong')
+    }
+  };
+
+	const updateTaskInfirebase = async (taskKey: string) => {
+     try { await updFirestore.collection('demoTasks').doc(taskKey).update(newTaskForSubmit)
+    } catch {
+      toast.error('something went wrong')
+    }
+  };
+
 	const submitOnFireBase = () => {
-		const toSubmit = () => newTaskForSubmit;
-		return updFirestore.collection('demoTasks').add(toSubmit());
+		for (const task in allTask) {
+			if (allTask[task] === Object(allTask[task])) {
+				for (const item in allTask[task]) {
+					if (item === 'id' && allTask[task].id === newTaskForSubmit.id) {
+            return updateTaskInfirebase(task);
+					}
+				}
+			}
+		}
+		return submitNewTaskInfirebase();
 	};
 
 	const updateSubmitStore = (values: any) => {
