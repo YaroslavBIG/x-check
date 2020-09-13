@@ -46,9 +46,13 @@ $accent-color: #1890ff;
       }
 
       &__requirement {
-        width: 160px;
+        width: 150px;
         margin-bottom: 0;
       }
+    }
+
+    .tags {
+      display: flex;
     }
 
     .mark {

@@ -6,6 +6,12 @@ import 'antd/dist/antd.css';
 import './index.scss';
 import {BrowserRouter} from 'react-router-dom';
 import firebase from 'firebase';
+import {ReactReduxFirebaseProvider} from 'react-redux-firebase';
+import {Provider} from 'react-redux';
+import {createFirestoreInstance} from 'redux-firestore';
+import {configureStore} from './components/app/store/configureStore';
+
+const store = configureStore();
 
 /*import {configureStore} from './components/app/store/configureStore';
 import {createFirestoreInstance} from 'redux-firestore';
@@ -36,14 +42,28 @@ const config = {
     appId: "1:374080355837:web:adf558906d19174084ed94"
 };
 
+const rrfConfig = {
+  userProfile: 'users',
+  useFirestoreForProfile: true
+}
+
+const rrfProps = {
+  firebase,
+  config: rrfConfig,
+  dispatch: store.dispatch,
+  createFirestoreInstance
+}
 
 firebase.initializeApp(config);
 firebase.firestore();
 
 ReactDOM.render(
+  <Provider store={store}>
+    <ReactReduxFirebaseProvider {...rrfProps}>
     <BrowserRouter>
         <App/>
     </BrowserRouter>
-    ,
+    </ReactReduxFirebaseProvider>
+  </Provider>,
     document.getElementById('root')
 );

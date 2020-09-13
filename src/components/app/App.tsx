@@ -1,14 +1,16 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 
-import {Tasks} from "../features/main/Tasks/Tasks";
+// import {Tasks} from "../features/main/Tasks/Tasks";
+import { Requests } from '../features/main/Requests/Requests';
 
 const App = () => {
     return (
         <>
             <h1>Come back Project</h1>
             <h1>If you see this label - it mean that test-script.yml <b>work, congratulations with it!</b></h1>
-            <Tasks/>
+            { /*<Tasks/>*/}
+            <Requests />
         </>
     )
 }

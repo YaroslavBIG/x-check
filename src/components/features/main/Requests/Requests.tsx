@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Form } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import CheckInfo from '../CheckInfo/CheckInfo';
-import Selfcheck from '../Self-check/Self-check';
+import Selfcheck from '../Selfcheck/Selfcheck';
 
 export const Requests = () => {
     const [isCheckInfoVisible, setCheckInfoVisibility] = useState(false);
