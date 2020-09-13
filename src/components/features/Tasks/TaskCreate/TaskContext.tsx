@@ -19,7 +19,7 @@ export const TaskContextState = (props: ITaskLayoutProps) => {
       categoriesOrder: [],
       items: []
     });
-  console.log(props)
+
   const [items, setNewItems] = useState<Array<Iitem> | Array<undefined>>(props.inicialState?.items || []);
   const [newTaskForSubmit, setNewTaskForSubmit] = useState(props.inicialState || {});
 

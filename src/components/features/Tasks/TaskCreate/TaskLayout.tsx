@@ -6,7 +6,6 @@ import { ITaskLayoutProps } from '../TaskInterface';
 
 
 export const TaskLayout = (props: ITaskLayoutProps) => {
-  console.log(props)
   return (
     <TaskContextState {...props} >
       <TaskCreate>

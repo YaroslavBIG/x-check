@@ -2,8 +2,9 @@ import React, { useContext } from 'react';
 import { Form, Input, InputNumber } from 'antd';
 import { TaskHeader } from './TaskHeader';
 import { TaskContext } from './TaskContext';
-import { Itask, ItaskCategoryValues } from '../TaskInterface';
+import { Itask } from '../TaskInterface';
 import { insertToArrayByIndex } from 'utils/insertToArrayByIndex';
+import { toast } from 'react-toastify';
 
 
 export const TaskAddCateory: React.FC = (props) => {
@@ -24,15 +25,14 @@ export const TaskAddCateory: React.FC = (props) => {
     ))
   };
 
-  const onFinish = (values: ItaskCategoryValues) => {
+  const onFinish = () => {
     addTaskToggler();
+    toast.success('Saved')
   };
 
   const onFinishFailed = (errorInfo: object) => {
-    console.log('Failed:', errorInfo);
+    toast.error(errorInfo);
   };
-
-  console.log("newTask.categoriesOrder.length", newTask.categoriesOrder.length)
 
   return (
     <div className="task-category">

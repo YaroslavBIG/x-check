@@ -5,8 +5,8 @@ import { taskStatus, Itask, Iitem } from '../TaskInterface';
 import { TaskContext } from './TaskContext';
 import { TaskAccordion } from './Accordion/TaskAccordion';
 import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
-import { useSelector } from 'react-redux';
-import { taskStore } from './taskReducer/taskStore';
+// import { useSelector } from 'react-redux';
+// import { taskStore } from './taskReducer/taskStore';
 import { toast } from 'react-toastify';
 import { PlusOutlined } from '@ant-design/icons';
 
@@ -30,8 +30,7 @@ export const TaskCreateDefault: React.FC = () => {
 
   // const allTask = useSelector((taskStore: taskStore) => taskStore.firestore.data.demoTasks)
 
-  // console.log('all!!', allTask)
-  console.log('ForSubmit',JSON.stringify(newTaskForSubmit, null, 2));
+
 
   const updFirestore = useFirestore();
 
@@ -49,6 +48,7 @@ export const TaskCreateDefault: React.FC = () => {
       ...values,
       author: 'Get Name from login', // TODO: 'Get Name from login'
       maxScore: items.reduce((acc: number, item: Iitem) => { return acc + item.maxScore }, 0),
+      description: values.description || '',
       categoriesOrder: newTask.categoriesOrder,
       items: items
     }))
@@ -66,6 +66,7 @@ export const TaskCreateDefault: React.FC = () => {
   const handleFormSubmit = async () => {
     const values = form.getFieldsValue();
     await updateSubmitStore(values)
+    toast.success('Task was submited')
   };
 
   const onFinish = async (values: object) => {
@@ -79,7 +80,7 @@ export const TaskCreateDefault: React.FC = () => {
   };
 
   const onFinishFailed = (errorInfo: object) => {
-    console.log('Failed:', errorInfo);
+    toast.error(errorInfo);
   };
 
   const onReset = (): void => {
@@ -108,7 +109,6 @@ export const TaskCreateDefault: React.FC = () => {
         onFinishFailed={onFinishFailed}
       >
         <TaskHeader onReset={onReset} handleSubmit={handleFormSubmit} title='Create Task' />
-        {/* <Button htmlType='submit' onClick={handleFormSubmit} type='primary' > Submit </Button > */}
         <div className='task-status'>
           <Form.Item
             label='Satus'

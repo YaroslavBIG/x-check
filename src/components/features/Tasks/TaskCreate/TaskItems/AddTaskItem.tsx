@@ -3,6 +3,8 @@ import {TaskContext} from '../index';
 import { Iitem } from "../../TaskInterface";
 import { Form, Input, InputNumber, Checkbox } from "antd";
 import { TaskHeader } from "../TaskHeader";
+import { toast } from 'react-toastify';
+
 
 export const AddTaskItem = () => {
   const [form] = Form.useForm();
@@ -14,7 +16,7 @@ export const AddTaskItem = () => {
 
   const handleItemSubmit = () => {
     form.validateFields()
-      .catch((errorInfo) => { alert(errorInfo) });
+      .catch((errorInfo) => toast.error(errorInfo));
   };
   const panelNum = Number(collapsePanelNum)
 
@@ -32,7 +34,7 @@ export const AddTaskItem = () => {
     addItemToggler()
     };
   const onFinishFailed = (errorInfo: object) => {
-    console.log('Failed:', errorInfo);
+    toast.error(errorInfo);
   };
 
 
