@@ -4,13 +4,10 @@ import { TaskContextState } from './TaskContext';
 import { TaskCreate } from './TaskCreate';
 import { ITaskLayoutProps } from '../TaskInterface';
 
-
 export const TaskLayout = (props: ITaskLayoutProps) => {
-  return (
-    <TaskContextState {...props} >
-      <TaskCreate>
-
-      </TaskCreate>
-    </TaskContextState>
-  )
-}
+	return (
+		<TaskContextState {...props}>
+			<TaskCreate />
+		</TaskContextState>
+	);
+};

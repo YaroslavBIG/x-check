@@ -5,19 +5,14 @@ import { TaskContext } from './TaskContext';
 import { AddTaskItem } from './TaskItems/AddTaskItem';
 
 export interface IAddTask {
-  addTask: boolean
+	addTask: boolean;
 }
 
 export const TaskCreate: React.FC = () => {
-  const { addTask, itemAddPage } = useContext(TaskContext);
-    return (
-      <div className="taskCreate">
-        {
-        itemAddPage ?
-          <AddTaskItem />
-          :
-          (addTask ? <TaskAddCateory /> : <TaskCreateDefault />)
-        }
-      </div>
-    )
-}
+	const { addTask, itemAddPage } = useContext(TaskContext);
+	return (
+		<div className='taskCreate'>
+			{itemAddPage ? <AddTaskItem /> : addTask ? <TaskAddCateory /> : <TaskCreateDefault />}
+		</div>
+	);
+};
