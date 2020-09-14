@@ -1,7 +1,7 @@
 import React from 'react';
 import { Iitem } from '../../TaskInterface';
 import { Button, Popover, Tag } from 'antd';
-import { SaveOutlined, DeleteOutlined, InfoCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { DeleteOutlined, InfoCircleOutlined, CheckCircleOutlined, EditOutlined } from '@ant-design/icons';
 export const TaskItem = (props: Iitem) => {
 	const { title, description, minScore, maxScore, mentorOnly } = props;
 
@@ -25,7 +25,7 @@ export const TaskItem = (props: Iitem) => {
 			<div className='task--control-buttons'>
 				<Button
 					type='text'
-					icon={<SaveOutlined />}
+					icon={<EditOutlined />}
 					size='middle'
 					htmlType='submit'
 					onSubmit={() => 'handleItemSubmit'}

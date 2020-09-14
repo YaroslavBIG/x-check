@@ -6,7 +6,12 @@ import { Itask } from '../TaskInterface';
 import { insertToArrayByIndex } from 'utils/insertToArrayByIndex';
 import { toast } from 'react-toastify';
 
-export const TaskAddCateory: React.FC = (props) => {
+interface ItaskAddCategoryProps {
+	children?: React.ReactNode;
+	editCategory?: string;
+}
+
+export const TaskAddCateory: React.FC = (props: ItaskAddCategoryProps) => {
 	const [ form ] = Form.useForm();
 	const { setNewTask, addTaskToggler, newTask } = useContext(TaskContext);
 
