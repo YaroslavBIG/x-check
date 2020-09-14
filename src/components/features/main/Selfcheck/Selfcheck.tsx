@@ -11,8 +11,7 @@ const { Panel } = Collapse;
 
 interface SelfcheckProps {
   isVisible: boolean,
-  onClose: () => void,
-  onFormSubmit: () => void,
+  hide: () => void,
   form: any
 }
 
@@ -30,9 +29,14 @@ const initialFormValues = {
 
 const Selfcheck = (props: SelfcheckProps) => {
 
+  const handleClose = () => {
+    props.hide();
+    props.form.resetFields();
+  }
+
   const onFinish = (values: object) => {
     console.log('Received values of form: ', values);
-    props.onFormSubmit();
+    handleClose();
     addSelfGrade(values);
   };
 
@@ -44,7 +48,7 @@ const Selfcheck = (props: SelfcheckProps) => {
 
   const addSelfGrade = (values: any) => {
     Object.keys(values).forEach((key: string) => {
-      if (values[key] === undefined){
+      if (values[key] === undefined) {
         delete values[key];
       }
     });
@@ -54,16 +58,16 @@ const Selfcheck = (props: SelfcheckProps) => {
   const firestore = useFirestore();
   useFirestoreConnect([{ collection: 'tasks' }]);
   const tasks = useSelector((state : TasksState) => state.firestore.data.tasks);
-  console.log(tasks && Object.keys(tasks));
 
   return (
     <Drawer 
+      mask={false}
       closable={false}
       visible={props.isVisible}
       placement='left'
       width={600}
       title={
-        <FormHeader title="Self-check" onClose={props.onClose} form={props.form}/>
+        <FormHeader title="Self-check" onClose={handleClose} form={props.form}/>
     }
     >
     <div className="self-check">
