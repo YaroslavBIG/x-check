@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Drawer, Form, Collapse } from 'antd';
 import 'antd/dist/antd.css';
 import './Selfcheck.scss';
@@ -30,9 +30,9 @@ const initialFormValues = {
 };
 
 const Selfcheck = (props: SelfcheckProps) => {
-
   const { isVisible, hide, setselfGradeValues, form, taskId } = props;
-  console.log(taskId);
+  const [totalPoints, setTotalPoints] = useState(0);
+  const [checkedRequirements, setCheckedRequirements] = useState(0);
   useFirestoreConnect([{ collection: 'tasks' }]);
   const tasks = useSelector((state : TasksState) => state.firestore.data.tasks);
 
@@ -47,8 +47,18 @@ const Selfcheck = (props: SelfcheckProps) => {
     addSelfGrade(values);
   };
 
-  const onValuesChange = (changedValues: object, allValues: object) : void => {
+  const onValuesChange = (changedValues: object, allValues: any) : void => {
     console.log(changedValues, allValues);
+    let totalPoints = 0;
+    let checkedRequirements = 0;
+    Object.keys(allValues).forEach((key: string) => {
+      if (typeof allValues[key] === 'number') {
+        totalPoints += allValues[key];
+        checkedRequirements++;
+      }
+    });
+    setTotalPoints(totalPoints);
+    setCheckedRequirements(checkedRequirements);
     form.setFieldsValue(allValues);
     console.log(form.getFieldValue());
   }
@@ -59,7 +69,10 @@ const Selfcheck = (props: SelfcheckProps) => {
         delete values[key];
       }
     });
-    setselfGradeValues(values);
+    setselfGradeValues({
+      ...values, 
+      totalPoints: totalPoints, // some error
+      checkedRequirements: checkedRequirements});
   }
 
   return (
@@ -76,8 +89,8 @@ const Selfcheck = (props: SelfcheckProps) => {
     <div className="self-check">
         <Form name="self-check" form={form} onFinish={onFinish} onValuesChange={onValuesChange} initialValues={initialFormValues} >
           <div className="self-check__current-values">
-              <h3>Total points: 80/600</h3>
-              <h3>Checked requirements: 10/20</h3>
+              <h3>Total points: {totalPoints}/{isVisible && tasks[taskId].maxScore}</h3>
+              <h3>Checked requirements: {checkedRequirements}/{isVisible && tasks[taskId].items.length}</h3>
           </div>
           <Collapse bordered={false} style={{backgroundColor: 'white'}}>
             {(tasks && isVisible) &&
