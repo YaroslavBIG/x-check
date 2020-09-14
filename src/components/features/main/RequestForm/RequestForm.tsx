@@ -21,22 +21,24 @@ interface CollectionsState {
 
 const RequestForm = (props: any) => {
   const [isSelfcheckVisible, setSelfcheckVisibility] = useState(false);
+  const [taskId, setTaskId] = useState('');
+  const [selfcheckForm] = Form.useForm();
+
+  useFirestoreConnect([ { collection: 'tasks' }, { collection: 'sessions' } ]);
+  const tasks = useSelector((state : CollectionsState) => state.firestore.data.tasks);
+  const sessions = useSelector((state : CollectionsState) => state.firestore.data.sessions);
 
   const addSelfcheck = async () => {
     try {
       const values = await props.form.validateFields();
+      console.log(props.form.getFieldValue('task'));
+      setTaskId(props.form.getFieldValue('task'));
       setSelfcheckVisibility(true);
       console.log('Success:', values);
     } catch (errorInfo) {
       console.log('Failed:', errorInfo);
     }
   }
-
-  const [selfcheckForm] = Form.useForm();
-
-  useFirestoreConnect([ { collection: 'tasks' }, { collection: 'sessions' } ]);
-  const tasks = useSelector((state : CollectionsState) => state.firestore.data.tasks);
-  const sessions = useSelector((state : CollectionsState) => state.firestore.data.sessions);
 
   return (
     <>
@@ -64,7 +66,7 @@ const RequestForm = (props: any) => {
           >
             <Select placeholder="Select a task">
               { tasks && 
-                Object.keys(tasks).map((ind: any) => <Option key={ind} value={tasks[ind].id}>{tasks[ind].id}</Option>) 
+                Object.keys(tasks).map((ind: string) => <Option key={ind} value={ind}>{tasks[ind].id}</Option>) 
               }
             </Select>
           </Form.Item>
@@ -124,11 +126,13 @@ const RequestForm = (props: any) => {
         </Form>
       </div>
     </Drawer>
+    {isSelfcheckVisible && 
     <Selfcheck 
+      taskId={taskId}
       isVisible={isSelfcheckVisible} 
       hide={() => setSelfcheckVisibility(false)} 
       form={selfcheckForm} 
-    />
+    />}
   </>
   );
 }

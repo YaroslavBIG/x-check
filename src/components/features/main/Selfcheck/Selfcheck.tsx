@@ -12,7 +12,8 @@ const { Panel } = Collapse;
 interface SelfcheckProps {
   isVisible: boolean,
   hide: () => void,
-  form: any
+  form: any,
+  taskId: string
 }
 
 interface TasksState {
@@ -29,9 +30,15 @@ const initialFormValues = {
 
 const Selfcheck = (props: SelfcheckProps) => {
 
+  const { isVisible, hide, form, taskId } = props;
+  console.log(taskId);
+  const firestore = useFirestore();
+  useFirestoreConnect([{ collection: 'tasks' }]);
+  const tasks = useSelector((state : TasksState) => state.firestore.data.tasks);
+
   const handleClose = () => {
-    props.hide();
-    props.form.resetFields();
+    hide();
+    form.resetFields();
   }
 
   const onFinish = (values: object) => {
@@ -42,8 +49,8 @@ const Selfcheck = (props: SelfcheckProps) => {
 
   const onValuesChange = (changedValues: object, allValues: object) : void => {
     console.log(changedValues, allValues);
-    props.form.setFieldsValue(allValues);
-    console.log(props.form.getFieldValue());
+    form.setFieldsValue(allValues);
+    console.log(form.getFieldValue());
   }
 
   const addSelfGrade = (values: any) => {
@@ -55,36 +62,30 @@ const Selfcheck = (props: SelfcheckProps) => {
     firestore.collection('selfGrades').add(values);
   }
 
-  const firestore = useFirestore();
-  useFirestoreConnect([{ collection: 'tasks' }]);
-  const tasks = useSelector((state : TasksState) => state.firestore.data.tasks);
-
   return (
     <Drawer 
       mask={false}
       closable={false}
-      visible={props.isVisible}
+      visible={isVisible}
       placement='left'
       width={600}
       title={
-        <FormHeader title="Self-check" onClose={handleClose} form={props.form}/>
+        <FormHeader title="Self-check" onClose={handleClose} form={form}/>
     }
     >
     <div className="self-check">
-        <Form name="self-check" form={props.form} onFinish={onFinish} onValuesChange={onValuesChange} initialValues={initialFormValues} >
+        <Form name="self-check" form={form} onFinish={onFinish} onValuesChange={onValuesChange} initialValues={initialFormValues} >
           <div className="self-check__current-values">
               <h3>Total points: 80/600</h3>
               <h3>Checked requirements: 10/20</h3>
           </div>
           <Collapse bordered={false} style={{backgroundColor: 'white'}}>
             {tasks && 
-              Object.keys(tasks).map((ind: string) => {
-                return tasks[ind].categoriesOrder.map((category: string) => (
+                tasks[taskId].categoriesOrder.map((category: string) => (
                   <Panel header={category} key={category}>
-                    {tasks[ind].items.map((item: TaskItem, ind: number) => item.category === category && <CategoryItem item={item} key={item.id} />)}
+                    {tasks[taskId].items.map((item: TaskItem, ind: number) => item.category === category && <CategoryItem item={item} key={item.id} />)}
                   </Panel>
-                ));
-              })
+                ))
             }
           </Collapse>
         </Form>
