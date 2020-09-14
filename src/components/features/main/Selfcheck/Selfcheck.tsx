@@ -4,7 +4,7 @@ import 'antd/dist/antd.css';
 import './Selfcheck.scss';
 import FormHeader from '../FormHeader/FormHeader';
 import { useSelector } from 'react-redux';
-import { useFirestoreConnect, useFirestore } from 'react-redux-firebase';
+import { useFirestoreConnect} from 'react-redux-firebase';
 import CategoryItem, { TaskItem } from './CategoryItem';
 
 const { Panel } = Collapse;
@@ -12,6 +12,7 @@ const { Panel } = Collapse;
 interface SelfcheckProps {
   isVisible: boolean,
   hide: () => void,
+  setselfGradeValues: (values: any) => void,
   form: any,
   taskId: string
 }
@@ -30,9 +31,8 @@ const initialFormValues = {
 
 const Selfcheck = (props: SelfcheckProps) => {
 
-  const { isVisible, hide, form, taskId } = props;
+  const { isVisible, hide, setselfGradeValues, form, taskId } = props;
   console.log(taskId);
-  const firestore = useFirestore();
   useFirestoreConnect([{ collection: 'tasks' }]);
   const tasks = useSelector((state : TasksState) => state.firestore.data.tasks);
 
@@ -42,7 +42,7 @@ const Selfcheck = (props: SelfcheckProps) => {
   }
 
   const onFinish = (values: object) => {
-    console.log('Received values of form: ', values);
+    console.log('Received values of selfcheck form: ', values);
     handleClose();
     addSelfGrade(values);
   };
@@ -59,7 +59,7 @@ const Selfcheck = (props: SelfcheckProps) => {
         delete values[key];
       }
     });
-    firestore.collection('selfGrades').add(values);
+    setselfGradeValues(values);
   }
 
   return (
@@ -80,7 +80,7 @@ const Selfcheck = (props: SelfcheckProps) => {
               <h3>Checked requirements: 10/20</h3>
           </div>
           <Collapse bordered={false} style={{backgroundColor: 'white'}}>
-            {tasks && 
+            {(tasks && isVisible) &&
                 tasks[taskId].categoriesOrder.map((category: string) => (
                   <Panel header={category} key={category}>
                     {tasks[taskId].items.map((item: TaskItem, ind: number) => item.category === category && <CategoryItem item={item} key={item.id} />)}

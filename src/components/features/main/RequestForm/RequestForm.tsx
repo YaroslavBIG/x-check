@@ -6,7 +6,7 @@ import Selfcheck from '../Selfcheck/Selfcheck';
 import 'antd/dist/antd.css';
 import './RequestForm.scss';
 import { useSelector } from 'react-redux'
-import { useFirestoreConnect } from 'react-redux-firebase'
+import { useFirestoreConnect, useFirestore } from 'react-redux-firebase'
 
 const { Option } = Select;
 
@@ -22,8 +22,10 @@ interface CollectionsState {
 const RequestForm = (props: any) => {
   const [isSelfcheckVisible, setSelfcheckVisibility] = useState(false);
   const [taskId, setTaskId] = useState('');
+  const [selfGradeValues, setselfGradeValues] = useState();
   const [selfcheckForm] = Form.useForm();
 
+  const firestore = useFirestore();
   useFirestoreConnect([ { collection: 'tasks' }, { collection: 'sessions' } ]);
   const tasks = useSelector((state : CollectionsState) => state.firestore.data.tasks);
   const sessions = useSelector((state : CollectionsState) => state.firestore.data.sessions);
@@ -37,8 +39,24 @@ const RequestForm = (props: any) => {
       console.log('Success:', values);
     } catch (errorInfo) {
       console.log('Failed:', errorInfo);
+      
     }
   }
+
+  const onFinish = (values: any) => {
+    console.log('Received values of form: ', values);
+    Object.keys(values).forEach((key: string) => {
+      if (values[key] === undefined) {
+        delete values[key];
+      }
+    });
+    console.log(selfGradeValues);
+    props.onClose();
+    firestore.collection('requests').add({
+      selfGrade: selfGradeValues, 
+      ...values
+    });
+  };
 
   return (
     <>
@@ -52,7 +70,7 @@ const RequestForm = (props: any) => {
       }
     >
       <div className="request">
-        <Form name="request" layout="vertical" form={props.form}>
+        <Form name="request" layout="vertical" form={props.form} onFinish={onFinish}>
           <Form.Item
             style={{marginTop: '1.5rem'}}
             name="task"
@@ -126,13 +144,13 @@ const RequestForm = (props: any) => {
         </Form>
       </div>
     </Drawer>
-    {isSelfcheckVisible && 
     <Selfcheck 
       taskId={taskId}
       isVisible={isSelfcheckVisible} 
       hide={() => setSelfcheckVisibility(false)} 
+      setselfGradeValues={(values: any) => setselfGradeValues(values)}
       form={selfcheckForm} 
-    />}
+    />
   </>
   );
 }
