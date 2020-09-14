@@ -13,7 +13,7 @@ export const TaskAccordion = () => {
 	};
 
 	return (
-		<Collapse onChange={(key) => collapseHandler(key)}>
+		<Collapse accordion onChange={(key) => collapseHandler(key)}>
 			{newTask.categoriesOrder.map((el: string, idx: number) => (
 				<Panel
 					header={el}

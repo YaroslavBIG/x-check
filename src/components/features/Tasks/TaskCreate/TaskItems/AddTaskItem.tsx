@@ -14,11 +14,7 @@ export const AddTaskItem = () => {
 	};
 
 	const handleItemSubmit = () => {
-		form.validateFields().catch((errorInfo) => toast.error(errorInfo));
-	};
-	const panelNum = Number(collapsePanelNum);
-
-	const onFinish = (values: Iitem) => {
+		const values = form.getFieldsValue();
 		setNewItems((prev: Array<Iitem>) => [
 			...prev,
 			{
@@ -29,6 +25,11 @@ export const AddTaskItem = () => {
 				description: values.description || ''
 			}
 		]);
+	};
+	const panelNum = Number(collapsePanelNum);
+
+	const onFinish = () => {
+		toast.success('Saved');
 		addItemToggler();
 	};
 

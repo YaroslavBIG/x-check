@@ -21,8 +21,6 @@ export const TaskCreateDefault: React.FC = () => {
 
 	const updFirestore = useFirestore();
 
-	useFirestoreConnect([ { collection: 'demoTasks' } ]);
-
 	interface taskStore {
 		firestore: {
 			data: {
@@ -59,14 +57,22 @@ export const TaskCreateDefault: React.FC = () => {
 			}
 		}
 		return submitNewTaskInfirebase();
-	};
+  };
+  
+  useEffect(
+      () => {
+      setNewTask((prev: Itask) => ({
+			...prev,
+      items: items
+    }))
+    }, [items, setNewTask]);
 
 	const updateSubmitStore = (values: any) => {
 		setNewTask((prev: Itask) => ({
 			...prev,
 			...values,
-			items: items
-		}));
+      items: items,
+    }));
 
 		setNewTaskForSubmit((prev: Itask) => ({
 			...prev,
@@ -121,7 +127,12 @@ export const TaskCreateDefault: React.FC = () => {
 			}));
 		},
 		[ newTask, items, setNewTaskForSubmit ]
-	);
+  );
+
+  useEffect(() => {
+    updateSubmitStore({})
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items]);
 
 	return (
 		<div className='task'>

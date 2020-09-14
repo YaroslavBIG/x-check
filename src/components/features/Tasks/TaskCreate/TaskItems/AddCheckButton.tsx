@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { PlusOutlined, MoreOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu } from 'antd';
 import { TaskContext } from '../TaskContext';
+import { Iitem, Itask } from '../../TaskInterface';
 
 export interface addCheckButtonProps {
 	panelNum: number;
@@ -9,7 +10,9 @@ export interface addCheckButtonProps {
 }
 
 export const AddCheckButton = (props: addCheckButtonProps) => {
-	const { addItemToggler, setCollapsPanelId, setCollapsePanelNum } = useContext(TaskContext);
+	const { addItemToggler, setCollapsPanelId, setCollapsePanelNum, setNewItems, newTask, setNewTask } = useContext(
+		TaskContext
+	);
 	const addCheckHandler = (ev: any) => {
 		ev.preventDefault();
 		setCollapsPanelId(ev.currentTarget.dataset.id);
@@ -17,16 +20,40 @@ export const AddCheckButton = (props: addCheckButtonProps) => {
 		addItemToggler();
 	};
 
-	function handleMenuClick(e: any) {
-		console.log('click', e);
-	}
+	const handleMenuClick = (e: any) => {
+		const { num, id, type } = e.domEvent.currentTarget.dataset;
+		console.log(num, id, type, newTask);
+		if (type === 'edit') {
+			console.log(type);
+		}
+		if (type === 'remove') {
+			const currentCategory = newTask.categoriesOrder[num];
+			setNewTask((prev: Itask) => ({
+				...prev,
+				categoriesOrder: [ ...prev.categoriesOrder.filter((category) => category !== currentCategory) ]
+			}));
+			setNewItems((prev: Array<Iitem>) => [ ...prev.filter((item) => item.id !== id) ]);
+		}
+	};
 
 	const menu = (
 		<Menu onClick={handleMenuClick}>
-			<Menu.Item key='1' icon={<EditOutlined />}>
+			<Menu.Item
+				data-num={props.panelNum}
+				data-id={props.elId}
+				data-type='edit'
+				key={`edit_${props.elId}`}
+				icon={<EditOutlined />}
+			>
 				Edit
 			</Menu.Item>
-			<Menu.Item key='2' icon={<DeleteOutlined />}>
+			<Menu.Item
+				data-num={props.panelNum}
+				data-id={props.elId}
+				data-type='remove'
+				key={`remove_${props.elId}`}
+				icon={<DeleteOutlined />}
+			>
 				Remove
 			</Menu.Item>
 		</Menu>
