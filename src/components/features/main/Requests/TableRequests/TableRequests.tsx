@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import styles from './TableRequests.module.scss';
 
 import { SearchOutlined } from '@ant-design/icons';
 import { Table, Tag, Input, Button, Space } from 'antd';
@@ -176,8 +175,8 @@ const TableRequests = () => {
       value: 'Draft',
     },
     {
-      text: 'Archived',
-      value: 'Archived',
+      text: 'Completed',
+      value: 'Completed',
     },
   ];
 
