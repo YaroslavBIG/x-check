@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Iitem, Itask, ITaskLayoutProps, taskStatus } from '../TaskInterface';
 
 export const TaskContext: any = React.createContext(false);
@@ -23,6 +23,7 @@ export const TaskContextState = (props: ITaskLayoutProps) => {
   const [items, setNewItems] = useState<Array<Iitem> | Array<undefined>>(props.inicialState?.items || []);
   const [newTaskForSubmit, setNewTaskForSubmit] = useState(props.inicialState || {});
   const [editCategory, setEditCategory] = useState<string | Boolean>(false)
+  const [oldTaskName, setOldTaskName] = useState<string | undefined>(useMemo(() => props.inicialState?.id, [props]))
 
   const addTaskToggler = () => {
     setAddTask((prevState) => !prevState);
@@ -55,7 +56,9 @@ export const TaskContextState = (props: ITaskLayoutProps) => {
           newTaskForSubmit: newTaskForSubmit,
           setNewTaskForSubmit: setNewTaskForSubmit,
           editCategory: editCategory,
-          setEditCategory: setEditCategory
+          setEditCategory: setEditCategory,
+          oldTaskName: oldTaskName,
+          setOldTaskName: setOldTaskName
         }
       }
     >

@@ -13,10 +13,18 @@ const { Option } = Select;
 const { TextArea } = Input;
 export const TaskCreateDefault: React.FC = () => {
 	const [ form ] = Form.useForm();
-	const { newTask, setNewTask, items, newTaskForSubmit, setNewTaskForSubmit, addTaskToggler } = useContext(
-		TaskContext
-	);
-	useFirestoreConnect([ { collection: 'demoTasks' } ]);
+  const {
+    newTask,
+    setNewTask,
+    items,
+    newTaskForSubmit,
+    setNewTaskForSubmit,
+    addTaskToggler,
+    oldTaskName,
+    setOldTaskName
+  } = useContext(TaskContext);
+
+  useFirestoreConnect([ { collection: 'demoTasks' } ]);
 
 	const updFirestore = useFirestore();
 
@@ -49,7 +57,8 @@ export const TaskCreateDefault: React.FC = () => {
 		for (const task in allTask) {
 			if (allTask[task] === Object(allTask[task])) {
 				for (const item in allTask[task]) {
-					if (item === 'id' && allTask[task].id === newTaskForSubmit.id) {
+					if (item === 'id' && allTask[task].id === (oldTaskName || newTaskForSubmit.id)) {
+            setOldTaskName(newTaskForSubmit.id)
             return updateTaskInfirebase(task);
 					}
 				}
@@ -80,7 +89,7 @@ export const TaskCreateDefault: React.FC = () => {
 			maxScore: items.reduce((acc: number, item: Iitem) => {
 				return acc + item.maxScore;
 			}, 0),
-			description: values.description || '',
+			description: values.description || newTask.description,
 			categoriesOrder: newTask.categoriesOrder,
 			items: items
 		}));
@@ -141,7 +150,8 @@ export const TaskCreateDefault: React.FC = () => {
 					<Form.Item
 						label='Satus'
 						name='state'
-						rules={[ { required: true, message: 'Please select status!' } ]}
+            rules={[ { required: true, message: 'Please select status!' } ]}
+            initialValue={newTask.state}
 					>
 						<Select placeholder='Select status' aria-required style={{ width: 120 }} onChange={() => 1}>
 							<Option value={taskStatus.DRAFT}>{taskStatus.DRAFT}</Option>
@@ -151,12 +161,12 @@ export const TaskCreateDefault: React.FC = () => {
 					</Form.Item>
 				</div>
 				<div className='task-title'>
-					<Form.Item label='Title' name='id' rules={[ { required: true, message: 'Please input title!' } ]}>
+					<Form.Item label='Title' name='id' rules={[ { required: true, message: 'Please input title!' } ]} >
 						<Input placeholder='Type up to 30 characters' maxLength={30} />
 					</Form.Item>
 				</div>
 				<div className='task-description'>
-					<Form.Item label='Description' name='description'>
+					<Form.Item label='Description' name='description' >
 						<TextArea placeholder='Enter description here' autoSize={{ minRows: 2, maxRows: 10 }} />
 					</Form.Item>
 				</div>
