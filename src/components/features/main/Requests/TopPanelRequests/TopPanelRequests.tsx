@@ -10,11 +10,7 @@ const TopPanelRequests = () => {
   return (
     <div className={styles.topPanelRequests__container}>
       <div className={styles.topPanelRequests__search}>
-        <Search
-          placeholder="Search"
-          onSearch={(value) => console.log(value)}
-          style={{ width: 200 }}
-        />
+        <Search placeholder="Search" onSearch={(value) => alert(value)} style={{ width: 200 }} />
       </div>
       <div className={styles.topPanelRequests__crud}>
         <DeleteOutlined className={styles.topPanelRequests__crud__delete} />
