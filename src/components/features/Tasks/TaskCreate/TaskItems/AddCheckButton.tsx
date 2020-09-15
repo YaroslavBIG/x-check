@@ -10,9 +10,16 @@ export interface addCheckButtonProps {
 }
 
 export const AddCheckButton = (props: addCheckButtonProps) => {
-	const { addItemToggler, setCollapsPanelId, setCollapsePanelNum, setNewItems, newTask, setNewTask } = useContext(
-		TaskContext
-	);
+	const {
+		addItemToggler,
+		setCollapsPanelId,
+		setCollapsePanelNum,
+		setNewItems,
+		newTask,
+		setNewTask,
+		setEditCategory
+	} = useContext(TaskContext);
+
 	const addCheckHandler = (ev: any) => {
 		ev.preventDefault();
 		setCollapsPanelId(ev.currentTarget.dataset.id);
@@ -22,17 +29,23 @@ export const AddCheckButton = (props: addCheckButtonProps) => {
 
 	const handleMenuClick = (e: any) => {
 		const { num, id, type } = e.domEvent.currentTarget.dataset;
-		console.log(num, id, type, newTask);
-		if (type === 'edit') {
-			console.log(type);
-		}
-		if (type === 'remove') {
-			const currentCategory = newTask.categoriesOrder[num];
-			setNewTask((prev: Itask) => ({
-				...prev,
-				categoriesOrder: [ ...prev.categoriesOrder.filter((category) => category !== currentCategory) ]
-			}));
-			setNewItems((prev: Array<Iitem>) => [ ...prev.filter((item) => item.id !== id) ]);
+		const currentCategory = newTask.categoriesOrder[num];
+
+		switch (type) {
+			case 'edit':
+				setEditCategory(currentCategory);
+				break;
+
+			case 'remove':
+				setNewTask((prev: Itask) => ({
+					...prev,
+					categoriesOrder: [ ...prev.categoriesOrder.filter((category) => category !== currentCategory) ]
+				}));
+				setNewItems((prev: Array<Iitem>) => [ ...prev.filter((item) => item.id !== id) ]);
+				break;
+
+			default:
+				break;
 		}
 	};
 

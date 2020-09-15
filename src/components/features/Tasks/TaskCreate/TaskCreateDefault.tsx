@@ -16,7 +16,6 @@ export const TaskCreateDefault: React.FC = () => {
 	const { newTask, setNewTask, items, newTaskForSubmit, setNewTaskForSubmit, addTaskToggler } = useContext(
 		TaskContext
 	);
-
 	useFirestoreConnect([ { collection: 'demoTasks' } ]);
 
 	const updFirestore = useFirestore();
@@ -58,7 +57,7 @@ export const TaskCreateDefault: React.FC = () => {
 		}
 		return submitNewTaskInfirebase();
   };
-  
+
   useEffect(
       () => {
       setNewTask((prev: Itask) => ({

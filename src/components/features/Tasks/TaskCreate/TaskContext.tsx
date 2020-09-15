@@ -22,6 +22,7 @@ export const TaskContextState = (props: ITaskLayoutProps) => {
 
   const [items, setNewItems] = useState<Array<Iitem> | Array<undefined>>(props.inicialState?.items || []);
   const [newTaskForSubmit, setNewTaskForSubmit] = useState(props.inicialState || {});
+  const [editCategory, setEditCategory] = useState<string | Boolean>(false)
 
   const addTaskToggler = () => {
     setAddTask((prevState) => !prevState);
@@ -52,7 +53,9 @@ export const TaskContextState = (props: ITaskLayoutProps) => {
           items: items,
           setNewItems: setNewItems,
           newTaskForSubmit: newTaskForSubmit,
-          setNewTaskForSubmit: setNewTaskForSubmit
+          setNewTaskForSubmit: setNewTaskForSubmit,
+          editCategory: editCategory,
+          setEditCategory: setEditCategory
         }
       }
     >

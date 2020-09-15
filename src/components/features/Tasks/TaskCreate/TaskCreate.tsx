@@ -9,10 +9,18 @@ export interface IAddTask {
 }
 
 export const TaskCreate: React.FC = () => {
-	const { addTask, itemAddPage } = useContext(TaskContext);
+	const { addTask, itemAddPage, editCategory } = useContext(TaskContext);
 	return (
 		<div className='taskCreate'>
-			{itemAddPage ? <AddTaskItem /> : addTask ? <TaskAddCateory /> : <TaskCreateDefault />}
+			{editCategory ? (
+				<TaskAddCateory />
+			) : itemAddPage ? (
+				<AddTaskItem />
+			) : addTask ? (
+				<TaskAddCateory />
+			) : (
+				<TaskCreateDefault />
+			)}
 		</div>
 	);
 };

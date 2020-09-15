@@ -4,15 +4,16 @@ import { Button } from 'antd';
 import { TaskContext } from './TaskContext';
 
 export const ArrowButton = (props: any) => {
-	const { setItemAddPage, itemAddPage, setAddTask, addTask } = useContext(TaskContext);
+	const { setItemAddPage, itemAddPage, setAddTask, addTask, editCategory, setEditCategory } = useContext(TaskContext);
 
 	const toTaskCreateHandler = () => {
 		setAddTask(false);
 		setItemAddPage(false);
+		setEditCategory(false);
 	};
 
 	const arrowButtonHandler = () => {
-		if (itemAddPage || addTask) {
+		if (itemAddPage || addTask || editCategory) {
 			toTaskCreateHandler();
 		} else {
 			setAddTask(true);
