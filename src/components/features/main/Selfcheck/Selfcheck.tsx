@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { Drawer, Form, Collapse } from 'antd';
 import 'antd/dist/antd.css';
 import './Selfcheck.scss';
@@ -14,7 +14,11 @@ interface SelfcheckProps {
   hide: () => void,
   setselfGradeValues: (values: any) => void,
   form: any,
-  taskId: string
+  taskId: string,
+  totalPoints: number,
+  checkedRequirements: number,
+  setTotalPoints: (number: number) => void,
+  setCheckedRequirements: (number: number) => void,
 }
 
 interface TasksState {
@@ -30,37 +34,41 @@ const initialFormValues = {
 };
 
 const Selfcheck = (props: SelfcheckProps) => {
-  const { isVisible, hide, setselfGradeValues, form, taskId } = props;
-  const [totalPoints, setTotalPoints] = useState(0);
-  const [checkedRequirements, setCheckedRequirements] = useState(0);
+  const { isVisible, hide, setselfGradeValues, form, taskId, totalPoints, setTotalPoints, checkedRequirements, setCheckedRequirements } = props;
   useFirestoreConnect([{ collection: 'tasks' }]);
   const tasks = useSelector((state : TasksState) => state.firestore.data.tasks);
 
   const handleClose = () => {
     hide();
     form.resetFields();
+    setTotalPoints(0);
+    setCheckedRequirements(0);
   }
 
   const onFinish = (values: object) => {
     console.log('Received values of selfcheck form: ', values);
-    handleClose();
+    hide();
     addSelfGrade(values);
   };
 
   const onValuesChange = (changedValues: object, allValues: any) : void => {
-    console.log(changedValues, allValues);
+    console.log(allValues);
+    setCurrentValues(allValues);
+    form.setFieldsValue(allValues);
+    console.log(form.getFieldValue());
+  }
+
+  const setCurrentValues = (values: any) => {
     let totalPoints = 0;
     let checkedRequirements = 0;
-    Object.keys(allValues).forEach((key: string) => {
-      if (typeof allValues[key] === 'number') {
-        totalPoints += allValues[key];
+    Object.keys(values).forEach((key: string) => {
+      if (typeof values[key] === 'number') {
+        totalPoints += values[key];
         checkedRequirements++;
       }
     });
     setTotalPoints(totalPoints);
     setCheckedRequirements(checkedRequirements);
-    form.setFieldsValue(allValues);
-    console.log(form.getFieldValue());
   }
 
   const addSelfGrade = (values: any) => {
@@ -69,10 +77,12 @@ const Selfcheck = (props: SelfcheckProps) => {
         delete values[key];
       }
     });
+
     setselfGradeValues({
       ...values, 
-      totalPoints: totalPoints, // some error
-      checkedRequirements: checkedRequirements});
+      totalPoints, 
+      checkedRequirements
+    });
   }
 
   return (

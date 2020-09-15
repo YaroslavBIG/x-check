@@ -24,6 +24,8 @@ const RequestForm = (props: any) => {
   const [taskId, setTaskId] = useState('');
   const [selfGradeValues, setselfGradeValues] = useState();
   const [selfcheckForm] = Form.useForm();
+  const [totalPoints, setTotalPoints] = useState(0);
+  const [checkedRequirements, setCheckedRequirements] = useState(0);
 
   const firestore = useFirestore();
   useFirestoreConnect([ { collection: 'tasks' }, { collection: 'sessions' } ]);
@@ -39,7 +41,6 @@ const RequestForm = (props: any) => {
       console.log('Success:', values);
     } catch (errorInfo) {
       console.log('Failed:', errorInfo);
-      
     }
   }
 
@@ -51,12 +52,22 @@ const RequestForm = (props: any) => {
       }
     });
     console.log(selfGradeValues);
+    selfcheckForm.resetFields();
+    setTotalPoints(0);
+    setCheckedRequirements(0);
     props.onClose();
     firestore.collection('requests').add({
       selfGrade: selfGradeValues, 
       ...values
     });
   };
+
+  const handleClose = () => {
+    selfcheckForm.resetFields();
+    setTotalPoints(0);
+    setCheckedRequirements(0);
+    props.onClose();
+  }
 
   return (
     <>
@@ -66,7 +77,7 @@ const RequestForm = (props: any) => {
       placement='left'
       width={600}
       title={
-        <FormHeader title="Request" onClose={props.onClose} form={props.form}/>
+        <FormHeader title="Request" onClose={handleClose} form={props.form}/>
       }
     >
       <div className="request">
@@ -149,7 +160,11 @@ const RequestForm = (props: any) => {
       isVisible={isSelfcheckVisible} 
       hide={() => setSelfcheckVisibility(false)} 
       setselfGradeValues={(values: any) => setselfGradeValues(values)}
-      form={selfcheckForm} 
+      form={selfcheckForm}
+      totalPoints={totalPoints}
+      checkedRequirements={checkedRequirements}
+      setTotalPoints={setTotalPoints}
+      setCheckedRequirements={setCheckedRequirements}
     />
   </>
   );
