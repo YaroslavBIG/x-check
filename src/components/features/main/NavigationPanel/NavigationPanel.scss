@@ -1,4 +1,3 @@
-
 .trigger {
   font-size: 18px;
   line-height: 64px;
@@ -12,27 +11,20 @@
   color: #1890ff
 }
 
-
-.logo {
-  height: 32px;
-  background: white;
-  margin: 16px;
-}
-
-
 .site-layout .site-layout-background {
   background: #fff
 }
 
 .site-layout-background {
-  padding: 0;
   margin: 24px 16px;
   padding: 24px;
   min-height: 280px;
+  overflow: auto;
 }
 
 aside.ant-layout-sider.ant-layout-sider-dark {
   background: inherit;
+  box-shadow: rgb(204, 204, 204) 3px 3px 4px 2px;
 }
 
 ul.ant-menu.ant-menu-light.ant-menu-root.ant-menu-inline {
@@ -61,6 +53,16 @@ header.ant-layout-header.site-layout-background {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  min-height: 0px;
+  min-height: 0;
+}
 
+.logo {
+  margin-top: 5px;
+  text-align: center;
+
+  &.collapsed img {
+    width: 80px;
+    height: 80px;
+    transition: all 300ms ease-in-out;
+  }
 }
