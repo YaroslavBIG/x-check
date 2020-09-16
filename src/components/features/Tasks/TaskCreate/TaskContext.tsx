@@ -24,6 +24,7 @@ export const TaskContextState = (props: ITaskLayoutProps) => {
   const [newTaskForSubmit, setNewTaskForSubmit] = useState(props.inicialState || {});
   const [editCategory, setEditCategory] = useState<string | Boolean>(false)
   const [editItem, setEditItem] = useState<string | Boolean>(false)
+  const [refactorItem, setRefactorItem] = useState<Iitem | null>(null)
   const [oldTaskName, setOldTaskName] = useState<string | undefined>(useMemo(() => props.inicialState?.id, [props]))
 
   const addTaskToggler = () => {
@@ -31,8 +32,10 @@ export const TaskContextState = (props: ITaskLayoutProps) => {
     setItemAddPage(false)
   };
 
-  const addItemToggler = () => {
-    setItemAddPage((prevState) => !prevState);
+  const returnToTaskDefault = () => {
+    setEditItem(false)
+    setEditCategory(false)
+    setItemAddPage(false)
     setAddTask(false)
   };
 
@@ -49,7 +52,7 @@ export const TaskContextState = (props: ITaskLayoutProps) => {
           addTaskToggler: addTaskToggler,
           itemAddPage: itemAddPage,
           setItemAddPage: setItemAddPage,
-          addItemToggler: addItemToggler,
+          returnToTaskDefault: returnToTaskDefault,
           newTask: newTask,
           setNewTask: setNewTask,
           items: items,
@@ -61,7 +64,9 @@ export const TaskContextState = (props: ITaskLayoutProps) => {
           editItem: editItem,
           setEditItem: setEditItem,
           oldTaskName: oldTaskName,
-          setOldTaskName: setOldTaskName
+          setOldTaskName: setOldTaskName,
+          refactorItem: refactorItem,
+          setRefactorItem: setRefactorItem
         }
       }
     >

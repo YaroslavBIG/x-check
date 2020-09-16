@@ -30,8 +30,9 @@ export const TaskCreate: React.FC = () => {
 			return <AddTaskItem />;
 		} else if (addTask) {
 			return <TaskAddCateory />;
+		} else {
+			return <TaskCreateDefault />;
 		}
-		return <TaskCreateDefault />;
 	};
 
 	return <div className='taskCreate'>{page()}</div>;

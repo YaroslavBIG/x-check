@@ -11,7 +11,7 @@ export interface addCheckButtonProps {
 
 export const AddCheckButton = (props: addCheckButtonProps) => {
 	const {
-		addItemToggler,
+		setItemAddPage,
 		setCollapsPanelId,
 		setCollapsePanelNum,
 		setNewItems,
@@ -24,7 +24,7 @@ export const AddCheckButton = (props: addCheckButtonProps) => {
 		ev.preventDefault();
 		setCollapsPanelId(ev.currentTarget.dataset.id);
 		setCollapsePanelNum(ev.currentTarget.dataset.num);
-		addItemToggler();
+		setItemAddPage(true);
 	};
 
 	const handleMenuClick = (e: any) => {

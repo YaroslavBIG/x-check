@@ -19,13 +19,13 @@ export const TaskCreateDefault: React.FC = () => {
     items,
     newTaskForSubmit,
     setNewTaskForSubmit,
-    addTaskToggler,
+    setAddTask,
     oldTaskName,
     setOldTaskName
   } = useContext(TaskContext);
 
   useFirestoreConnect([ { collection: 'demoTasks' } ]);
-
+  console.log(items)
   const updFirestore = useFirestore();
 
 	interface taskStore {
@@ -98,7 +98,7 @@ export const TaskCreateDefault: React.FC = () => {
 	const handleAddCategory = () => {
 		const values = form.getFieldsValue();
 		updateSubmitStore(values);
-		addTaskToggler();
+		setAddTask(true);
 	};
 
 	const handleFormSubmit = async () => {
@@ -121,20 +121,14 @@ export const TaskCreateDefault: React.FC = () => {
 
 	useEffect(
 		() => {
-			form.setFieldsValue(newTaskForSubmit);
-		},
-		[ form, newTaskForSubmit ]
-	);
-
-	useEffect(
-		() => {
+      form.setFieldsValue(newTask);
 			setNewTaskForSubmit((prev: Itask) => ({
 				...prev,
 				categoriesOrder: newTask.categoriesOrder,
 				items: items
 			}));
 		},
-		[ newTask, items, setNewTaskForSubmit ]
+		[newTask, items, setNewTaskForSubmit, form]
   );
 
   useEffect(() => {

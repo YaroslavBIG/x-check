@@ -13,7 +13,9 @@ interface valuesTaskAdd {
 
 export const TaskAddCateory: React.FC = () => {
 	const [ form ] = Form.useForm();
-	const { setNewTask, addTaskToggler, newTask, editCategory, setEditCategory, setNewItems } = useContext(TaskContext);
+	const { setNewTask, returnToTaskDefault, newTask, editCategory, setEditCategory, setNewItems } = useContext(
+		TaskContext
+	);
 
 	const onReset = (): void => {
 		form.resetFields();
@@ -72,7 +74,7 @@ export const TaskAddCateory: React.FC = () => {
 	};
 
 	const onFinish = () => {
-		addTaskToggler();
+		returnToTaskDefault();
 		setEditCategory(false);
 	};
 

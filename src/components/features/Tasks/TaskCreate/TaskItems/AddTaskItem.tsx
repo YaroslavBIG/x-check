@@ -12,38 +12,66 @@ export const AddTaskItem = () => {
 		setNewItems,
 		collapsePanelNum,
 		collapsPanetId,
-		addItemToggler,
+		setItemAddPage,
+		editItem,
 		setEditItem,
-		editItem
+		refactorItem
 	} = useContext(TaskContext);
 
 	const onReset = (): void => {
 		form.resetFields();
 	};
 
+	const deleteItem = (prev: Array<Iitem>) => {
+		const filtred = prev.filter(
+			(item) => !(item.id === refactorItem[0].id && item.title === refactorItem[0].title)
+		);
+		return filtred;
+	};
+
 	const handleItemSubmit = () => {
+		form.validateFields();
 		const values = form.getFieldsValue();
-		setNewItems((prev: Array<Iitem>) => [
-			...prev,
-			{
-				...values,
-				id: collapsPanetId, //.replace(/_\w\d/g, '')}_p${collapsePanelNum}
-				category: newTask.categoriesOrder[panelNum],
-				mentorOnly: values.mentorOnly || null,
-				description: values.description || ''
-			}
-		]);
+
+		if (editItem) {
+			setNewItems((prev: Array<Iitem>) => [
+				...deleteItem(prev),
+				{
+					...values,
+					id: collapsPanetId,
+					category: newTask.categoriesOrder[panelNum],
+					mentorOnly: values.mentorOnly || null,
+					description: values.description || ''
+				}
+			]);
+		} else {
+			setNewItems((prev: Array<Iitem>) => [
+				...prev,
+				{
+					...values,
+					id: collapsPanetId,
+					category: newTask.categoriesOrder[panelNum],
+					mentorOnly: values.mentorOnly || null,
+					description: values.description || ''
+				}
+			]);
+		}
 	};
 	const panelNum = Number(collapsePanelNum);
 
 	const onFinish = () => {
 		toast.success('Saved');
-		addItemToggler();
+		setEditItem(false);
+		setItemAddPage(false);
 	};
 
 	const onFinishFailed = (errorInfo: object) => {
 		toast.error(errorInfo);
 	};
+
+	if (editItem) {
+		form.setFieldsValue(refactorItem[0]);
+	}
 
 	return (
 		<div className='task-item'>

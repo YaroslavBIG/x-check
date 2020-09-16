@@ -10,19 +10,22 @@ interface ItaskItemButtons {
 }
 
 export const TaskItemButtons = (props: ItaskItemButtons) => {
-	const { setEditItem, setNewItems } = useContext(TaskContext);
+	const { setEditItem, setNewItems, setRefactorItem, items, setCollapsPanelId } = useContext(TaskContext);
 	const { elTitle, elId } = props;
 
 	const itemButtonsHandler = (dataSet: DOMStringMap) => {
 		const { id, title, type } = dataSet;
+		const currentItem = items.filter((item: Iitem) => (item.id === id && item.title === title ? true : false));
 
 		switch (type) {
 			case 'edit':
+				setCollapsPanelId(id);
+				setRefactorItem(currentItem);
 				setEditItem(true);
 				break;
 			case 'delete':
 				setNewItems((prev: Array<Iitem>) => [
-					...prev.filter((item) => (item.id === id && item.title === title ? false : true))
+					...prev.filter((item) => !(item.id === id && item.title === title))
 				]);
 				break;
 			default:
