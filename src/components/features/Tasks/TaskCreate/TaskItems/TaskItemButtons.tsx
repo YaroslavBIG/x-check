@@ -1,7 +1,7 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import React, { useContext } from 'react';
-import { Iitem } from '../../TaskInterface';
+import { Iitem } from '../../../../../interfaces/TaskInterface';
 import { TaskContext } from '../TaskContext';
 
 interface ItaskItemButtons {

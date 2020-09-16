@@ -1,5 +1,5 @@
 import React from 'react';
-import { Iitem } from '../../TaskInterface';
+import { Iitem } from '../../../../../interfaces/TaskInterface';
 import { Button, Popover, Tag } from 'antd';
 import { InfoCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { TaskItemButtons } from './TaskItemButtons';

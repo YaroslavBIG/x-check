@@ -16,11 +16,11 @@ export interface Iitem {
 }
 
 export interface Itask {
-	id: string; // Task name "simple-task-v1"
+	id: string;
 	author: string; // Get author name from firebase?
-	state: string; // enum taskStatus
-	maxScore?: number; // sum all categories score
-	categoriesOrder: Array<string>; // ["Basic Scope", "Extra Scope", "Fines"]
+	state: string;
+	maxScore?: number;
+	categoriesOrder: Array<string>;
 	description?: string;
 	items?: Array<Iitem>;
 }

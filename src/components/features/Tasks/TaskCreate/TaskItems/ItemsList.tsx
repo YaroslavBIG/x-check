@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { TaskContext } from '../TaskContext';
 import { TaskItem } from './TaskItem';
-import { Iitem } from '../../TaskInterface';
+import { Iitem } from '../../../../../interfaces/TaskInterface';
 import { Empty } from 'antd';
 
 export const ItemsList = () => {

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Form, Input, InputNumber } from 'antd';
 import { TaskHeader } from './TaskHeader';
 import { TaskContext } from './TaskContext';
-import { Iitem, Itask } from '../TaskInterface';
+import { Iitem, Itask } from '../../../../interfaces/TaskInterface';
 import { insertToArrayByIndex } from 'utils/insertToArrayByIndex';
 import { toast } from 'react-toastify';
 

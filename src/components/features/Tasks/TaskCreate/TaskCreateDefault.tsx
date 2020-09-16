@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { Form, Select, Input, Button } from 'antd';
 import { TaskHeader } from './TaskHeader';
-import { taskStatus, Itask, Iitem } from '../TaskInterface';
+import { taskStatus, Itask, Iitem } from '../../../../interfaces/TaskInterface';
 import { TaskContext } from './TaskContext';
 import { TaskAccordion } from './Accordion/TaskAccordion';
 import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
