@@ -131,11 +131,6 @@ export const TaskCreateDefault: React.FC = () => {
 		[newTask, items, setNewTaskForSubmit, form]
   );
 
-  useEffect(() => {
-    updateSubmitStore({})
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items]);
-
 	return (
 		<div className='task'>
 			<Form layout='vertical' form={form} name='Task Create' onFinish={onFinish} onFinishFailed={onFinishFailed}>

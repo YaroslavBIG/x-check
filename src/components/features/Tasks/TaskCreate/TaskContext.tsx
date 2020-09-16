@@ -6,8 +6,8 @@ export const TaskProvider = TaskContext.Provider;
 export const TaskConsumer = TaskContext.Consumer;
 
 export const TaskContextState = (props: ITaskLayoutProps) => {
-  const [addTask, setAddTask] = useState(false);
-  const [itemAddPage, setItemAddPage] = useState(false);
+  const [addTask, setAddTask] = useState<boolean | string>(false);
+  const [itemAddPage, setItemAddPage] = useState<boolean | string>(false);
   const [collapsePanelNum, setCollapsePanelNum] = useState<number>(0);
   const [collapsPanetId, setCollapsPanelId] = useState<string | undefined>(undefined)
   const [newTask, setNewTask] = useState<Itask | undefined>(props.inicialState ||
@@ -21,7 +21,7 @@ export const TaskContextState = (props: ITaskLayoutProps) => {
     });
 
   const [items, setNewItems] = useState<Array<Iitem> | Array<undefined>>(props.inicialState?.items || []);
-  const [newTaskForSubmit, setNewTaskForSubmit] = useState(props.inicialState || {});
+  const [newTaskForSubmit, setNewTaskForSubmit] = useState<Itask | object>(props.inicialState || {});
   const [editCategory, setEditCategory] = useState<string | Boolean>(false)
   const [editItem, setEditItem] = useState<string | Boolean>(false)
   const [refactorItem, setRefactorItem] = useState<Iitem | null>(null)

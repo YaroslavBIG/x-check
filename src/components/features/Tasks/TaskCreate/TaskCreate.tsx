@@ -8,16 +8,6 @@ export interface IAddTask {
 	addTask: boolean;
 }
 
-// {/* {editCategory ? (
-// 				<TaskAddCateory />
-// 			) : itemAddPage ? (
-// 				<AddTaskItem />
-// 			) : addTask ? (
-// 				<TaskAddCateory />
-// 			) : (
-// 				<TaskCreateDefault />
-// 			)} */}
-
 export const TaskCreate: React.FC = () => {
 	const { addTask, itemAddPage, editCategory, editItem } = useContext(TaskContext);
 

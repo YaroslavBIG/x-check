@@ -8,7 +8,7 @@ export const TaskAccordion = () => {
 	const { Panel } = Collapse;
 	const { newTask, setCollapsePanelNum } = useContext(TaskContext);
 
-	const collapseHandler = (panelNum: any) => {
+	const collapseHandler = (panelNum: string | string[]) => {
 		if (!!panelNum) setCollapsePanelNum(panelNum);
 	};
 

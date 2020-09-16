@@ -3,7 +3,19 @@ import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { TaskContext } from './TaskContext';
 
-export const ArrowButton = (props: any) => {
+interface IarrowButtonProps {
+	children?: React.ReactNode;
+	setItemAddPage?: React.Dispatch<React.SetStateAction<number>>;
+	itemAddPage?: boolean | number;
+	setAddTask?: React.Dispatch<React.SetStateAction<boolean>>;
+	editItem?: string | Boolean;
+	addTask?: React.Dispatch<React.SetStateAction<boolean>>;
+	editCategory?: string | Boolean;
+	setEditCategory?: React.Dispatch<React.SetStateAction<string | Boolean>>;
+	setEditItem?: React.Dispatch<React.SetStateAction<string | Boolean>>;
+}
+
+export const ArrowButton = (props: IarrowButtonProps) => {
 	const {
 		setItemAddPage,
 		itemAddPage,
