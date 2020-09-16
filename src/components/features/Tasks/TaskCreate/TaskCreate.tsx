@@ -8,19 +8,31 @@ export interface IAddTask {
 	addTask: boolean;
 }
 
+// {/* {editCategory ? (
+// 				<TaskAddCateory />
+// 			) : itemAddPage ? (
+// 				<AddTaskItem />
+// 			) : addTask ? (
+// 				<TaskAddCateory />
+// 			) : (
+// 				<TaskCreateDefault />
+// 			)} */}
+
 export const TaskCreate: React.FC = () => {
-	const { addTask, itemAddPage, editCategory } = useContext(TaskContext);
-	return (
-		<div className='taskCreate'>
-			{editCategory ? (
-				<TaskAddCateory />
-			) : itemAddPage ? (
-				<AddTaskItem />
-			) : addTask ? (
-				<TaskAddCateory />
-			) : (
-				<TaskCreateDefault />
-			)}
-		</div>
-	);
+	const { addTask, itemAddPage, editCategory, editItem } = useContext(TaskContext);
+
+	const page = () => {
+		if (editCategory) {
+			return <TaskAddCateory />;
+		} else if (editItem) {
+			return <AddTaskItem />;
+		} else if (itemAddPage) {
+			return <AddTaskItem />;
+		} else if (addTask) {
+			return <TaskAddCateory />;
+		}
+		return <TaskCreateDefault />;
+	};
+
+	return <div className='taskCreate'>{page()}</div>;
 };

@@ -23,6 +23,7 @@ export const TaskContextState = (props: ITaskLayoutProps) => {
   const [items, setNewItems] = useState<Array<Iitem> | Array<undefined>>(props.inicialState?.items || []);
   const [newTaskForSubmit, setNewTaskForSubmit] = useState(props.inicialState || {});
   const [editCategory, setEditCategory] = useState<string | Boolean>(false)
+  const [editItem, setEditItem] = useState<string | Boolean>(false)
   const [oldTaskName, setOldTaskName] = useState<string | undefined>(useMemo(() => props.inicialState?.id, [props]))
 
   const addTaskToggler = () => {
@@ -57,6 +58,8 @@ export const TaskContextState = (props: ITaskLayoutProps) => {
           setNewTaskForSubmit: setNewTaskForSubmit,
           editCategory: editCategory,
           setEditCategory: setEditCategory,
+          editItem: editItem,
+          setEditItem: setEditItem,
           oldTaskName: oldTaskName,
           setOldTaskName: setOldTaskName
         }

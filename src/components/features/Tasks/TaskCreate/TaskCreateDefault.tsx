@@ -26,7 +26,7 @@ export const TaskCreateDefault: React.FC = () => {
 
   useFirestoreConnect([ { collection: 'demoTasks' } ]);
 
-	const updFirestore = useFirestore();
+  const updFirestore = useFirestore();
 
 	interface taskStore {
 		firestore: {

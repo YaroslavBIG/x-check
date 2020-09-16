@@ -5,7 +5,7 @@ export enum taskStatus {
 }
 
 export interface Iitem {
-	id?: string; // `${categoryName.replace(/\s+/g, '')}_p${item.order}` => BasicScope_p1
+	id: string; // `${categoryName.replace(/\s+/g, '')}_p${item.order}` => BasicScope_p1
 	category: string; // categoryName => "Basic Scope"
 	title: string;
 	description: string;
@@ -16,7 +16,7 @@ export interface Iitem {
 }
 
 export interface Itask {
-	id?: string; // Task name "simple-task-v1"
+	id: string; // Task name "simple-task-v1"
 	author: string; // Get author name from firebase?
 	state: string; // enum taskStatus
 	maxScore?: number; // sum all categories score

@@ -1,9 +1,11 @@
 import React from 'react';
 import { Iitem } from '../../TaskInterface';
 import { Button, Popover, Tag } from 'antd';
-import { DeleteOutlined, InfoCircleOutlined, CheckCircleOutlined, EditOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { TaskItemButtons } from './TaskItemButtons';
+
 export const TaskItem = (props: Iitem) => {
-	const { title, description, minScore, maxScore, mentorOnly } = props;
+	const { title, description, minScore, maxScore, mentorOnly, id } = props;
 
 	return (
 		<div className='task--item'>
@@ -22,22 +24,7 @@ export const TaskItem = (props: Iitem) => {
 					</Tag>
 				) : null}
 			</div>
-			<div className='task--control-buttons'>
-				<Button
-					type='text'
-					icon={<EditOutlined />}
-					size='middle'
-					htmlType='submit'
-					onSubmit={() => 'handleItemSubmit'}
-				/>
-				<Button
-					type='text'
-					htmlType='button'
-					icon={<DeleteOutlined />}
-					size='middle'
-					onClick={() => 'onReset'}
-				/>
-			</div>
+			<TaskItemButtons elTitle={title} elId={id} />
 		</div>
 	);
 };

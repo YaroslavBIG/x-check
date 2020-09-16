@@ -7,7 +7,15 @@ import { toast } from 'react-toastify';
 
 export const AddTaskItem = () => {
 	const [ form ] = Form.useForm();
-	const { newTask, setNewItems, collapsePanelNum, collapsPanetId, addItemToggler } = useContext(TaskContext);
+	const {
+		newTask,
+		setNewItems,
+		collapsePanelNum,
+		collapsPanetId,
+		addItemToggler,
+		setEditItem,
+		editItem
+	} = useContext(TaskContext);
 
 	const onReset = (): void => {
 		form.resetFields();
@@ -45,7 +53,7 @@ export const AddTaskItem = () => {
 						onReset={onReset}
 						handleSubmit={handleItemSubmit}
 						arrowButton={true}
-						title='Add (Edit Check)'
+						title={editItem ? 'Edit Check' : 'Add Check'}
 					/>
 				</div>
 

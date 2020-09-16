@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { TaskContext } from '../TaskContext';
 import { Collapse } from 'antd';
-import { AddCheckButton } from '../TaskItems/AddCheckButton';
+import { AddCheckButton } from './AddCheckButton';
 import { ItemsList } from '../TaskItems/ItemsList';
 
 export const TaskAccordion = () => {
