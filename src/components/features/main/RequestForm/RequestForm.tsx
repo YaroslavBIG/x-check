@@ -5,8 +5,9 @@ import FormHeader from '../FormHeader/FormHeader';
 import Selfcheck from '../Selfcheck/Selfcheck';
 import 'antd/dist/antd.css';
 import './RequestForm.scss';
-import { useSelector } from 'react-redux'
-import { useFirestoreConnect, useFirestore } from 'react-redux-firebase'
+import { useSelector } from 'react-redux';
+import { useFirestoreConnect, useFirestore } from 'react-redux-firebase';
+import { toast, ToastContainer } from 'react-toastify';
 
 const { Option } = Select;
 
@@ -14,7 +15,8 @@ interface CollectionsState {
   firestore: {
     data: {
       tasks: any,
-      sessions: any
+      sessions: any,
+      requests: any
     }
   }
 }
@@ -22,44 +24,57 @@ interface CollectionsState {
 const RequestForm = (props: any) => {
   const [isSelfcheckVisible, setSelfcheckVisibility] = useState(false);
   const [taskId, setTaskId] = useState('');
-  const [selfGradeValues, setselfGradeValues] = useState();
+  const [selfGradeValues, setselfGradeValues] = useState({checkedRequirements: 0});
   const [selfcheckForm] = Form.useForm();
   const [totalPoints, setTotalPoints] = useState(0);
   const [checkedRequirements, setCheckedRequirements] = useState(0);
+  const [isRequired, setRequirement] = useState(false);
 
   const firestore = useFirestore();
-  useFirestoreConnect([ { collection: 'tasks' }, { collection: 'sessions' } ]);
+  useFirestoreConnect([ { collection: 'tasks' }, { collection: 'sessions' }, { collection: 'requests' } ]);
   const tasks = useSelector((state : CollectionsState) => state.firestore.data.tasks);
   const sessions = useSelector((state : CollectionsState) => state.firestore.data.sessions);
+  const requests = useSelector((state : CollectionsState) => state.firestore.data.requests);
 
   const addSelfcheck = async () => {
     try {
-      const values = await props.form.validateFields();
-      console.log(props.form.getFieldValue('task'));
-      setTaskId(props.form.getFieldValue('task'));
+      await props.form.validateFields(['taskId']);
       setSelfcheckVisibility(true);
-      console.log('Success:', values);
     } catch (errorInfo) {
-      console.log('Failed:', errorInfo);
+      toast.error(errorInfo);
     }
   }
 
-  const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
-    Object.keys(values).forEach((key: string) => {
-      if (values[key] === undefined) {
-        delete values[key];
+  const onFinish = async (values: any) => {
+    try {
+      await props.form.validateFields();
+      if ((!isRequired) || (isRequired && taskId && selfGradeValues.checkedRequirements === tasks[taskId].items.length)) {
+        console.log('Received values of form: ', values);
+        Object.keys(values).forEach((key: string) => {
+          if (values[key] === undefined) {
+            delete values[key];
+          }
+        });
+        console.log(selfGradeValues);
+        selfcheckForm.resetFields();
+        setTotalPoints(0);
+        setCheckedRequirements(0);
+        props.onClose();
+        firestore.collection('requests').add({
+          selfGrade: selfGradeValues, 
+          task: tasks[taskId].id,
+          ...values,
+          id: `rev-req-${Object.keys(requests).length + 1}`
+        });
+        toast.info('Request was successfully send');
       }
-    });
-    console.log(selfGradeValues);
-    selfcheckForm.resetFields();
-    setTotalPoints(0);
-    setCheckedRequirements(0);
-    props.onClose();
-    firestore.collection('requests').add({
-      selfGrade: selfGradeValues, 
-      ...values
-    });
+      else {
+        toast.info("Make sure you checked all requirements");
+      }
+    } catch (errorInfo) {
+      console.log('Failed:', errorInfo);
+      toast.error(errorInfo);
+    }
   };
 
   const handleClose = () => {
@@ -67,6 +82,15 @@ const RequestForm = (props: any) => {
     setTotalPoints(0);
     setCheckedRequirements(0);
     props.onClose();
+  }
+
+  const handleStatusChange = (value: string) => {
+    if (value === 'PUBLISHED') {
+      setRequirement(true);
+    }
+    else if (isRequired) {
+      setRequirement(false);
+    }
   }
 
   return (
@@ -84,7 +108,7 @@ const RequestForm = (props: any) => {
         <Form name="request" layout="vertical" form={props.form} onFinish={onFinish}>
           <Form.Item
             style={{marginTop: '1.5rem'}}
-            name="task"
+            name="taskId"
             label="Task"
             rules={[
               {
@@ -93,7 +117,7 @@ const RequestForm = (props: any) => {
               },
             ]}
           >
-            <Select placeholder="Select a task">
+            <Select placeholder="Select a task" onChange={(value: string) => setTaskId(value)}>
               { tasks && 
                 Object.keys(tasks).map((ind: string) => <Option key={ind} value={ind}>{tasks[ind].id}</Option>) 
               }
@@ -110,11 +134,11 @@ const RequestForm = (props: any) => {
               </Select>
           </Form.Item>
           <Form.Item 
-            name="pr"
+            name="pullRequest"
             label="Link to PR" 
             rules={[
               {
-                required: false,
+                required: isRequired,
                 message: 'Please add link to pull request!',
               },
             ]}
@@ -122,11 +146,11 @@ const RequestForm = (props: any) => {
             <Input placeholder="Paste the link" />
           </Form.Item>
           <Form.Item 
-            name="deployed"
+            name="deployedVersion"
             label="Link to deployed version" 
             rules={[
               {
-                required: false,
+                required: isRequired,
                 message: 'Please add link to deployed version!',
               },
             ]}
@@ -138,15 +162,15 @@ const RequestForm = (props: any) => {
             label="Status"
             rules={[
               {
-                required: false,
+                required: true,
                 message: 'Please select a status',
               },
             ]}
           >
-            <Select placeholder="Select a status">
-              <Option value="draft">Draft</Option>
-              <Option value="published">Published</Option>
-              <Option value="completed">Completed</Option>
+            <Select placeholder="Select a status" onChange={handleStatusChange}>
+              <Option value="DRAFT">Draft</Option>
+              <Option value="PUBLISHED">Published</Option>
+              <Option value="COMPLETED">Completed</Option>
             </Select>
           </Form.Item>
           <Button className="self-check-button" size="large" onClick={addSelfcheck} >
@@ -166,6 +190,17 @@ const RequestForm = (props: any) => {
       setTotalPoints={setTotalPoints}
       setCheckedRequirements={setCheckedRequirements}
     />
+    <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        />
   </>
   );
 }
