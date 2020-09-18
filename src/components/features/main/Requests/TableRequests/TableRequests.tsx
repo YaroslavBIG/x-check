@@ -47,7 +47,6 @@ const TableRequests = () => {
       .get()
       .then((query) => {
         query.forEach((doc) => {
-          // console.log(doc.data());
           requests = [...requests, transformRequests(doc.data())];
         });
         setRequests(requests);
@@ -58,7 +57,6 @@ const TableRequests = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const onSelectChange = (selectedRowKeys: any) => {
-    // console.log('selectedRowKeys changed: ', selectedRowKeys);
     setSelectedRowKeys(selectedRowKeys);
   };
 
