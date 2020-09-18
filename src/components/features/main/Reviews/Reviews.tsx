@@ -16,6 +16,7 @@ const Reviews = () => {
   let reviewCounter = 0;
 
   useEffect(() => {
+    const db = firebase.firestore();
     db.collection('reviews').get()
       .then((reviews) => {
         let rvs: any[] = [];
