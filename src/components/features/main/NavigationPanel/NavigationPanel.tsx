@@ -15,10 +15,11 @@ import { Link, Switch, Route } from 'react-router-dom';
 import CustomHeader from '../CustomHeader/CustomHeader';
 import { Tasks } from '../Tasks/Tasks';
 import Logo from '../../login/Logo/Logo';
-import { Reviews } from '../Reviews/Reviews';
+import Reviews from '../Reviews/Reviews';
 import { Requests } from '../Requests/Requests';
 import { Debates } from '../Debates/Debates';
 import { XCheckPath } from '../../../../enum/app-paths.enum';
+import Sessions from '../Sessions/Sessions';
 
 const { Header, Sider, Content } = Layout;
 
@@ -83,10 +84,9 @@ const NavigationPanel = () => {
             <Switch>
               <Route exact path="/tasks" component={Tasks}/>
               <Route exact path="/requests" component={Requests}/>
-              {/*<Route exact path="/sessions" component={Sessions}/>*/}
+              <Route exact path="/sessions" component={Sessions}/>
               <Route exact path="/reviews" component={Reviews}/>
               <Route exact path="/debates" component={Debates}/>
-              )}/>
             </Switch>
             {/*<Switch>
               <PrivateRoute isAuth={isLoaded(auth) && !isEmpty(auth)} path={XCheckPath.TASKS} component={Tasks}

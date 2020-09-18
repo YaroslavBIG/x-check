@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Form } from 'antd';
-import { EditOutlined } from '@ant-design/icons';
-import CheckInfo from '../CheckInfo/CheckInfo';
+import { Form } from 'antd';
 
 export const Requests = () => {
     const [isVisible, setVisibility] = useState(false);
@@ -15,8 +13,6 @@ export const Requests = () => {
     return (
         <div>
             <h1>Requests</h1>
-            <Button icon={<EditOutlined/>} onClick={() => setVisibility(true)}>Show check info form</Button>
-            <CheckInfo isVisible={isVisible} onClose={onClose} form={form}/>
         </div>
     );
 };
