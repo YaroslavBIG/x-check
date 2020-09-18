@@ -1,8 +1,5 @@
 import { ColumnsType } from 'antd/es/table';
 import { AppReviewInterface } from '../../../../interfaces/app-review.interface';
-import { Tag } from 'antd';
-import React from 'react';
-import { ReviewStatusEnum } from '../../../../enum/review-status.enum';
 
 export const columnsRequests: ColumnsType<AppReviewInterface> = [
   {
