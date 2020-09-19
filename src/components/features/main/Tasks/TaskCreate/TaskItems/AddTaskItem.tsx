@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { TaskContext } from '../index';
-import { Iitem } from '../../../../../interfaces/TaskInterface';
+import { Iitem } from 'interfaces/TaskInterface';
 import { Form, Input, InputNumber, Checkbox } from 'antd';
 import { TaskHeader } from '../TaskHeader';
 import { toast } from 'react-toastify';

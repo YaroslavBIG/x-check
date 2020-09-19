@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { PlusOutlined, MoreOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu } from 'antd';
 import { TaskContext } from '../TaskContext';
-import { Iitem, Itask } from '../../../../../interfaces/TaskInterface';
+import { Iitem, Itask } from 'interfaces/TaskInterface';
 
 export interface addCheckButtonProps {
 	panelNum: number;

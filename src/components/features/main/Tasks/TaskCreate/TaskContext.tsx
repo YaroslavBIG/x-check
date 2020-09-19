@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Iitem, Itask, ITaskLayoutProps, taskStatus } from '../../../../interfaces/TaskInterface';
+import { Iitem, Itask, ITaskLayoutProps, taskStatus } from 'interfaces/TaskInterface';
 
 export const TaskContext: any = React.createContext(false);
 export const TaskProvider = TaskContext.Provider;

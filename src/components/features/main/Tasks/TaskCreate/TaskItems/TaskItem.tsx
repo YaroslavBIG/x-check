@@ -1,5 +1,5 @@
 import React from 'react';
-import { Iitem } from '../../../../../interfaces/TaskInterface';
+import { Iitem } from 'interfaces/TaskInterface';
 import { Button, Popover, Tag } from 'antd';
 import { InfoCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { TaskItemButtons } from './TaskItemButtons';
@@ -10,7 +10,7 @@ export const TaskItem = (props: Iitem) => {
 	return (
 		<div className='task--item'>
 			<div className='item--ico'>
-				<Popover content={description} title='Title'>
+				<Popover content={description} title='Description'>
 					<Button type='text' icon={<InfoCircleOutlined />} />
 				</Popover>
 			</div>
