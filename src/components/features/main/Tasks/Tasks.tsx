@@ -1,9 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import "./Tasks"
+import "./Tasks.scss";
 import {SearchOutlined} from '@ant-design/icons';
 import {Table, Tag, Input, Button, Space} from 'antd';
 import Highlighter from "react-highlight-words";
 import firebase from "firebase";
+import {TasksHeader} from './TasksHeader';
+import { TaskDrawerContextState } from './TaskDrawer/TaskDrawerContext';
+import { TaskDrawer } from './TaskDrawer/TaskDrawer';
+import { TaskLayout } from './TaskCreate';
+
 
 // TODO change any-type to actual-type
 // TODO remove comments
@@ -246,12 +251,24 @@ const Tasks = () => {
     ];
 
     return (
-        <>
-            <Table dataSource={tasks}
-                   columns={columns}
-                   rowSelection={rowSelection}
-            />
-        </>
+      <TaskDrawerContextState >
+        <TaskDrawer> 
+          <TaskLayout /> 
+        </TaskDrawer>
+        <div className='tasks'>
+
+            <TasksHeader />
+
+            <div className="tasks-table">
+              <Table dataSource={tasks}
+                    columns={columns}
+                    rowSelection={rowSelection}
+              />
+            </div>
+
+        </div>
+        
+      </TaskDrawerContextState>
     );
 }
 

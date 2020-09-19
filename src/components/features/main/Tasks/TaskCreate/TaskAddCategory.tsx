@@ -19,7 +19,7 @@ export const TaskAddCateory: React.FC = () => {
 
 	const onReset = (): void => {
 		form.resetFields();
-		setEditCategory(false);
+		returnToTaskDefault();
 	};
 
 	const setCategoriesOrder = (prev: Itask, values: valuesTaskAdd) => {

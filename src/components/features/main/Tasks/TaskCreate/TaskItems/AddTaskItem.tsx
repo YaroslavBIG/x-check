@@ -15,11 +15,13 @@ export const AddTaskItem = () => {
 		setItemAddPage,
 		editItem,
 		setEditItem,
-		refactorItem
+		refactorItem,
+		returnToTaskDefault
 	} = useContext(TaskContext);
 
 	const onReset = (): void => {
 		form.resetFields();
+		returnToTaskDefault();
 	};
 
 	const deleteItem = (prev: Array<Iitem>) => {
