@@ -91,7 +91,7 @@ export default function Sessions() {
     {
       collection: 'tasks',
       where: [
-        ['status', '==', 'PUBLISHED']
+        ['state', '==', 'PUBLISHED']
       ],
       storeAs: 'publishedTasks'
     }, {
