@@ -24,30 +24,30 @@ export const TaskCreateDefault: React.FC = () => {
     setOldTaskName
   } = useContext(TaskContext);
 
-  useFirestoreConnect([ { collection: 'demoTasks' } ]);
-  console.log(items)
+  useFirestoreConnect([ { collection: 'tasks' } ]);
+
   const updFirestore = useFirestore();
 
 	interface taskStore {
 		firestore: {
 			data: {
-				demoTasks: { [key: string]: Itask };
+				tasks: { [key: string]: Itask };
 			};
 		};
 	}
 
-  const allTask = useSelector((taskStore: taskStore) => taskStore.firestore.data.demoTasks);
+  const allTask = useSelector((taskStore: taskStore) => taskStore.firestore.data.tasks);
 
   const submitNewTaskInfirebase = async () => {
     try {
-      await updFirestore.collection('demoTasks').add(newTaskForSubmit)
+      await updFirestore.collection('tasks').add(newTaskForSubmit)
     } catch {
       toast.error('something went wrong')
     }
   };
 
 	const updateTaskInfirebase = async (taskKey: string) => {
-     try { await updFirestore.collection('demoTasks').doc(taskKey).update(newTaskForSubmit)
+     try { await updFirestore.collection('tasks').doc(taskKey).update(newTaskForSubmit)
     } catch {
       toast.error('something went wrong')
     }
