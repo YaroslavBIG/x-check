@@ -64,11 +64,12 @@ export default function SessionForm() {
   }, [form, currentSession]);
 
   function onSubmit(values: SessionFormData) {
+    const pubTask = publishedTasks;
     let valuesForFirebase = {
       ...values,
       task: {
         taskId: values?.task,
-        taskName: publishedTasks[values.task]?.taskName
+        taskName: pubTask[values.task] ? 'abc' : 'cde'
       }
     };
     if (!currentSession) {
@@ -81,10 +82,10 @@ export default function SessionForm() {
   async function addNewSession(valuesForFirebase: Partial<FirestoreSessionData>) {
     let newSessionAttributes = {
       ...valuesForFirebase,
-      createdBy: currentUserId,
+      createdBy: currentUserId || 'unknownUser',
       host: {
-        photoURL: currentUserData.photoURL,
-        displayName: currentUserData.displayName
+        photoURL: currentUserData.photoURL || 'nophoto',
+        displayName: currentUserData.displayName || 'noname'
       },
       attendees: [],
       attendeeIds: [],
@@ -96,6 +97,7 @@ export default function SessionForm() {
       dispatch(closeSessionForm());
       toast.info('Session has been successfully added');
     } catch (e) {
+      console.log(e);
       toast.error(e);
     }
   }
@@ -116,10 +118,10 @@ export default function SessionForm() {
     if (publishedTasks) {
       Object.keys(publishedTasks).forEach((el: string) => {
         if (publishedTasks[el]) {
-          const values = publishedTasks[el];
+          const values: any = publishedTasks[el];
           modifiedData.push({
             taskId: el,
-            taskName: values?.taskName
+            taskName: values?.description
           });
         }
       });
