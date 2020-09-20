@@ -1,7 +1,12 @@
 import React, { ReactText } from 'react';
 import { Button, Modal } from 'antd';
 import styles from './SessionToolbar.module.scss';
-import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons/lib';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+  PlusOutlined,
+} from '@ant-design/icons/lib';
 import { useFirestore } from 'react-redux-firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -14,16 +19,18 @@ export default function SessionToolbar() {
   const firestore = useFirestore();
   const dispatch = useDispatch();
   const selectedRows = useSelector((state: SessionsState) => state.sessions.rows);
-  const sessions: SessionsRecord = useSelector((state: SessionsState) => state.firestore.data.sessions);
+  const sessions: SessionsRecord = useSelector(
+    (state: SessionsState) => state.firestore.data.sessions,
+  );
 
   function showConfirm() {
     confirm({
       title: 'Delete Sessions',
-      icon: <ExclamationCircleOutlined/>,
+      icon: <ExclamationCircleOutlined />,
       content: 'Are you sure you want to delete the selected sessions?',
       onOk() {
         deleteSession();
-      }
+      },
     });
   }
 
@@ -34,7 +41,8 @@ export default function SessionToolbar() {
   function updateSession() {
     if (selectedRows && selectedRows[0]) {
       const dataForForm = {
-        ...sessions[selectedRows[0]], id: selectedRows[0]
+        ...sessions[selectedRows[0]],
+        id: selectedRows[0],
       };
       dispatch(openSessionForm(dataForForm));
     }
@@ -42,7 +50,9 @@ export default function SessionToolbar() {
 
   async function deleteSession() {
     try {
-      await selectedRows.forEach((row: ReactText) => firestore.delete({ collection: 'sessions', doc: row as string }));
+      await selectedRows.forEach((row: ReactText) =>
+        firestore.delete({ collection: 'sessions', doc: row as string }),
+      );
       toast.info('Sessions successfully removed');
     } catch (e) {
       toast.error(e);
@@ -51,11 +61,26 @@ export default function SessionToolbar() {
 
   return (
     <>
-      <Button icon={<EditOutlined/>} disabled={selectedRows?.length !== 1} onClick={() => updateSession()}>Edit</Button>
-      <Button icon={<DeleteOutlined/>} disabled={!selectedRows?.length} className={styles.button}
-              onClick={showConfirm}>Delete</Button>
-      <Button type='primary' icon={<PlusOutlined/>} onClick={() => addSession()}
-              className={styles.button}>Add</Button>
+      <Button
+        icon={<EditOutlined />}
+        disabled={selectedRows?.length !== 1}
+        onClick={() => updateSession()}>
+        Edit
+      </Button>
+      <Button
+        icon={<DeleteOutlined />}
+        disabled={!selectedRows?.length}
+        className={styles.button}
+        onClick={showConfirm}>
+        Delete
+      </Button>
+      <Button
+        type="primary"
+        icon={<PlusOutlined />}
+        onClick={() => addSession()}
+        className={styles.button}>
+        Add
+      </Button>
     </>
   );
 }
