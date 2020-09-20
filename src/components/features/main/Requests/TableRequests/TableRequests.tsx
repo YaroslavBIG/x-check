@@ -8,27 +8,20 @@ import firebase from 'firebase';
 // TS-Interface
 interface Requests {
   key: string | number;
-  requestName: string;
+  task: string;
   status: string;
-  updateTime: string;
   author: string;
-  maxScore: number;
+  crossCheckSessionId: string;
 }
 
 // Network
 const transformRequests = (request: any) => {
-  const { id, status, updateTime, author, items, requestName } = request;
+  const { status, author, crossCheckSessionId, task } = request;
   return {
-    key: id,
-    requestName,
+    crossCheckSessionId,
+    task,
     status,
-    updateTime,
     author,
-    maxScore: items
-      ? items.reduce((acc: any, cur: any) => {
-          return acc + cur.maxScore;
-        }, 0)
-      : [],
   };
 };
 
@@ -40,7 +33,6 @@ const TableRequests = () => {
 
   useEffect(() => {
     const db = firebase.firestore();
-
     let requests: any = [];
 
     db.collection('requests')
@@ -148,12 +140,12 @@ const TableRequests = () => {
   // render-function for column-status
   const renderStatus = (status: string) => {
     let color;
-    if (status === 'published') {
+    if (status === 'PUBLISHED') {
       color = 'green';
-    } else if (status === 'draft') {
+    } else if (status === 'DRAFT') {
       color = 'orange';
     } else {
-      color = 'default';
+      color = 'DEFAULT';
     }
 
     return (
@@ -181,9 +173,9 @@ const TableRequests = () => {
   const columns = [
     {
       title: 'Request',
-      dataIndex: 'requestName',
-      key: 'requestName',
-      ...getColumnSearchProps('requestName'),
+      dataIndex: 'task',
+      key: 'task',
+      ...getColumnSearchProps('task'),
     },
     {
       title: 'Status',
@@ -194,19 +186,15 @@ const TableRequests = () => {
       onFilter: (value: any, record: any) => record.status.indexOf(value) === 0,
     },
     {
-      title: 'Last Update',
-      dataIndex: 'updateTime',
-      key: 'updateTime',
+      title: 'Session',
+      dataIndex: 'crossCheckSessionId',
+      key: 'crossCheckSessionId',
     },
     {
       title: 'Author',
       dataIndex: 'author',
       key: 'author',
-    },
-    {
-      title: 'Max Score',
-      dataIndex: 'maxScore',
-      key: 'maxScore',
+      ...getColumnSearchProps('author'),
     },
   ];
 
