@@ -1,0 +1,96 @@
+$accent-color: #1890ff;
+
+.self-check {
+
+  &__current-values {
+    display: flex;
+    justify-content: space-between;
+    margin: 1.5rem 0;
+
+    h3 {
+      color: $accent-color;
+      margin-bottom: 0;
+    }
+  }
+
+  .ant-collapse-header {
+    font-weight: bold;
+  }
+
+  .ant-collapse-content-box {
+    color: #595959;
+    padding-right: 0;
+    padding-left: 40px;
+  }
+
+  .ant-form-item {
+    margin-bottom: 0;
+  }
+
+  .item {
+    margin-bottom: 1rem;
+  }
+
+  .requirement {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+      
+    .task-info {
+      display: flex;
+      align-items: center;
+
+      .anticon {
+        margin-right: 8px;
+        font-size: 1.25rem;
+      }
+
+      &__requirement {
+        width: 143px;
+        margin-bottom: 0;
+      }
+    }
+
+    .tags {
+      display: flex;
+    }
+
+    .mark {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+  
+      .ant-input-number-sm {
+        width: 60px;
+        margin-right: 8px;
+      }
+  
+      .ant-radio-group {
+        width: 145px;
+
+        .ant-radio-wrapper {
+          margin-right: 0;
+        }
+
+        span.ant-radio + * {
+          padding-right: 0;
+        }
+      }
+    }
+  }
+
+  .comment {
+    color: $accent-color;
+    font-size: 0.75rem;
+    margin-bottom: 0;
+    margin-left: 28px;
+    cursor: pointer;
+  }
+
+  .ant-input {
+    width: calc(100% - 28px);
+    margin-left: 28px;
+    margin-top: 0.5rem;
+  }
+}
+ 

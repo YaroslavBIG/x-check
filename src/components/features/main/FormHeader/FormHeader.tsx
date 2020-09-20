@@ -5,7 +5,8 @@ import styles from './FormHeader.module.scss';
 
 interface FormHeaderProps {
   title: string,
-  onClose: () => void
+  onClose: () => void,
+  form?: any
 }
 
 const FormHeader = (props: FormHeaderProps) => { 
@@ -14,7 +15,7 @@ const FormHeader = (props: FormHeaderProps) => {
       <h2 className={styles.form__title}>{props.title}</h2>
       <div className={styles.form__buttons}> 
         <Button size="large" onClick={props.onClose}>Cancel</Button>
-        <Button htmlType="submit" type="primary" size="large" onClick={props.onClose}>Save</Button>
+        <Button htmlType="submit" type="primary" size="large" onClick={props.form.submit}>Save</Button>
       </div>
     </div>
   );

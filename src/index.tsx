@@ -6,11 +6,10 @@ import 'antd/dist/antd.css';
 import './index.scss';
 import {BrowserRouter} from 'react-router-dom';
 import firebase from 'firebase';
-
-import {configureStore} from './components/app/store/configureStore';
-import {createFirestoreInstance} from 'redux-firestore';
 import {ReactReduxFirebaseProvider} from 'react-redux-firebase';
 import {Provider} from 'react-redux';
+import {createFirestoreInstance} from 'redux-firestore';
+import {configureStore} from './components/app/store/configureStore';
 
 const store = configureStore();
 
