@@ -2,6 +2,7 @@ import { FirestoreSessionData } from './firestore-session.interface';
 import { ReactText } from 'react';
 import { Session } from './app-session.interface';
 import { TaskRecord } from './task.interface';
+import { Itask } from './TaskInterface';
 
 export interface SessionsRecord {
   [P: string]: FirestoreSessionData;
@@ -22,10 +23,11 @@ export interface SessionsState {
       photoURL: string;
     }
   },
+  taskStore : Itask,
   firestore: {
     status: {
       requesting: {
-        sessions: boolean;
+        [key: string]: boolean;
       }
     }
     data: {

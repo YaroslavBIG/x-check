@@ -14,6 +14,7 @@
     "@types/react-highlight-words": "^0.16.1",
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
+    "@types/redux-logger": "^3.0.8",
     "antd": "^4.6.1",
     "cuid": "^2.1.8",
     "firebase": "^7.17.1",
@@ -28,6 +29,7 @@
     "react-toastify": "^6.0.8",
     "redux": "^4.0.5",
     "redux-firestore": "^0.13.0",
+    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "typescript": "^3.7.5"
   },

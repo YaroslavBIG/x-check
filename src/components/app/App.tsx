@@ -4,10 +4,8 @@ import 'antd/dist/antd.css';
 import NavigationPanel from '../features/main/NavigationPanel/NavigationPanel';
 
 const App = () => {
-    return (
-        <NavigationPanel/>
-    )
-}
+	return <NavigationPanel />;
+};
 
 /*export interface AuthRouteState {
   login: { defaultPath: string },
