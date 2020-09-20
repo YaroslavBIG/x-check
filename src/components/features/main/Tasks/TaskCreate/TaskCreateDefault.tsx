@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 import { Form, Select, Input, Button } from 'antd';
 import { TaskHeader } from './TaskHeader';
-import { taskStatus, Itask, Iitem } from 'interfaces/TaskInterface';
-import { TaskContext } from './TaskContext';
+import { taskStatus, Itask, Iitem, ItaskStore } from 'interfaces/TaskInterface';
+import { initialState, TaskContext } from './TaskContext';
 import { TaskAccordion } from './Accordion/TaskAccordion';
 import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
 import { toast } from 'react-toastify';
@@ -14,85 +14,82 @@ const { Option } = Select;
 const { TextArea } = Input;
 export const TaskCreateDefault: React.FC = () => {
 	const [ form ] = Form.useForm();
-  const {
-    newTask,
-    setNewTask,
-    items,
-    newTaskForSubmit,
-    setNewTaskForSubmit,
-    setAddTask,
-    oldTaskName,
-    setOldTaskName
-  } = useContext(TaskContext);
+	const {
+		newTask,
+		setNewTask,
+		items,
+		newTaskForSubmit,
+		setNewTaskForSubmit,
+		setAddTask,
+		oldTaskName,
+		setOldTaskName
+	} = useContext(TaskContext);
 
-  useFirestoreConnect([ { collection: 'tasks' } ]);
+	useFirestoreConnect([ { collection: 'tasks' } ]);
 
-  const updFirestore = useFirestore();
+	const updFirestore = useFirestore();
 
-	interface taskStore {
-		firestore: {
-			data: {
-				tasks: { [key: string]: Itask };
-			};
-		};
-	}
+	const allTask = useSelector((store: ItaskStore) => store.firestore.data.tasks);
 
-  const allTask = useSelector((taskStore: taskStore) => taskStore.firestore.data.tasks);
-
-  const submitNewTaskInfirebase = async () => {
-    try {
-      await updFirestore.collection('tasks').add(newTaskForSubmit)
-    } catch {
-      toast.error('something went wrong')
-    }
-  };
+	const submitNewTaskInfirebase = async () => {
+		try {
+			await updFirestore.collection('tasks').add(newTaskForSubmit);
+		} catch (error) {
+			toast.error('something went wrong', error);
+		}
+	};
 
 	const updateTaskInfirebase = async (taskKey: string) => {
-     try { await updFirestore.collection('tasks').doc(taskKey).update(newTaskForSubmit)
-    } catch {
-      toast.error('something went wrong')
-    }
-  };
+		try {
+			await updFirestore.collection('tasks').doc(taskKey).update(newTaskForSubmit);
+		} catch (error) {
+			toast.error('something went wrong', error);
+		}
+	};
 
 	const submitOnFireBase = () => {
 		for (const task in allTask) {
 			if (allTask[task] === Object(allTask[task])) {
 				for (const item in allTask[task]) {
 					if (item === 'id' && allTask[task].id === (oldTaskName || newTaskForSubmit.id)) {
-            setOldTaskName(newTaskForSubmit.id)
-            return updateTaskInfirebase(task);
+						setOldTaskName(newTaskForSubmit.id);
+						return updateTaskInfirebase(task);
 					}
 				}
 			}
 		}
 		return submitNewTaskInfirebase();
-  };
+	};
 
-  useEffect(
-      () => {
-      setNewTask((prev: Itask) => ({
-			...prev,
-      items: items
-    }))
-    }, [items, setNewTask]);
+	useEffect(
+		() => {
+			setNewTask((prev: Itask) => ({
+				...prev,
+				items: items
+			}));
+		},
+		[ items, setNewTask ]
+	);
 
 	const updateSubmitStore = (values: any) => {
 		setNewTask((prev: Itask) => ({
 			...prev,
 			...values,
-      items: items,
-    }));
+			items: items
+		}));
 
 		setNewTaskForSubmit((prev: Itask) => ({
 			...prev,
-			...values,
+      ...values,
+      id: values.id || newTask.id,
 			author: 'Get Name from login', // TODO: 'Get Name from login'
 			maxScore: items.reduce((acc: number, item: Iitem) => {
 				return acc + item.maxScore;
 			}, 0),
 			description: values.description || newTask.description,
 			categoriesOrder: newTask.categoriesOrder,
-			items: items
+			items: items,
+			lastUpdate: new Date().toLocaleDateString()
 		}));
 	};
 
@@ -104,35 +101,38 @@ export const TaskCreateDefault: React.FC = () => {
 
 	const handleFormSubmit = async () => {
 		const values = form.getFieldsValue();
-		await updateSubmitStore(values);
-		toast.success('Task was submited');
+    await updateSubmitStore(values);
+    toast.success('Task was submited');
 	};
 
 	const onFinish = async (values: object) => {
-		await submitOnFireBase();
+    await submitOnFireBase();
+    setStateShowDrawer(false);
+    setNewTask(initialState);
+    form.resetFields();
 	};
 
 	const onFinishFailed = (errorInfo: object) => {
 		toast.error(errorInfo);
-  };
-  
-  const { setStateShowDrawer } = useContext(TaskDrawerContext);
+	};
+
+	const { setStateShowDrawer } = useContext(TaskDrawerContext);
 
 	const onReset = (): void => {
-    form.resetFields();
-    setStateShowDrawer(false)
+		form.resetFields();
+		setStateShowDrawer(false);
 	};
 
 	useEffect(
 		() => {
-      form.setFieldsValue(newTask);
+			form.setFieldsValue(newTask);
 			setNewTaskForSubmit((prev: Itask) => ({
 				...prev,
 				categoriesOrder: newTask.categoriesOrder,
 				items: items
 			}));
 		},
-		[newTask, items, setNewTaskForSubmit, form]
+		[ newTask, items, setNewTaskForSubmit, form ]
   );
 
 	return (
@@ -143,8 +143,8 @@ export const TaskCreateDefault: React.FC = () => {
 					<Form.Item
 						label='Satus'
 						name='state'
-            rules={[ { required: true, message: 'Please select status!' } ]}
-            initialValue={newTask.state}
+						rules={[ { required: true, message: 'Please select status!' } ]}
+						initialValue={taskStatus.DRAFT}
 					>
 						<Select placeholder='Select status' aria-required style={{ width: 120 }} onChange={() => 1}>
 							<Option value={taskStatus.DRAFT}>{taskStatus.DRAFT}</Option>
@@ -154,17 +154,17 @@ export const TaskCreateDefault: React.FC = () => {
 					</Form.Item>
 				</div>
 				<div className='task-title'>
-					<Form.Item label='Title' name='id' rules={[ { required: true, message: 'Please input title!' } ]} >
+					<Form.Item label='Title' name='id' rules={[ { required: true, message: 'Please input title!' } ]}>
 						<Input placeholder='Type up to 30 characters' maxLength={30} />
 					</Form.Item>
 				</div>
 				<div className='task-description'>
-					<Form.Item label='Description' name='description' >
+					<Form.Item label='Description' name='description'>
 						<TextArea placeholder='Enter description here' autoSize={{ minRows: 2, maxRows: 10 }} />
 					</Form.Item>
 				</div>
 			</Form>
-			<div className='accordion'>{newTask.categoriesOrder.length ? <TaskAccordion /> : null}</div>
+			<div className='accordion'>{newTask?.categoriesOrder?.length ? <TaskAccordion /> : null}</div>
 			<div className='task-add-category'>
 				<Button type='default' size='middle' onClick={handleAddCategory} icon={<PlusOutlined />}>
 					{' '}

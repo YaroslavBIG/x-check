@@ -22,7 +22,8 @@ export interface Itask {
 	maxScore?: number;
 	categoriesOrder: Array<string>;
 	description?: string;
-	items?: Array<Iitem>;
+  items?: Array<Iitem>;
+  lastUpdate?: string
 }
 
 export interface ITaskLayoutProps {
@@ -33,4 +34,12 @@ export interface ITaskLayoutProps {
 export interface ItaskCategoryValues {
 	name: string;
 	order: number;
+}
+
+export interface ItaskStore {
+  firestore: {
+    data: {
+      tasks: { [key: string]: Itask };
+    };
+  };
 }

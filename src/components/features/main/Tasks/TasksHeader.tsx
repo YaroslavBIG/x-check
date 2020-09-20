@@ -3,15 +3,36 @@ import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, PlusOutlined }
 import { Button, Modal } from 'antd';
 import React, { useContext } from 'react';
 import { TaskDrawerContext } from './TaskDrawer/TaskDrawerContext';
+import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
+import { toast } from 'react-toastify';
 
 export const TasksHeader = () => {
 	const { confirm } = Modal;
 
-	const { stateShowDrawer, setStateShowDrawer } = useContext(TaskDrawerContext);
+	const { setStateShowDrawer, selectedTasks } = useContext(TaskDrawerContext);
 
 	const showDrawer = () => {
 		setStateShowDrawer(true);
 	};
+
+	useFirestoreConnect([ { collection: 'tasks' } ]);
+
+	const updFirestore = useFirestore();
+
+  const deleteFromFirebase = async (docName: string) => {
+    try {
+      updFirestore.collection('tasks').doc(docName).delete()
+    } catch (error) {
+      toast.error(error)
+    }
+  }
+
+  const deleteDocs = async (array: string[]) => {
+  for (const item of array) {
+    await deleteFromFirebase(item);
+  }
+    toast.success('Task deleted')
+  }
 
 	function showConfirm() {
 		confirm({
@@ -19,24 +40,20 @@ export const TasksHeader = () => {
 			icon: <ExclamationCircleOutlined />,
 			content: 'Are you sure you want to delete the selected sessions?',
 			onOk() {
-				// deleteSession();
+				if(selectedTasks?.length){
+          deleteDocs(selectedTasks)
+				}
 			}
 		});
 	}
 
-	// disabled={selectedRows?.length !== 1}
-	// disabled={!selectedRows?.length}
-
 	return (
 		<div className='tasks-header'>
-			<Button icon={<EditOutlined />} className='tasks-header--button' onClick={() => 'updateSession()'}>
-				Edit
-			</Button>
-			<Button icon={<DeleteOutlined />} className={'tasks-header--button'} onClick={showConfirm}>
+			<Button danger icon={<DeleteOutlined />} className={'tasks-header--button'} onClick={showConfirm}>
 				Delete
 			</Button>
-			<Button type='primary' icon={<PlusOutlined />} onClick={showDrawer}>
-				Add
+			<Button type='primary' onClick={showDrawer}>
+			  <PlusOutlined /> Add / <EditOutlined /> Edit
 			</Button>
 		</div>
 	);
