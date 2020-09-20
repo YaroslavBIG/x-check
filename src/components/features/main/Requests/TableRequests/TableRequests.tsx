@@ -33,7 +33,6 @@ const TableRequests = () => {
 
   useEffect(() => {
     const db = firebase.firestore();
-
     let requests: any = [];
 
     db.collection('requests')
