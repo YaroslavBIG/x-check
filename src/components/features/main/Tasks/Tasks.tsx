@@ -79,7 +79,7 @@ const Tasks = () => {
         db.collection('tasks').get()
             .then((query) => {
                 query.forEach((doc) => {
-                    console.log(doc.data())
+                    // console.log(doc.data())
                     tasks = [...tasks, transformTasks(doc.data())]
                 })
                 setTasks(tasks)
@@ -92,7 +92,7 @@ const Tasks = () => {
     const [selectedRowKeys, setSelectedRowKeys] = useState([])
 
     const onSelectChange = (selectedRowKeys: any) => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
+        // console.log('selectedRowKeys changed: ', selectedRowKeys);
         setSelectedRowKeys(selectedRowKeys)
     };
 
@@ -193,7 +193,7 @@ const Tasks = () => {
 
         return (
             <Tag color={color} key={status}>
-                {status.toUpperCase()}
+                {status?.toUpperCase()}
             </Tag>
         )
     }

@@ -13,35 +13,6 @@ import {configureStore} from './components/app/store/configureStore';
 
 const store = configureStore();
 
-/*import {configureStore} from './components/app/store/configureStore';
-import {createFirestoreInstance} from 'redux-firestore';
-import {ReactReduxFirebaseProvider} from 'react-redux-firebase';
-import {Provider} from 'react-redux';*/
-
-/*const store = configureStore();
-
-const rrfConfig = {
-  userProfile: 'users',
-  useFirestoreForProfile: true
-}
-
-const rrfProps = {
-  firebase,
-  config: rrfConfig,
-  dispatch: store.dispatch,
-  createFirestoreInstance
-}*/
-
-const config = {
-    apiKey: "AIzaSyDEuwssH0PSsk0KiMvkDdDacBkFllV8MXA",
-    authDomain: "app-x-check.firebaseapp.com",
-    databaseURL: "https://app-x-check.firebaseio.com",
-    projectId: "app-x-check",
-    storageBucket: "app-x-check.appspot.com",
-    messagingSenderId: "374080355837",
-    appId: "1:374080355837:web:adf558906d19174084ed94"
-};
-
 const rrfConfig = {
   userProfile: 'users',
   useFirestoreForProfile: true
@@ -53,17 +24,14 @@ const rrfProps = {
   dispatch: store.dispatch,
   createFirestoreInstance
 }
-
-firebase.initializeApp(config);
-firebase.firestore();
 
 ReactDOM.render(
   <Provider store={store}>
     <ReactReduxFirebaseProvider {...rrfProps}>
-    <BrowserRouter>
+      <BrowserRouter>
         <App/>
-    </BrowserRouter>
+      </BrowserRouter>
     </ReactReduxFirebaseProvider>
   </Provider>,
-    document.getElementById('root')
+  document.getElementById('root')
 );

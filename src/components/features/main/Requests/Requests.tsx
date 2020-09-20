@@ -1,36 +1,39 @@
 import React, { useState } from 'react';
+import styles from './Requests.module.scss';
+import './Requests';
+
+import HeaderRequests from './HeaderRequests/HeaderRequests';
+import TopPanelRequests from './TopPanelRequests/TopPanelRequests';
+import TableRequests from './TableRequests/TableRequests';
+
 import { Button, Form } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-// import CheckInfo from '../CheckInfo/CheckInfo';
 import RequestForm from '../RequestForm/RequestForm';
 
 export const Requests = () => {
-    // const [isCheckInfoVisible, setCheckInfoVisibility] = useState(false);
-    // const [isSelfCheckVisible, setSelfCheckVisibility] = useState(false);
-    const [isVisible, setVisibility] = useState(false);
-    const [form] = Form.useForm();
+  const [isVisible, setVisibility] = useState(false);
+  const [form] = Form.useForm();
 
-    // const handleCheckInfoClose = () => {
-    //     setCheckInfoVisibility(false);
-    //     form.resetFields();
-    // }
-
-    const handleClose = () => {
+  const handleClose = () => {
         setVisibility(false);
         form.resetFields();
-    }
+  }
 
-    // const handleFormSubmit = () => {
-    //     setSelfCheckVisibility(false);
-    //     form.resetFields();
-    // }
-    return (
-        <div>
-            <h1>Requests</h1>
-            {/* <Button icon={<EditOutlined/>} onClick={() => setCheckInfoVisibility(true)}>Show check info form</Button> */}
-            <Button icon={<EditOutlined/>} onClick={() => setVisibility(true)}>Show self check form</Button>
-            {/* <CheckInfo isVisible={isCheckInfoVisible} onClose={handleCheckInfoClose} form={form}/> */}
-            <RequestForm isVisible={isVisible} onClose={handleClose} form={form}/>
-        </div>
-    );
+  return (
+    <div className={styles.Requests__container}>
+      <HeaderRequests />
+
+      <Button
+        className={styles.Requests__btn}
+        icon={<EditOutlined />}
+        onClick={() => setVisibility(true)}>
+        Show request form
+      </Button>
+      <RequestForm isVisible={isVisible} onClose={handleClose} form={form}/>
+      <TopPanelRequests />
+      <div>
+        <TableRequests />
+      </div>
+    </div>
+  );
 };

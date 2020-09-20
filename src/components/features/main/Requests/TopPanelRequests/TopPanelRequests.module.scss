@@ -1,0 +1,32 @@
+.topPanelRequests {
+    &__container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 40px;
+    }
+
+    &__crud {
+        &__delete {
+            margin-right: 25px;
+            cursor: pointer;
+        }
+
+        &__lock {
+            margin-right: 25px;
+            cursor: pointer;
+        }
+
+        &__edit {
+            margin-right: 25px;
+            cursor: pointer;
+        }
+
+        &__btn {
+            margin-right: 15px;
+        }
+
+        &__info {
+            cursor: pointer;
+        }
+    }
+}
