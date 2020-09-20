@@ -46,6 +46,7 @@ export const TaskContextState = (props: ITaskLayoutProps) => {
 				setRefactorItem(null);
 			}
 		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[taskState]
 	);
 
