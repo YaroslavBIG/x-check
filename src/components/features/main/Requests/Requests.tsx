@@ -24,18 +24,13 @@ export const Requests = () => {
     //     setSelfCheckVisibility(false);
     //     form.resetFields();
     // }
-
-    const handleFormSubmit = () => {
-        setVisibility(false);
-        form.resetFields();
-    }
     return (
         <div>
             <h1>Requests</h1>
             {/* <Button icon={<EditOutlined/>} onClick={() => setCheckInfoVisibility(true)}>Show check info form</Button> */}
             <Button icon={<EditOutlined/>} onClick={() => setVisibility(true)}>Show self check form</Button>
             {/* <CheckInfo isVisible={isCheckInfoVisible} onClose={handleCheckInfoClose} form={form}/> */}
-            <RequestForm isVisible={isVisible} onClose={handleClose} onFormSubmit={handleFormSubmit} form={form}/>
+            <RequestForm isVisible={isVisible} onClose={handleClose} form={form}/>
         </div>
     );
 };

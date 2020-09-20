@@ -29,9 +29,6 @@ interface TasksState {
   }
 }
 
-const initialFormValues = {
-  values: {}
-};
 
 const Selfcheck = (props: SelfcheckProps) => {
   const { isVisible, hide, setselfGradeValues, form, taskId, totalPoints, setTotalPoints, checkedRequirements, setCheckedRequirements } = props;
@@ -97,7 +94,7 @@ const Selfcheck = (props: SelfcheckProps) => {
     }
     >
     <div className="self-check">
-        <Form name="self-check" form={form} onFinish={onFinish} onValuesChange={onValuesChange} initialValues={initialFormValues} >
+        <Form name="self-check" form={form} onFinish={onFinish} onValuesChange={onValuesChange} initialValues={undefined} >
           <div className="self-check__current-values">
               <h3>Total points: {totalPoints}/{isVisible && tasks[taskId].maxScore}</h3>
               <h3>Checked requirements: {checkedRequirements}/{isVisible && tasks[taskId].items.length}</h3>
@@ -106,7 +103,10 @@ const Selfcheck = (props: SelfcheckProps) => {
             {(tasks && isVisible) &&
                 tasks[taskId].categoriesOrder.map((category: string) => (
                   <Panel header={category} key={category}>
-                    {tasks[taskId].items.map((item: TaskItem, ind: number) => item.category === category && <CategoryItem item={item} key={item.id} />)}
+                    {tasks[taskId].items.map((item: TaskItem, ind: number) => {
+                      return item.category === category && <CategoryItem item={item} key={item.id} />;
+                    }
+                    )}
                   </Panel>
                 ))
             }

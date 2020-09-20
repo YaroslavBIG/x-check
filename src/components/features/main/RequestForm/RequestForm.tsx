@@ -21,7 +21,14 @@ interface CollectionsState {
   }
 }
 
+export enum RequestStatus {
+  DRAFT = 'Draft',
+  PUBLISHED = 'Published',
+  COMPLETED = 'Completed'
+}
+
 const RequestForm = (props: any) => {
+  const { isVisible, onClose, form} = props;
   const [isSelfcheckVisible, setSelfcheckVisibility] = useState(false);
   const [taskId, setTaskId] = useState('');
   const [selfGradeValues, setselfGradeValues] = useState({checkedRequirements: 0});
@@ -38,7 +45,7 @@ const RequestForm = (props: any) => {
 
   const addSelfcheck = async () => {
     try {
-      await props.form.validateFields(['taskId']);
+      await form.validateFields(['taskId']);
       setSelfcheckVisibility(true);
     } catch (errorInfo) {
       toast.error(errorInfo);
@@ -47,7 +54,7 @@ const RequestForm = (props: any) => {
 
   const onFinish = async (values: any) => {
     try {
-      await props.form.validateFields();
+      await form.validateFields();
       if ((!isRequired) || (isRequired && taskId && selfGradeValues.checkedRequirements === tasks[taskId].items.length)) {
         console.log('Received values of form: ', values);
         Object.keys(values).forEach((key: string) => {
@@ -59,7 +66,7 @@ const RequestForm = (props: any) => {
         selfcheckForm.resetFields();
         setTotalPoints(0);
         setCheckedRequirements(0);
-        props.onClose();
+        onClose();
         firestore.collection('requests').add({
           selfGrade: selfGradeValues, 
           task: tasks[taskId].id,
@@ -81,7 +88,7 @@ const RequestForm = (props: any) => {
     selfcheckForm.resetFields();
     setTotalPoints(0);
     setCheckedRequirements(0);
-    props.onClose();
+    onClose();
   }
 
   const handleStatusChange = (value: string) => {
@@ -97,15 +104,15 @@ const RequestForm = (props: any) => {
     <>
     <Drawer 
       closable={false}
-      visible={props.isVisible}
+      visible={isVisible}
       placement='left'
       width={600}
       title={
-        <FormHeader title="Request" onClose={handleClose} form={props.form}/>
+        <FormHeader title="Request" onClose={handleClose} form={form}/>
       }
     >
       <div className="request">
-        <Form name="request" layout="vertical" form={props.form} onFinish={onFinish}>
+        <Form name="request" layout="vertical" form={form} onFinish={onFinish}>
           <Form.Item
             style={{marginTop: '1.5rem'}}
             name="taskId"
@@ -168,9 +175,9 @@ const RequestForm = (props: any) => {
             ]}
           >
             <Select placeholder="Select a status" onChange={handleStatusChange}>
-              <Option value="DRAFT">Draft</Option>
-              <Option value="PUBLISHED">Published</Option>
-              <Option value="COMPLETED">Completed</Option>
+              <Option value="DRAFT">{RequestStatus.DRAFT}</Option>
+              <Option value="PUBLISHED">{RequestStatus.PUBLISHED}</Option>
+              <Option value="COMPLETED">{RequestStatus.COMPLETED}</Option>
             </Select>
           </Form.Item>
           <Button className="self-check-button" size="large" onClick={addSelfcheck} >
