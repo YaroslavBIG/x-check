@@ -99,6 +99,7 @@ const Selfcheck = (props: SelfcheckProps) => {
               <h3>Total points: {totalPoints}/{isVisible && tasks[taskId].maxScore}</h3>
               <h3>Checked requirements: {checkedRequirements}/{isVisible && tasks[taskId].items.length}</h3>
           </div>
+          <p>{(tasks && isVisible) && tasks[taskId].description}</p>
           <Collapse bordered={false} style={{backgroundColor: 'white'}}>
             {(tasks && isVisible) &&
                 tasks[taskId].categoriesOrder.map((category: string) => (
