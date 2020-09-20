@@ -253,7 +253,7 @@ export const Tasks = () => {
     key: 'action',
     render: (values: rows) => (
       <Space size="middle">
-        <Button type='primary' onClick={() => dispatch(taskDescriptionVisible(true, values.key))} >Description</Button>
+        <Button type='default' onClick={() => dispatch(taskDescriptionVisible(true, values.key))} >Description</Button>
       </Space>
     ),
   },
