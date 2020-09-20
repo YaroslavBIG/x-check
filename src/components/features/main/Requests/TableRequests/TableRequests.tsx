@@ -194,6 +194,7 @@ const TableRequests = () => {
       title: 'Author',
       dataIndex: 'author',
       key: 'author',
+      ...getColumnSearchProps('author'),
     },
   ];
 
