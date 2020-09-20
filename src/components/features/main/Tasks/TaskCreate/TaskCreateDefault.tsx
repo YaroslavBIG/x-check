@@ -82,7 +82,7 @@ export const TaskCreateDefault: React.FC = () => {
 			...prev,
       ...values,
       id: values.id || newTask.id,
-			author: 'Get Name from login', // TODO: 'Get Name from login'
+			author: 'Author', // TODO: 'Get Name from login'
 			maxScore: items.reduce((acc: number, item: Iitem) => {
 				return acc + item.maxScore;
 			}, 0),

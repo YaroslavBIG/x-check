@@ -17,10 +17,6 @@ import { deleteTask, setTask, taskDescriptionVisible } from './TaskCreate/taskRe
 import { ToastContainer } from 'react-toastify';
 import { TaskDescription } from './TaskDrawer/TaskDescription/TaskDescription';
 
-// TODO change any-type to actual-type
-// TODO remove comments
-
-// TS-Interface
 interface Tasks {
 	key: string | number;
 	taskName: string;
@@ -30,7 +26,6 @@ interface Tasks {
 	maxScore: number;
 }
 
-// Network
 const transformTasks = (tasks: any, docId: string) => {
   const { id, state, lastUpdate, author, maxScore } = tasks;
 
@@ -44,7 +39,6 @@ const transformTasks = (tasks: any, docId: string) => {
 	};
 };
 
-/*<Tasks[]>*/
 
 export const Tasks = () => {
   const dispatch = useDispatch();
@@ -78,8 +72,6 @@ export const Tasks = () => {
 		});
 	}, [allTask]);
 
-	//Block of Selected row logic
-
 
 	const onSelectChange = (selectedRowKeys: (string | number)[] | undefined) => {
     setSelectedRowKeys(selectedRowKeys);
@@ -90,7 +82,6 @@ export const Tasks = () => {
 		onChange: onSelectChange
 	};
 
-	//Block of search logic
 	const [ search, setSearch ] = useState({
 		searchText: '',
 		searchedColumn: ''
@@ -169,7 +160,7 @@ export const Tasks = () => {
 			)
 	});
 
-	// render-function for column-status
+
 	const renderStatus = (status: string) => {
     let color;
 
@@ -196,7 +187,7 @@ export const Tasks = () => {
 
 		return <Tag color={color}>{status?.toUpperCase()}</Tag>;
 	};
-	// collection of status for column-status
+
 	const filtersStatus = [
 		{
 			text: 'Published',
