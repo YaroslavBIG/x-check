@@ -16,8 +16,9 @@ interface Requests {
 
 // Network
 const transformRequests = (request: any) => {
-  const { status, author, crossCheckSessionId, task } = request;
+  const {id, status, author, crossCheckSessionId, task } = request;
   return {
+    key:id,
     crossCheckSessionId,
     task,
     status,
@@ -30,6 +31,7 @@ const transformRequests = (request: any) => {
 const TableRequests = () => {
   //Tasks block
   const [requests, setRequests] = useState<Requests[]>([]);
+  const [ selectedRowKeys, setSelectedRowKeys ] = useState<(string | number)[] | undefined>([]);
 
   useEffect(() => {
     const db = firebase.firestore();
@@ -46,16 +48,14 @@ const TableRequests = () => {
   }, []);
 
   //Block of Selected row logic
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-
-  const onSelectChange = (selectedRowKeys: any) => {
+  const onSelectChange = (selectedRowKeys: (string | number)[] | undefined) => {
     setSelectedRowKeys(selectedRowKeys);
-  };
+	};
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
+	const rowSelection = {
+		selectedRowKeys,
+		onChange: onSelectChange
+	};
 
   //Block of search logic
   const [search, setSearch] = useState({

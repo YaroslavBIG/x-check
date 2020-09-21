@@ -9,9 +9,6 @@ const { Search } = Input;
 const TopPanelRequests = () => {
   return (
     <div className={styles.topPanelRequests__container}>
-      <div className={styles.topPanelRequests__search}>
-        <Search placeholder="Search" onSearch={(value) => alert(value)} style={{ width: 200 }} />
-      </div>
       <div className={styles.topPanelRequests__crud}>
         <DeleteOutlined className={styles.topPanelRequests__crud__delete} />
         <LockOutlined className={styles.topPanelRequests__crud__lock} />
