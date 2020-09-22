@@ -8,15 +8,15 @@ import TableRequests from './TableRequests/TableRequests';
 
 import { Button, Form } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-import RequestForm from '../RequestForm/RequestForm';
+import CheckInfo from '../CheckInfo/CheckInfo';
 
 export const Requests = () => {
   const [isVisible, setVisibility] = useState(false);
   const [form] = Form.useForm();
 
   const handleClose = () => {
-        setVisibility(false);
-        form.resetFields();
+    setVisibility(false);
+    form.resetFields();
   }
 
   return (
@@ -27,9 +27,9 @@ export const Requests = () => {
         className={styles.Requests__btn}
         icon={<EditOutlined />}
         onClick={() => setVisibility(true)}>
-        Show request form
+        Show check form
       </Button>
-      <RequestForm isVisible={isVisible} onClose={handleClose} form={form}/>
+      <CheckInfo isVisible={isVisible} onClose={handleClose} form={form}/>
       <TopPanelRequests />
       <div>
         <TableRequests />

@@ -76,14 +76,14 @@ const Selfcheck = (props: SelfcheckProps) => {
     });
 
     setselfGradeValues({
-      ...values, 
-      totalPoints, 
+      ...values,
+      totalPoints,
       checkedRequirements
     });
   }
 
   return (
-    <Drawer 
+    <Drawer
       mask={false}
       closable={false}
       visible={isVisible}
@@ -105,7 +105,7 @@ const Selfcheck = (props: SelfcheckProps) => {
                 tasks[taskId].categoriesOrder.map((category: string) => (
                   <Panel header={category} key={category}>
                     {tasks[taskId].items.map((item: TaskItem, ind: number) => {
-                      return item.category === category && <CategoryItem item={item} key={item.id} />;
+                      return item.category === category && <CategoryItem item={item} key={item.id} isSelfcheck={true}/>;
                     }
                     )}
                   </Panel>

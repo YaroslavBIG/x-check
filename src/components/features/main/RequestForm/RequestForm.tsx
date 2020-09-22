@@ -8,6 +8,7 @@ import './RequestForm.scss';
 import { useSelector } from 'react-redux';
 import { useFirestoreConnect, useFirestore } from 'react-redux-firebase';
 import { toast, ToastContainer } from 'react-toastify';
+import { FormInstance } from 'antd/lib/form';
 
 const { Option } = Select;
 
@@ -27,7 +28,13 @@ export enum RequestStatus {
   COMPLETED = 'Completed'
 }
 
-const RequestForm = (props: any) => {
+interface CheckInfoProps {
+  isVisible: boolean,
+  onClose: () => void,
+  form: FormInstance
+}
+
+const RequestForm = (props: CheckInfoProps) => {
   const { isVisible, onClose, form} = props;
   const [isSelfcheckVisible, setSelfcheckVisibility] = useState(false);
   const [taskId, setTaskId] = useState('');
@@ -68,7 +75,7 @@ const RequestForm = (props: any) => {
         setCheckedRequirements(0);
         onClose();
         firestore.collection('requests').add({
-          selfGrade: selfGradeValues, 
+          selfGrade: selfGradeValues,
           task: tasks[taskId].id,
           ...values,
           id: `rev-req-${Object.keys(requests).length + 1}`
@@ -102,7 +109,7 @@ const RequestForm = (props: any) => {
 
   return (
     <>
-    <Drawer 
+    <Drawer
       closable={false}
       visible={isVisible}
       placement='left'
@@ -125,8 +132,8 @@ const RequestForm = (props: any) => {
             ]}
           >
             <Select placeholder="Select a task" onChange={(value: string) => setTaskId(value)}>
-              { tasks && 
-                Object.keys(tasks).map((ind: string) => <Option key={ind} value={ind}>{tasks[ind].id}</Option>) 
+              { tasks &&
+                Object.keys(tasks).map((ind: string) => <Option key={ind} value={ind}>{tasks[ind].id}</Option>)
               }
             </Select>
           </Form.Item>
@@ -135,14 +142,14 @@ const RequestForm = (props: any) => {
             label="Cross-check session"
             >
               <Select placeholder="Select a cross-check session">
-                { sessions && 
-                  Object.keys(sessions).map((ind: any) => <Option key={ind} value={sessions[ind].name}>{sessions[ind].name}</Option>) 
+                { sessions &&
+                  Object.keys(sessions).map((ind: any) => <Option key={ind} value={sessions[ind].name}>{sessions[ind].name}</Option>)
                 }
               </Select>
           </Form.Item>
-          <Form.Item 
+          <Form.Item
             name="pullRequest"
-            label="Link to PR" 
+            label="Link to PR"
             rules={[
               {
                 required: isRequired,
@@ -152,9 +159,9 @@ const RequestForm = (props: any) => {
           >
             <Input placeholder="Paste the link" />
           </Form.Item>
-          <Form.Item 
+          <Form.Item
             name="deployedVersion"
-            label="Link to deployed version" 
+            label="Link to deployed version"
             rules={[
               {
                 required: isRequired,
@@ -186,10 +193,10 @@ const RequestForm = (props: any) => {
         </Form>
       </div>
     </Drawer>
-    <Selfcheck 
+    <Selfcheck
       taskId={taskId}
-      isVisible={isSelfcheckVisible} 
-      hide={() => setSelfcheckVisibility(false)} 
+      isVisible={isSelfcheckVisible}
+      hide={() => setSelfcheckVisibility(false)}
       setselfGradeValues={(values: any) => setselfGradeValues(values)}
       form={selfcheckForm}
       totalPoints={totalPoints}

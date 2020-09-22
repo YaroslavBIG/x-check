@@ -5,7 +5,9 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 const { TextArea } = Input;
 
 interface CategoryItemProps {
-  item: any
+  item: TaskItem,
+  isSelfcheck: boolean,
+  selfGrade?: any
 }
 
 export interface TaskItem {
@@ -20,7 +22,7 @@ export interface TaskItem {
 }
 
 const CategoryItem = (props: CategoryItemProps) => {
-  const { item } = props;
+  const { item, isSelfcheck, selfGrade } = props;
 
   return (
     <div className="item">
@@ -49,10 +51,17 @@ const CategoryItem = (props: CategoryItemProps) => {
           </Form.Item>
         </div>
       </div>
-      <p className="comment">Add comment</p>         
-      <Form.Item name={`textarea-${item.id}`}>
-        <TextArea autoSize />
-      </Form.Item>
+      {!isSelfcheck && <p className="clarification comment">{selfGrade[`textarea-${item.id}`]}</p>}
+      <p className="clarification accent">{isSelfcheck ? 'Add comment' : 'Add review'}</p>
+      {isSelfcheck ?
+        <Form.Item name={`textarea-${item.id}`}>
+          <TextArea autoSize />
+        </Form.Item>
+        :
+        <Form.Item name={`review-${item.id}`}>
+          <TextArea autoSize />
+        </Form.Item>
+      }
     </div>
   );
 }
