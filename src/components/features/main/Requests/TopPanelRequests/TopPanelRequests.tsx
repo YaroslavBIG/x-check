@@ -1,10 +1,8 @@
 import React from 'react';
 import styles from './TopPanelRequests.module.scss';
-import { Input, Button } from 'antd';
+import { Button } from 'antd';
 import 'antd/dist/antd.css';
 import { DeleteOutlined, LockOutlined, EditOutlined, InfoCircleOutlined } from '@ant-design/icons';
-
-const { Search } = Input;
 
 const TopPanelRequests = () => {
   return (
