@@ -49,11 +49,16 @@ export const TasksHeader = () => {
 
 	return (
 		<div className='tasks-header'>
-			<Button danger icon={<DeleteOutlined />} className={'tasks-header--button'} onClick={showConfirm}>
+			<Button danger icon={<DeleteOutlined />} disabled={!selectedTasks?.length} className={'tasks-header--button'} onClick={showConfirm}>
 				Delete
 			</Button>
 			<Button type='primary' onClick={showDrawer}>
-			  <PlusOutlined /> Add / <EditOutlined /> Edit
+        {selectedTasks?.length ?
+          <EditOutlined />
+          :
+          <PlusOutlined />
+        }
+        {selectedTasks?.length ? 'Edit' : 'Add' }
 			</Button>
 		</div>
 	);
