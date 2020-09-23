@@ -12,14 +12,12 @@ const { Panel } = Collapse;
 interface CheckProps {
   isVisible: boolean,
   hide: () => void,
-  // setselfGradeValues: (values: any) => void,
+  setGradeValues: (values: any) => void,
   form: any,
   selfGrade: any,
   taskId: string,
   totalPoints: number,
   setTotalPoints: (number: number) => void,
-  // checkedRequirements: number,
-  // setCheckedRequirements: (number: number) => void,
 }
 
 interface TasksState {
@@ -32,56 +30,54 @@ interface TasksState {
 
 
 const Check = (props: CheckProps) => {
-  const { isVisible, hide/*, setselfGradeValues, */, form, taskId, selfGrade, totalPoints/*, setTotalPoints, checkedRequirements, setCheckedRequirements*/ } = props;
+  const { isVisible, hide, setGradeValues, form, taskId, selfGrade, totalPoints, setTotalPoints } = props;
   useFirestoreConnect([{ collection: 'tasks' }]);
   const tasks = useSelector((state : TasksState) => state.firestore.data.tasks);
+  // if (isVisible)
+  // {
+  //   setTotalPoints(selfGrade.totalPoints);
+  // }
 
   const handleClose = () => {
     hide();
     form.resetFields();
-    // setTotalPoints(0);
-    // setCheckedRequirements(0);
+    setTotalPoints(0);
   }
 
   const onFinish = (values: object) => {
     console.log('Received values of selfcheck form: ', values);
     hide();
-    // addSelfGrade(values);
+    addGrade(values);
   };
 
   const onValuesChange = (changedValues: object, allValues: any) : void => {
     console.log(allValues);
-    // setCurrentValues(allValues);
-    // form.setFieldsValue(allValues);
-    // console.log(form.getFieldValue());
+    setCurrentValues(allValues);
+    form.setFieldsValue(allValues);
   }
 
-  // const setCurrentValues = (values: any) => {
-  //   let totalPoints = 0;
-  //   let checkedRequirements = 0;
-  //   Object.keys(values).forEach((key: string) => {
-  //     if (typeof values[key] === 'number') {
-  //       totalPoints += values[key];
-  //       checkedRequirements++;
-  //     }
-  //   });
-  //   setTotalPoints(totalPoints);
-  //   setCheckedRequirements(checkedRequirements);
-  // }
+  const setCurrentValues = (values: any) => {
+    let totalPoints = 0;
+    Object.keys(values).forEach((key: string) => {
+      if (typeof values[key] === 'number' && key !== 'checkedRequirements' && key !== 'totalPoints') {
+        totalPoints += values[key];
+      }
+    });
+    setTotalPoints(totalPoints);
+  }
 
-  // const addSelfGrade = (values: any) => {
-  //   Object.keys(values).forEach((key: string) => {
-  //     if (values[key] === undefined) {
-  //       delete values[key];
-  //     }
-  //   });
+  const addGrade = (values: any) => {
+    Object.keys(values).forEach((key: string) => {
+      if (values[key] === undefined) {
+        delete values[key];
+      }
+    });
 
-  //   setselfGradeValues({
-  //     ...values,
-  //     totalPoints,
-  //     checkedRequirements
-  //   });
-  // }
+    setGradeValues({
+      ...values,
+      totalPoints,
+    });
+  }
 
   return (
     <Drawer

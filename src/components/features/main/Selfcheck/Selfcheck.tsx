@@ -12,7 +12,7 @@ const { Panel } = Collapse;
 interface SelfcheckProps {
   isVisible: boolean,
   hide: () => void,
-  setselfGradeValues: (values: any) => void,
+  setSelfGradeValues: (values: any) => void,
   form: any,
   taskId: string,
   totalPoints: number,
@@ -31,7 +31,7 @@ interface TasksState {
 
 
 const Selfcheck = (props: SelfcheckProps) => {
-  const { isVisible, hide, setselfGradeValues, form, taskId, totalPoints, setTotalPoints, checkedRequirements, setCheckedRequirements } = props;
+  const { isVisible, hide, setSelfGradeValues, form, taskId, totalPoints, setTotalPoints, checkedRequirements, setCheckedRequirements } = props;
   useFirestoreConnect([{ collection: 'tasks' }]);
   const tasks = useSelector((state : TasksState) => state.firestore.data.tasks);
 
@@ -75,7 +75,7 @@ const Selfcheck = (props: SelfcheckProps) => {
       }
     });
 
-    setselfGradeValues({
+    setSelfGradeValues({
       ...values,
       totalPoints,
       checkedRequirements

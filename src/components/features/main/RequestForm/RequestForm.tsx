@@ -38,7 +38,7 @@ const RequestForm = (props: CheckInfoProps) => {
   const { isVisible, onClose, form} = props;
   const [isSelfcheckVisible, setSelfcheckVisibility] = useState(false);
   const [taskId, setTaskId] = useState('');
-  const [selfGradeValues, setselfGradeValues] = useState({checkedRequirements: 0});
+  const [selfGradeValues, setSelfGradeValues] = useState({checkedRequirements: 0});
   const [selfcheckForm] = Form.useForm();
   const [totalPoints, setTotalPoints] = useState(0);
   const [checkedRequirements, setCheckedRequirements] = useState(0);
@@ -197,7 +197,7 @@ const RequestForm = (props: CheckInfoProps) => {
       taskId={taskId}
       isVisible={isSelfcheckVisible}
       hide={() => setSelfcheckVisibility(false)}
-      setselfGradeValues={(values: any) => setselfGradeValues(values)}
+      setSelfGradeValues={(values: any) => setSelfGradeValues(values)}
       form={selfcheckForm}
       totalPoints={totalPoints}
       checkedRequirements={checkedRequirements}

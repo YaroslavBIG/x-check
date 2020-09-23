@@ -6,9 +6,10 @@ import styles from './CheckInfo.module.scss';
 import FormHeader from '../FormHeader/FormHeader';
 import CheckInfoListItem from './CheckInfoListItem/CheckInfoListItem';
 import { useSelector } from 'react-redux';
-import { useFirestoreConnect } from 'react-redux-firebase';
+import { useFirestoreConnect, useFirestore } from 'react-redux-firebase';
 import { FormInstance } from 'antd/lib/form';
 import Check from '../Check/Check';
+import { toast, ToastContainer } from 'react-toastify';
 
 const { Option } = Select;
 
@@ -29,13 +30,28 @@ const CheckInfo = (props: CheckInfoProps) => {
   const [isCheckVisible, setCheckVisibility] = useState(false);
   const [taskId, setTaskId] = useState('');
   const [totalPoints, setTotalPoints] = useState(0);
+  const [gradeValues, setGradeValues] = useState();
 
+  const firestore = useFirestore();
   useFirestoreConnect([ { collection: 'requests' }]);
   const requests = useSelector((state : any) => state.firestore.data.requests);
   const key = 'rRxw0Q3rh4tHOC2uzgBy';
 
+  const reviews = useSelector((state : any) => state.firestore.data.reviews);
+
   const onFinish = (values: any) => {
-    console.log('Received values: ', values);
+    console.log('Received values of form: ', values);
+    console.log(gradeValues);
+    checkForm.resetFields();
+    setTotalPoints(0);
+    props.onClose();
+    firestore.collection('reviews').add({
+      grade: gradeValues,
+      task: taskId,
+      ...values,
+      id: `rev-${Object.keys(reviews).length + 1}`
+    });
+    toast.info('Review was successfully send');
   };
 
   const addCheck = () => {
@@ -104,14 +120,23 @@ const CheckInfo = (props: CheckInfoProps) => {
         taskId={taskId}
         isVisible={isCheckVisible}
         hide={() => setCheckVisibility(false)}
-        // setselfGradeValues={(values: any) => setselfGradeValues(values)}
+        setGradeValues={(values: any) => setGradeValues(values)}
         form={checkForm}
         selfGrade={requests && requests[key].selfGrade}
         totalPoints={totalPoints}
         setTotalPoints={setTotalPoints}
-        // checkedRequirements={checkedRequirements}
-        // setCheckedRequirements={setCheckedRequirements}
       />
+       <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        />
    </>
   );
 }
