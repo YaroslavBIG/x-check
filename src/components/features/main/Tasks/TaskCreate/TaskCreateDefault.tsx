@@ -2,13 +2,14 @@ import React, { useContext, useEffect } from 'react';
 import { Form, Select, Input, Button } from 'antd';
 import { TaskHeader } from './TaskHeader';
 import { taskStatus, Itask, Iitem, ItaskStore } from 'interfaces/TaskInterface';
-import { initialState, TaskContext } from './TaskContext';
+import { TaskContext } from './TaskContext';
 import { TaskAccordion } from './Accordion/TaskAccordion';
 import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
 import { toast } from 'react-toastify';
 import { PlusOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { TaskDrawerContext } from '../TaskDrawer/TaskDrawerContext';
+import { TaskExport } from './TaskExport/TaskExport';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -22,14 +23,15 @@ export const TaskCreateDefault: React.FC = () => {
 		setNewTaskForSubmit,
 		setAddTask,
 		oldTaskName,
-		setOldTaskName
+    setOldTaskName,
+    resetTaskToInitialState
 	} = useContext(TaskContext);
 
 	useFirestoreConnect([ { collection: 'tasks' } ]);
 
 	const updFirestore = useFirestore();
 
-	const allTask = useSelector((store: ItaskStore) => store.firestore.data.tasks);
+  const allTask = useSelector((store: ItaskStore) => store.firestore.data.tasks);
 
 	const submitNewTaskInfirebase = async () => {
 		try {
@@ -100,16 +102,19 @@ export const TaskCreateDefault: React.FC = () => {
 	};
 
 	const handleFormSubmit = async () => {
+    form.validateFields()
+    .then(() => toast.success('Task was submitted'))
+    .catch((e) => toast.error(e));
 		const values = form.getFieldsValue();
     await updateSubmitStore(values);
-    toast.success('Task was submited');
+
 	};
 
 	const onFinish = async (values: object) => {
     await submitOnFireBase();
     setStateShowDrawer(false);
-    setNewTask(initialState);
     form.resetFields();
+    resetTaskToInitialState()
 	};
 
 	const onFinishFailed = (errorInfo: object) => {
@@ -120,7 +125,8 @@ export const TaskCreateDefault: React.FC = () => {
 
 	const onReset = (): void => {
 		form.resetFields();
-		setStateShowDrawer(false);
+    setStateShowDrawer(false);
+    resetTaskToInitialState();
 	};
 
 	useEffect(
@@ -139,9 +145,12 @@ export const TaskCreateDefault: React.FC = () => {
 		<div className='task'>
 			<Form layout='vertical' form={form} name='Task Create' onFinish={onFinish} onFinishFailed={onFinishFailed}>
 				<TaskHeader onReset={onReset} handleSubmit={handleFormSubmit} title='Create Task' />
+          <Form.Item >
+            <TaskExport />
+          </Form.Item>
 				<div className='task-status'>
 					<Form.Item
-						label='Satus'
+						label='Status'
 						name='state'
 						rules={[ { required: true, message: 'Please select status!' } ]}
 						initialValue={taskStatus.DRAFT}
