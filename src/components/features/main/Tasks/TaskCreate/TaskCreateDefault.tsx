@@ -10,6 +10,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { TaskDrawerContext } from '../TaskDrawer/TaskDrawerContext';
 import { TaskExport } from './TaskExport/TaskExport';
+import { IProfileState }from '../../CustomHeader/CustomHeader';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -32,6 +33,7 @@ export const TaskCreateDefault: React.FC = () => {
 	const updFirestore = useFirestore();
 
   const allTask = useSelector((store: ItaskStore) => store.firestore.data.tasks);
+  const profileName = useSelector((state: IProfileState) => state.firebase.profile.displayName);
 
 	const submitNewTaskInfirebase = async () => {
 		try {
@@ -78,13 +80,14 @@ export const TaskCreateDefault: React.FC = () => {
 			...prev,
 			...values,
 			items: items
-		}));
+    }));
+
 
 		setNewTaskForSubmit((prev: Itask) => ({
 			...prev,
       ...values,
       id: values.id || newTask.id,
-			author: 'Author', // TODO: 'Get Name from login'
+			author: profileName || 'Unknown author',
 			maxScore: items.reduce((acc: number, item: Iitem) => {
 				return acc + item.maxScore;
 			}, 0),

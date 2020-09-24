@@ -252,7 +252,7 @@ export const Tasks = () => {
 
 	return (
 		<TaskDrawerContextState selectedRowKeys={selectedRowKeys}>
-      <ToastContainer
+      {/* <ToastContainer
       position="top-center"
       autoClose={5000}
       hideProgressBar={false}
@@ -262,7 +262,7 @@ export const Tasks = () => {
       pauseOnFocusLoss
       draggable
       pauseOnHover
-    />
+    /> */}
 			<TaskDrawer>
 				<TaskLayout />
 			</TaskDrawer>

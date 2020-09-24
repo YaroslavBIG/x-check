@@ -55,7 +55,16 @@ const App = () => {
         :
         <Loading/>
       }
-      <ToastContainer position='bottom-right' hideProgressBar/>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover/>
     </>
   );
 };
