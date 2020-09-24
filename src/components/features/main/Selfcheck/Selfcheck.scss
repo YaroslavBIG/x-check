@@ -83,21 +83,31 @@ $accent-color: #1890ff;
     font-size: 0.75rem;
     margin-bottom: 0;
     margin-left: 28px;
-    cursor: pointer;
   }
 
   .comment {
     margin-bottom: 0.5rem;
   }
 
-  .accent {
-    color: $accent-color;
-  }
-
   .ant-input {
     width: calc(100% - 28px);
     margin-left: 28px;
     margin-top: 0.5rem;
+  }
+
+  .ant-form-item-label {
+    margin-left: 28px;
+    padding-bottom: 0;
+  }
+
+  .ant-form-item-label > label {
+    color: $accent-color;
+    font-size: 0.75rem;
+
+  }
+
+  .ant-form-item-explain {
+    margin-left: 28px;
   }
 }
 

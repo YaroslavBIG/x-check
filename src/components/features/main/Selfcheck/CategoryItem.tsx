@@ -7,7 +7,8 @@ const { TextArea } = Input;
 interface CategoryItemProps {
   item: TaskItem,
   isSelfcheck: boolean,
-  selfGrade?: any
+  selfGrade?: any,
+  changedValues?: any
 }
 
 export interface TaskItem {
@@ -22,8 +23,11 @@ export interface TaskItem {
 }
 
 const CategoryItem = (props: CategoryItemProps) => {
-  const { item, isSelfcheck, selfGrade } = props;
-
+  const { item, isSelfcheck, selfGrade, changedValues } = props;
+console.log(changedValues);
+  const handleChange = (id: any) => {
+    console.log(id);
+  }
   return (
     <div className="item">
       <div className="requirement">
@@ -43,7 +47,7 @@ const CategoryItem = (props: CategoryItemProps) => {
             <InputNumber size="small" min={item.minScore} max={item.maxScore}/>
           </Form.Item>
           <Form.Item name={`radio-group-${item.id}`}>
-            <Radio.Group>
+            <Radio.Group onChange={(e) => handleChange(item.id)}>
               <Radio value={0}>not performed</Radio>
               <Radio value={0.5*item.maxScore}>partially performed</Radio>
               <Radio value={item.maxScore}>performed</Radio>
@@ -52,13 +56,24 @@ const CategoryItem = (props: CategoryItemProps) => {
         </div>
       </div>
       {!isSelfcheck && <p className="clarification comment">{selfGrade[`textarea-${item.id}`]}</p>}
-      <p className="clarification accent">{isSelfcheck ? 'Add comment' : 'Add review'}</p>
       {isSelfcheck ?
-        <Form.Item name={`textarea-${item.id}`}>
+        <Form.Item
+          name={`textarea-${item.id}`}
+          label="Add comment"
+        >
           <TextArea autoSize />
         </Form.Item>
         :
-        <Form.Item name={`review-${item.id}`}>
+        <Form.Item
+          name={`review-${item.id}`}
+          label="Add review"
+          rules={[
+            {
+              required: changedValues?.includes(item.id),
+              message: 'Please select a status',
+            },
+          ]}
+        >
           <TextArea autoSize />
         </Form.Item>
       }

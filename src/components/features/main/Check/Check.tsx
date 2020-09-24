@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Drawer, Form, Collapse } from 'antd';
 import 'antd/dist/antd.css';
 import '../Selfcheck/Selfcheck.scss';
@@ -33,6 +33,8 @@ const Check = (props: CheckProps) => {
   const { isVisible, hide, setGradeValues, form, taskId, selfGrade, totalPoints, setTotalPoints } = props;
   useFirestoreConnect([{ collection: 'tasks' }]);
   const tasks = useSelector((state : TasksState) => state.firestore.data.tasks);
+  const [changedValues, setChangedValues] = useState<Array<string>>([]);
+
   // if (isVisible)
   // {
   //   setTotalPoints(selfGrade.totalPoints);
@@ -50,8 +52,20 @@ const Check = (props: CheckProps) => {
     addGrade(values);
   };
 
-  const onValuesChange = (changedValues: object, allValues: any) : void => {
-    console.log(allValues);
+  const onValuesChange = (changedValuesObject: any, allValues: any) : void => {
+    console.log(changedValuesObject, allValues);
+    Object.keys(changedValuesObject).forEach(key => {
+      if (!key.includes('review')) {
+        if (selfGrade[key] !== changedValuesObject[key]) {
+          setChangedValues(changedValues.concat([key.slice(12)]));
+        }
+        else {
+          const index = changedValues.indexOf(key.slice(12));
+          changedValues.splice(index, 1);
+        }
+      }
+    });
+    console.log(changedValues);
     setCurrentValue(allValues);
     form.setFieldsValue(allValues);
     console.log(form.getFieldValue());
@@ -93,7 +107,14 @@ const Check = (props: CheckProps) => {
     }
     >
     <div className="self-check">
-        <Form name="self-check" form={form} onFinish={onFinish} onValuesChange={onValuesChange} initialValues={selfGrade} >
+        <Form
+          name="self-check"
+          form={form}
+          onFinish={onFinish}
+          onValuesChange={onValuesChange}
+          initialValues={selfGrade}
+          layout="vertical"
+        >
           <div className="self-check__current-values">
               <h3>Total points: {totalPoints}/{isVisible && tasks[taskId].maxScore}</h3>
               <h3>Self-check points: {isVisible && selfGrade.totalPoints}/{isVisible && tasks[taskId].maxScore}</h3>
@@ -104,7 +125,7 @@ const Check = (props: CheckProps) => {
                 tasks[taskId].categoriesOrder.map((category: string) => (
                   <Panel header={category} key={category}>
                     {tasks[taskId].items.map((item: TaskItem, ind: number) => {
-                      return item.category === category && <CategoryItem item={item} key={item.id} isSelfcheck={false} selfGrade={selfGrade}/>;
+                      return item.category === category && <CategoryItem item={item} key={item.id} isSelfcheck={false} selfGrade={selfGrade} changedValues={changedValues}/>;
                     }
                     )}
                   </Panel>

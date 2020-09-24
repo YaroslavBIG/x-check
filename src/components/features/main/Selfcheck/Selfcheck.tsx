@@ -94,7 +94,14 @@ const Selfcheck = (props: SelfcheckProps) => {
     }
     >
     <div className="self-check">
-        <Form name="self-check" form={form} onFinish={onFinish} onValuesChange={onValuesChange} initialValues={undefined} >
+        <Form
+          name="self-check"
+          form={form}
+          onFinish={onFinish}
+          onValuesChange={onValuesChange}
+          initialValues={undefined}
+          layout="vertical"
+        >
           <div className="self-check__current-values">
               <h3>Total points: {totalPoints}/{isVisible && tasks[taskId].maxScore}</h3>
               <h3>Checked requirements: {checkedRequirements}/{isVisible && tasks[taskId].items.length}</h3>
