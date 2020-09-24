@@ -33,7 +33,7 @@ const CheckInfo = (props: CheckInfoProps) => {
   const [gradeValues, setGradeValues] = useState();
 
   const firestore = useFirestore();
-  useFirestoreConnect([ { collection: 'requests' }]);
+  useFirestoreConnect([ { collection: 'requests' }, { collection: 'reviews' } ]);
   const requests = useSelector((state : any) => state.firestore.data.requests);
   const key = 'rRxw0Q3rh4tHOC2uzgBy';
 
@@ -49,7 +49,8 @@ const CheckInfo = (props: CheckInfoProps) => {
       grade: gradeValues,
       task: taskId,
       ...values,
-      id: `rev-${Object.keys(reviews).length + 1}`
+      id: `rev-${Object.keys(reviews).length + 1}`,
+      requestId: requests[key].id
     });
     toast.info('Review was successfully send');
   };
@@ -105,9 +106,9 @@ const CheckInfo = (props: CheckInfoProps) => {
               ]}
             >
               <Select placeholder="Select a status" className={styles.select}>
-                <Option value={CheckStatus.DRAFT}>{CheckStatus.DRAFT}</Option>
-                <Option value={CheckStatus.PUBLISHED}>{CheckStatus.PUBLISHED}</Option>
-                <Option value={CheckStatus.COMPLETED}>{CheckStatus.COMPLETED}</Option>
+                <Option value="DRAFT">{CheckStatus.DRAFT}</Option>
+                <Option value="PUBLISHED">{CheckStatus.PUBLISHED}</Option>
+                <Option value="COMPLETED">{CheckStatus.COMPLETED}</Option>
               </Select>
             </Form.Item>
             <Button className={styles["check-info__button"]} size="large" onClick={addCheck}>

@@ -45,18 +45,19 @@ const Check = (props: CheckProps) => {
   }
 
   const onFinish = (values: object) => {
-    console.log('Received values of selfcheck form: ', values);
+    console.log('Received values ofcheck form: ', values);
     hide();
     addGrade(values);
   };
 
   const onValuesChange = (changedValues: object, allValues: any) : void => {
     console.log(allValues);
-    setCurrentValues(allValues);
+    setCurrentValue(allValues);
     form.setFieldsValue(allValues);
+    console.log(form.getFieldValue());
   }
 
-  const setCurrentValues = (values: any) => {
+  const setCurrentValue = (values: any) => {
     let totalPoints = 0;
     Object.keys(values).forEach((key: string) => {
       if (typeof values[key] === 'number' && key !== 'checkedRequirements' && key !== 'totalPoints') {
@@ -74,8 +75,9 @@ const Check = (props: CheckProps) => {
     });
 
     setGradeValues({
+      ...selfGrade,
       ...values,
-      totalPoints,
+      checkPoints: totalPoints,
     });
   }
 
