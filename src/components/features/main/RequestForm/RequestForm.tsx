@@ -7,8 +7,9 @@ import 'antd/dist/antd.css';
 import './RequestForm.scss';
 import { useSelector } from 'react-redux';
 import { useFirestoreConnect, useFirestore } from 'react-redux-firebase';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { FormInstance } from 'antd/lib/form';
+import { IProfileState } from '../CustomHeader/CustomHeader';
 
 const { Option } = Select;
 
@@ -49,6 +50,7 @@ const RequestForm = (props: CheckInfoProps) => {
   const tasks = useSelector((state : CollectionsState) => state.firestore.data.tasks);
   const sessions = useSelector((state : CollectionsState) => state.firestore.data.sessions);
   const requests = useSelector((state : CollectionsState) => state.firestore.data.requests);
+  const profile = useSelector((state: IProfileState) => state.firebase.profile);
 
   const addSelfcheck = async () => {
     try {
@@ -77,6 +79,7 @@ const RequestForm = (props: CheckInfoProps) => {
         firestore.collection('requests').add({
           selfGrade: selfGradeValues,
           task: tasks[taskId].id,
+          author: profile.displayName,
           ...values,
           id: `rev-req-${Object.keys(requests).length + 1}`
         });
@@ -138,7 +141,7 @@ const RequestForm = (props: CheckInfoProps) => {
             </Select>
           </Form.Item>
           <Form.Item
-            name="session"
+            name="crossCheckSessionId"
             label="Cross-check session"
             >
               <Select placeholder="Select a cross-check session">
@@ -204,17 +207,6 @@ const RequestForm = (props: CheckInfoProps) => {
       setTotalPoints={setTotalPoints}
       setCheckedRequirements={setCheckedRequirements}
     />
-    <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        />
   </>
   );
 }

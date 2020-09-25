@@ -9,7 +9,8 @@ import { useSelector } from 'react-redux';
 import { useFirestoreConnect, useFirestore } from 'react-redux-firebase';
 import { FormInstance } from 'antd/lib/form';
 import Check from '../Check/Check';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
+import { IProfileState } from '../CustomHeader/CustomHeader';
 
 const { Option } = Select;
 
@@ -39,6 +40,8 @@ const CheckInfo = (props: CheckInfoProps) => {
   const key = 'rRxw0Q3rh4tHOC2uzgBy';
 
   const reviews = useSelector((state : any) => state.firestore.data.reviews);
+  const profile = useSelector((state: IProfileState) => state.firebase.profile);
+
 
   const handleClose = () => {
     checkForm.resetFields();
@@ -58,7 +61,8 @@ const CheckInfo = (props: CheckInfoProps) => {
       task: taskId,
       ...values,
       id: `rev-${Object.keys(reviews).length + 1}`,
-      requestId: requests[key].id
+      requestId: requests[key].id,
+      author: profile.displayName
     });
     toast.info('Review was successfully send');
   };
@@ -86,7 +90,7 @@ const CheckInfo = (props: CheckInfoProps) => {
           <div className={styles['check-info']}>
             <ul>
               <CheckInfoListItem heading="Task" info={requests && requests[key].task}/>
-              <CheckInfoListItem heading="Cross-check session" info={requests && requests[key].session}/>
+              <CheckInfoListItem heading="Cross-check session" info={requests && requests[key].crossCheckSessionId}/>
               <CheckInfoListItem heading="Link to pull request">
                 <a href={requests && requests[key].pullRequest} target="_blank" rel="noopener noreferrer">
                   {requests && requests[key].pullRequest}
@@ -98,8 +102,8 @@ const CheckInfo = (props: CheckInfoProps) => {
                   </a>
               </CheckInfoListItem>
               <CheckInfoListItem heading="Student">
-                <Avatar className={styles.avatar} icon={<UserOutlined />} />
-                <span>Evan Flores</span>
+                <Avatar className={styles.avatar} src={profile.photoURL ? profile.photoURL : ''} icon={!profile.photoURL && <UserOutlined />}/>
+                <span>{profile.displayName}</span>
               </CheckInfoListItem>
               <CheckInfoListItem heading="Reviewer">
                 <Avatar className={styles.avatar} icon={<UserOutlined />} />
@@ -107,7 +111,7 @@ const CheckInfo = (props: CheckInfoProps) => {
               </CheckInfoListItem>
             </ul>
             <Form.Item
-              name="status"
+              name="state"
               label="Status"
               rules={[
                 {
@@ -141,17 +145,6 @@ const CheckInfo = (props: CheckInfoProps) => {
         changedValues={changedValues}
         setChangedValues={setChangedValues}
       />
-       <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        />
    </>
   );
 }

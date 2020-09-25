@@ -1,16 +1,9 @@
 import React, { useState } from 'react';
 import styles from './TopPanelRequests.module.scss';
-<<<<<<< HEAD
-import { Input, Button, Form } from 'antd';
+import { Button, Form } from 'antd';
 import 'antd/dist/antd.css';
 import { DeleteOutlined, LockOutlined, EditOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import RequestForm from '../../RequestForm/RequestForm';
-const { Search } = Input;
-=======
-import { Button } from 'antd';
-import 'antd/dist/antd.css';
-import { DeleteOutlined, LockOutlined, EditOutlined, InfoCircleOutlined } from '@ant-design/icons';
->>>>>>> dev
 
 const TopPanelRequests = () => {
   const [isVisible, setVisibility] = useState(false);
