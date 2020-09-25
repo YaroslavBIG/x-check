@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'antd/dist/antd.css';
-
+import { Route, Switch, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setDefaultPath } from '../features/login/loginReducer';
+import Loading from '../features/login/Loading/Loading';
+import Login from '../features/login/Login';
+import { XCheckPath } from '../../enum/app-paths.enum';
+import { isLoaded } from 'react-redux-firebase';
 import NavigationPanel from '../features/main/NavigationPanel/NavigationPanel';
+import { setRowSelection } from '../features/main/Sessions/SessionsReducer';
+import { ToastContainer } from 'react-toastify';
 
-const App = () => {
+/*const App = () => {
 	return <NavigationPanel />;
-};
+};*/
 
-/*export interface AuthRouteState {
+export interface AuthRouteState {
   login: { defaultPath: string },
   firebase: {
     auth: {
@@ -47,9 +55,18 @@ const App = () => {
         :
         <Loading/>
       }
-      <ToastContainer position='bottom-right' hideProgressBar/>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover/>
     </>
   );
-};*/
+};
 
 export default App;

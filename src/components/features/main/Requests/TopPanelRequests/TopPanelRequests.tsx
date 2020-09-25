@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import styles from './TopPanelRequests.module.scss';
+<<<<<<< HEAD
 import { Input, Button, Form } from 'antd';
 import 'antd/dist/antd.css';
 import { DeleteOutlined, LockOutlined, EditOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import RequestForm from '../../RequestForm/RequestForm';
 const { Search } = Input;
+=======
+import { Button } from 'antd';
+import 'antd/dist/antd.css';
+import { DeleteOutlined, LockOutlined, EditOutlined, InfoCircleOutlined } from '@ant-design/icons';
+>>>>>>> dev
 
 const TopPanelRequests = () => {
   const [isVisible, setVisibility] = useState(false);
@@ -17,9 +23,6 @@ const TopPanelRequests = () => {
 
   return (
     <div className={styles.topPanelRequests__container}>
-      <div className={styles.topPanelRequests__search}>
-        <Search placeholder="Search" onSearch={(value) => alert(value)} style={{ width: 200 }} />
-      </div>
       <div className={styles.topPanelRequests__crud}>
         <DeleteOutlined className={styles.topPanelRequests__crud__delete} />
         <LockOutlined className={styles.topPanelRequests__crud__lock} />
