@@ -1,10 +1,10 @@
-import React from 'react';
-import { useFirebase } from 'react-redux-firebase';
-import { useSelector } from 'react-redux';
-import styles from './CustomHeader.module.scss'
 import { Dropdown, Menu } from 'antd';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { useFirebase } from 'react-redux-firebase';
+import styles from './CustomHeader.module.scss';
 
-interface IProfileState {
+export interface IProfileState {
   firebase: {
     profile: {
       displayName: string;

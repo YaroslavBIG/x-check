@@ -32,18 +32,40 @@ export const TaskContextState = (props: ITaskLayoutProps) => {
 	const [ editCategory, setEditCategory ] = useState<string | Boolean>(false);
 	const [ editItem, setEditItem ] = useState<string | Boolean>(false);
 	const [ refactorItem, setRefactorItem ] = useState<Iitem | null>(null);
-	const [ oldTaskName, setOldTaskName ] = useState<string | undefined>();
+  const [ oldTaskName, setOldTaskName ] = useState<string | undefined>();
+  const [ uploudedTask, setUploudedTask ] = useState<Itask | null>(null)
+
+  const resetTaskToInitialState = () => {
+    setNewTask(initialState);
+    setNewTaskForSubmit(initialState);
+    setOldTaskName(initialState.id);
+    setRefactorItem(null);
+    setNewItems([]);
+  }
+
+  useEffect(() => {
+   if(uploudedTask) {
+     setNewTask({
+       ...uploudedTask
+     })
+     if(uploudedTask.items?.length){
+     setNewItems(
+       [...uploudedTask.items]
+     )}
+   }
+  }, [uploudedTask]);
 
 	useEffect(
 		() => {
 			if (taskStateId) {
-				setNewTask(taskState);
+        setNewTask(taskState);
+        if(taskState?.items?.length){
+        setNewItems(
+       [...taskState?.items]
+     )}
 				setOldTaskName(taskState.id);
 			} else {
-				setNewTask(initialState);
-				setNewTaskForSubmit(initialState);
-				setOldTaskName(initialState.id);
-				setRefactorItem(null);
+				resetTaskToInitialState()
 			}
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -88,7 +110,9 @@ export const TaskContextState = (props: ITaskLayoutProps) => {
 				oldTaskName: oldTaskName,
 				setOldTaskName: setOldTaskName,
 				refactorItem: refactorItem,
-				setRefactorItem: setRefactorItem
+        setRefactorItem: setRefactorItem,
+        setUploudedTask: setUploudedTask,
+        resetTaskToInitialState: resetTaskToInitialState
 			}}
 		>
 			{props.children}

@@ -14,7 +14,6 @@ import { ItaskStore } from 'interfaces/TaskInterface';
 import { taskStatus } from 'enum/task.enums';
 import { SessionsState } from 'interfaces/sessions-state.interface';
 import { deleteTask, setTask, taskDescriptionVisible } from './TaskCreate/taskReducer/taskReducer';
-import { ToastContainer } from 'react-toastify';
 import { TaskDescription } from './TaskDrawer/TaskDescription/TaskDescription';
 
 interface Tasks {
@@ -252,17 +251,6 @@ export const Tasks = () => {
 
 	return (
 		<TaskDrawerContextState selectedRowKeys={selectedRowKeys}>
-      <ToastContainer
-      position="top-center"
-      autoClose={5000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-    />
 			<TaskDrawer>
 				<TaskLayout />
 			</TaskDrawer>
