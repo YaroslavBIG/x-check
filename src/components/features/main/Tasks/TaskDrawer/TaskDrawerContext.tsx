@@ -5,25 +5,28 @@ export const TaskDrawerProvider = TaskDrawerContext.Provider;
 export const TaskDraweronsumer = TaskDrawerContext.Consumer;
 
 interface TaskDrawerContextStateProps {
-  selectedRowKeys?: ReactText[] | undefined,
-  children?: React.ReactNode
+	selectedRowKeys?: ReactText[] | undefined;
+	children?: React.ReactNode;
 }
 
 export const TaskDrawerContextState = (props: TaskDrawerContextStateProps) => {
 	const [ stateShowDrawer, setStateShowDrawer ] = useState(false);
-  const [ selectedTasks, setSelectedTasks ] = useState<(string | number)[] | undefined>([]);
-  
+	const [ selectedTasks, setSelectedTasks ] = useState<(string | number)[] | undefined>([]);
 
-  useEffect(() => {
-    props?.selectedRowKeys?.length ? setSelectedTasks(props?.selectedRowKeys) : setSelectedTasks([]);
-  }, [props]);
+	useEffect(
+		() => {
+			setSelectedTasks(props.selectedRowKeys || []);
+		},
+		[ props, setSelectedTasks ]
+	);
+
 	return (
 		<TaskDrawerProvider
 			value={{
 				stateShowDrawer: stateShowDrawer,
 				setStateShowDrawer: setStateShowDrawer,
 				selectedTasks: selectedTasks,
-        setSelectedTasks: setSelectedTasks,
+				setSelectedTasks: setSelectedTasks
 			}}
 		>
 			{props.children}

@@ -9,13 +9,13 @@ import { toast } from 'react-toastify';
 export const TasksHeader = () => {
 	const { confirm } = Modal;
 
-	const { setStateShowDrawer, selectedTasks } = useContext(TaskDrawerContext);
+	const { setStateShowDrawer, selectedTasks, setSelectedTasks } = useContext(TaskDrawerContext);
 
-	const showDrawer = () => {
+  const showDrawer = () => {
 		setStateShowDrawer(true);
-	};
+  };
 
-	useFirestoreConnect([ { collection: 'tasks' } ]);
+  useFirestoreConnect([ { collection: 'tasks' } ]);
 
 	const updFirestore = useFirestore();
 
@@ -34,7 +34,7 @@ export const TasksHeader = () => {
     toast.success('Task deleted')
   }
 
-	function showConfirm() {
+	const showConfirm = () => {
 		confirm({
 			title: 'Delete Sessions',
 			icon: <ExclamationCircleOutlined />,
@@ -42,7 +42,8 @@ export const TasksHeader = () => {
 			onOk() {
 				if(selectedTasks?.length){
           deleteDocs(selectedTasks)
-				}
+        }
+        setSelectedTasks([]);
 			}
 		});
 	}
