@@ -70,7 +70,7 @@ console.log(changedValues);
           rules={[
             {
               required: changedValues?.includes(item.id),
-              message: 'Please select a status',
+              message: 'Please add a review',
             },
           ]}
         >

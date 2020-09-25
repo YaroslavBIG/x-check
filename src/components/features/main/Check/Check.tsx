@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { Drawer, Form, Collapse } from 'antd';
 import 'antd/dist/antd.css';
 import '../Selfcheck/Selfcheck.scss';
@@ -12,12 +12,15 @@ const { Panel } = Collapse;
 interface CheckProps {
   isVisible: boolean,
   hide: () => void,
+  gradeValues: {},
   setGradeValues: (values: any) => void,
   form: any,
   selfGrade: any,
   taskId: string,
   totalPoints: number,
   setTotalPoints: (number: number) => void,
+  changedValues: Array<string>,
+  setChangedValues: (value: Array<string>) => void
 }
 
 interface TasksState {
@@ -30,20 +33,19 @@ interface TasksState {
 
 
 const Check = (props: CheckProps) => {
-  const { isVisible, hide, setGradeValues, form, taskId, selfGrade, totalPoints, setTotalPoints } = props;
+  const {
+    isVisible, hide, gradeValues, setGradeValues, form, taskId, selfGrade, totalPoints, setTotalPoints, changedValues, setChangedValues
+  } = props;
   useFirestoreConnect([{ collection: 'tasks' }]);
   const tasks = useSelector((state : TasksState) => state.firestore.data.tasks);
-  const [changedValues, setChangedValues] = useState<Array<string>>([]);
-
-  // if (isVisible)
-  // {
-  //   setTotalPoints(selfGrade.totalPoints);
-  // }
 
   const handleClose = () => {
     hide();
-    form.resetFields();
-    setTotalPoints(0);
+    if (!Object.keys(gradeValues).length) {
+      form.resetFields();
+      setTotalPoints(0);
+      setChangedValues([]);
+    }
   }
 
   const onFinish = (values: object) => {
@@ -53,13 +55,13 @@ const Check = (props: CheckProps) => {
   };
 
   const onValuesChange = (changedValuesObject: any, allValues: any) : void => {
-    console.log(changedValuesObject, allValues);
+    console.log(changedValuesObject);
     Object.keys(changedValuesObject).forEach(key => {
       if (!key.includes('review')) {
-        if (selfGrade[key] !== changedValuesObject[key]) {
+        if (selfGrade[key] !== changedValuesObject[key] && !changedValues.includes(key.slice(12))) {
           setChangedValues(changedValues.concat([key.slice(12)]));
         }
-        else {
+        else if (selfGrade[key] === changedValuesObject[key]) {
           const index = changedValues.indexOf(key.slice(12));
           changedValues.splice(index, 1);
         }

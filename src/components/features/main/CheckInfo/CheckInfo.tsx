@@ -30,7 +30,8 @@ const CheckInfo = (props: CheckInfoProps) => {
   const [isCheckVisible, setCheckVisibility] = useState(false);
   const [taskId, setTaskId] = useState('');
   const [totalPoints, setTotalPoints] = useState(0);
-  const [gradeValues, setGradeValues] = useState();
+  const [gradeValues, setGradeValues] = useState({});
+  const [changedValues, setChangedValues] = useState<Array<string>>([]);
 
   const firestore = useFirestore();
   useFirestoreConnect([ { collection: 'requests' }, { collection: 'reviews' } ]);
@@ -39,8 +40,15 @@ const CheckInfo = (props: CheckInfoProps) => {
 
   const reviews = useSelector((state : any) => state.firestore.data.reviews);
 
+  const handleClose = () => {
+    checkForm.resetFields();
+    setTotalPoints(0);
+    setChangedValues([]);
+    props.onClose();
+  }
+
   const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
+    console.log('Received values of check info form: ', values);
     console.log(gradeValues);
     checkForm.resetFields();
     setTotalPoints(0);
@@ -56,6 +64,9 @@ const CheckInfo = (props: CheckInfoProps) => {
   };
 
   const addCheck = () => {
+    if (!totalPoints) {
+      setTotalPoints(requests[key].selfGrade.totalPoints);
+    }
     setTaskId(requests[key].taskId);
     setCheckVisibility(true);
   }
@@ -68,7 +79,7 @@ const CheckInfo = (props: CheckInfoProps) => {
         placement='left'
         width={600}
         title={
-          <FormHeader title="Review" onClose={props.onClose} form={props.form}/>
+          <FormHeader title="Review" onClose={handleClose} form={props.form}/>
         }
       >
         <Form name={styles['check-info']} layout="vertical" form={props.form} onFinish={onFinish}>
@@ -121,11 +132,14 @@ const CheckInfo = (props: CheckInfoProps) => {
         taskId={taskId}
         isVisible={isCheckVisible}
         hide={() => setCheckVisibility(false)}
+        gradeValues={gradeValues}
         setGradeValues={(values: any) => setGradeValues(values)}
         form={checkForm}
         selfGrade={requests && requests[key].selfGrade}
         totalPoints={totalPoints}
         setTotalPoints={setTotalPoints}
+        changedValues={changedValues}
+        setChangedValues={setChangedValues}
       />
        <ToastContainer
         position="top-right"

@@ -11,8 +11,8 @@ const TopPanelRequests = () => {
   const [form] = Form.useForm();
 
   const handleClose = () => {
-        setVisibility(false);
-        form.resetFields();
+    setVisibility(false);
+    form.resetFields();
   }
 
   return (
