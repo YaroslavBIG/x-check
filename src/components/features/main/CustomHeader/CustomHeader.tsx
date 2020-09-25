@@ -1,4 +1,8 @@
 import React from 'react';
+import { useFirebase } from 'react-redux-firebase';
+import { useSelector } from 'react-redux';
+import styles from './CustomHeader.module.scss'
+import { Dropdown, Menu } from 'antd';
 
 interface IProfileState {
   firebase: {
@@ -12,7 +16,7 @@ interface IProfileState {
 }
 
 const CustomHeader = () => {
-  /*const firebase = useFirebase();
+  const firebase = useFirebase();
   const profile = useSelector((state: IProfileState) => state.firebase.profile);
   const profileName = useSelector((state: IProfileState) => state.firebase.profile.displayName);
 
@@ -37,11 +41,10 @@ const CustomHeader = () => {
         <a href="/" onClick={() => firebase.logout()}>Sign out</a>
       </Menu.Item>
     </Menu>
-  );*/
+  );
 
   return (
-    <div>Header</div>
-    /*<div className={styles.header}>
+    <div className={styles.header}>
       <Dropdown overlay={menu} placement="bottomLeft">
         <div
           className={styles.avatar}
@@ -50,7 +53,7 @@ const CustomHeader = () => {
           {!profile.photoURL && profileName?.slice(0,2)}
         </div>
       </Dropdown>
-    </div>*/
+    </div>
     );
 };
 
