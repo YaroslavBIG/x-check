@@ -4,8 +4,7 @@ import { Table } from 'antd';
 import { AppReviewInterface } from '../../../../interfaces/app-review.interface';
 import { columnsRequests } from './reviewTableDefinition';
 import ReviewsToolBar from './ReviewsToolBar/ReviewsToolBar';
-import { ReviewStatusEnum } from '../../../../enum/review-status.enum';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { ReviewState } from '../../../../interfaces/review-state.interface';
 import { useFirestoreConnect } from 'react-redux-firebase';
 
