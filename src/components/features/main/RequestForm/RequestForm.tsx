@@ -80,7 +80,7 @@ const RequestForm = (props: CheckInfoProps) => {
           ...values,
           id: `rev-req-${Object.keys(requests).length + 1}`
         });
-        toast.info('Request was successfully send');
+        toast.info('Request was successfully sent');
       }
       else {
         toast.info("Make sure you checked all requirements");
