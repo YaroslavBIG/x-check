@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styles from '../Sessions/Sessions.module.scss';
 import { Table } from 'antd';
 import { AppReviewInterface } from '../../../../interfaces/app-review.interface';
@@ -11,7 +11,6 @@ import { useFirestoreConnect } from 'react-redux-firebase';
 
 const Reviews = () => {
 
-  const dispatch = useDispatch();
   const reviews: any = useSelector((state: ReviewState) => state.firestore.data.reviews)
   useFirestoreConnect([
     { collection: 'reviews' }
@@ -38,13 +37,6 @@ const Reviews = () => {
   }
 
   const addRowHandler = () => {
-    const newRow = {
-      key: "0007",
-    id: "0007",
-    requestId: "ddddd",
-    author: "Mr.Bean",
-    state: ReviewStatusEnum.REJECTED
-    }
   }
 
   return (

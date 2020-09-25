@@ -1,5 +1,4 @@
-import React, { ReactText } from 'react';
-import { FirestoreSessionData } from '../../../../interfaces/firestore-session.interface';
+import { ReactText } from 'react';
 
 const SELECT_REVIEW_ROW = 'SELECT_REVIEW_ROW'
 const OPEN_REVIEW_FORM = 'OPEN_SESSION_FORM'
