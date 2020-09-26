@@ -7,7 +7,9 @@ import 'antd/dist/antd.css';
 import './RequestForm.scss';
 import { useSelector } from 'react-redux';
 import { useFirestoreConnect, useFirestore } from 'react-redux-firebase';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
+import { FormInstance } from 'antd/lib/form';
+import { IProfileState } from '../CustomHeader/CustomHeader';
 
 const { Option } = Select;
 
@@ -27,11 +29,17 @@ export enum RequestStatus {
   COMPLETED = 'Completed'
 }
 
-const RequestForm = (props: any) => {
+interface CheckInfoProps {
+  isVisible: boolean,
+  onClose: () => void,
+  form: FormInstance
+}
+
+const RequestForm = (props: CheckInfoProps) => {
   const { isVisible, onClose, form} = props;
   const [isSelfcheckVisible, setSelfcheckVisibility] = useState(false);
   const [taskId, setTaskId] = useState('');
-  const [selfGradeValues, setselfGradeValues] = useState({checkedRequirements: 0});
+  const [selfGradeValues, setSelfGradeValues] = useState({checkedRequirements: 0});
   const [selfcheckForm] = Form.useForm();
   const [totalPoints, setTotalPoints] = useState(0);
   const [checkedRequirements, setCheckedRequirements] = useState(0);
@@ -42,6 +50,7 @@ const RequestForm = (props: any) => {
   const tasks = useSelector((state : CollectionsState) => state.firestore.data.tasks);
   const sessions = useSelector((state : CollectionsState) => state.firestore.data.sessions);
   const requests = useSelector((state : CollectionsState) => state.firestore.data.requests);
+  const profile = useSelector((state: IProfileState) => state.firebase.profile);
 
   const addSelfcheck = async () => {
     try {
@@ -56,30 +65,29 @@ const RequestForm = (props: any) => {
     try {
       await form.validateFields();
       if ((!isRequired) || (isRequired && taskId && selfGradeValues.checkedRequirements === tasks[taskId].items.length)) {
-        console.log('Received values of form: ', values);
         Object.keys(values).forEach((key: string) => {
           if (values[key] === undefined) {
             delete values[key];
           }
         });
-        console.log(selfGradeValues);
         selfcheckForm.resetFields();
         setTotalPoints(0);
         setCheckedRequirements(0);
         onClose();
         firestore.collection('requests').add({
-          selfGrade: selfGradeValues, 
+          selfGrade: selfGradeValues,
           task: tasks[taskId].id,
+          author: profile.displayName,
+          photo: profile.photoURL,
           ...values,
           id: `rev-req-${Object.keys(requests).length + 1}`
         });
-        toast.info('Request was successfully send');
+        toast.info('Request was successfully sent');
       }
       else {
         toast.info("Make sure you checked all requirements");
       }
     } catch (errorInfo) {
-      console.log('Failed:', errorInfo);
       toast.error(errorInfo);
     }
   };
@@ -102,7 +110,7 @@ const RequestForm = (props: any) => {
 
   return (
     <>
-    <Drawer 
+    <Drawer
       closable={false}
       visible={isVisible}
       placement='left'
@@ -125,24 +133,24 @@ const RequestForm = (props: any) => {
             ]}
           >
             <Select placeholder="Select a task" onChange={(value: string) => setTaskId(value)}>
-              { tasks && 
-                Object.keys(tasks).map((ind: string) => <Option key={ind} value={ind}>{tasks[ind].id}</Option>) 
+              { tasks &&
+                Object.keys(tasks).map((ind: string) => <Option key={ind} value={ind}>{tasks[ind].id}</Option>)
               }
             </Select>
           </Form.Item>
           <Form.Item
-            name="session"
+            name="crossCheckSessionId"
             label="Cross-check session"
             >
               <Select placeholder="Select a cross-check session">
-                { sessions && 
-                  Object.keys(sessions).map((ind: any) => <Option key={ind} value={sessions[ind].name}>{sessions[ind].name}</Option>) 
+                { sessions &&
+                  Object.keys(sessions).map((ind: any) => <Option key={ind} value={sessions[ind].name}>{sessions[ind].name}</Option>)
                 }
               </Select>
           </Form.Item>
-          <Form.Item 
+          <Form.Item
             name="pullRequest"
-            label="Link to PR" 
+            label="Link to PR"
             rules={[
               {
                 required: isRequired,
@@ -152,9 +160,9 @@ const RequestForm = (props: any) => {
           >
             <Input placeholder="Paste the link" />
           </Form.Item>
-          <Form.Item 
+          <Form.Item
             name="deployedVersion"
-            label="Link to deployed version" 
+            label="Link to deployed version"
             rules={[
               {
                 required: isRequired,
@@ -186,28 +194,17 @@ const RequestForm = (props: any) => {
         </Form>
       </div>
     </Drawer>
-    <Selfcheck 
+    <Selfcheck
       taskId={taskId}
-      isVisible={isSelfcheckVisible} 
-      hide={() => setSelfcheckVisibility(false)} 
-      setselfGradeValues={(values: any) => setselfGradeValues(values)}
+      isVisible={isSelfcheckVisible}
+      hide={() => setSelfcheckVisibility(false)}
+      setSelfGradeValues={(values: any) => setSelfGradeValues(values)}
       form={selfcheckForm}
       totalPoints={totalPoints}
       checkedRequirements={checkedRequirements}
       setTotalPoints={setTotalPoints}
       setCheckedRequirements={setCheckedRequirements}
     />
-    <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        />
   </>
   );
 }
