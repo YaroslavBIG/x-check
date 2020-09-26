@@ -17,6 +17,10 @@ $accent-color: #1890ff;
     font-weight: bold;
   }
 
+  .ant-collapse {
+    margin-bottom: 1.5rem;
+  }
+
   .ant-collapse-content-box {
     color: #595959;
     padding-right: 0;
@@ -29,6 +33,17 @@ $accent-color: #1890ff;
 
   .item {
     margin-bottom: 1rem;
+
+    .ant-form-item-label {
+      margin-left: 28px;
+      padding-bottom: 0;
+    }
+
+    .ant-input {
+      width: calc(100% - 28px);
+      margin-left: 28px;
+      margin-top: 0.5rem;
+    }
   }
 
   .requirement {
@@ -79,6 +94,12 @@ $accent-color: #1890ff;
     }
   }
 
+  .result {
+    width: 100px;
+    margin-bottom: 0;
+    text-align: center;
+  }
+
   .clarification {
     font-size: 0.75rem;
     margin-bottom: 0;
@@ -87,23 +108,12 @@ $accent-color: #1890ff;
 
   .comment {
     margin-bottom: 0.5rem;
-  }
-
-  .ant-input {
-    width: calc(100% - 28px);
-    margin-left: 28px;
     margin-top: 0.5rem;
-  }
-
-  .ant-form-item-label {
-    margin-left: 28px;
-    padding-bottom: 0;
   }
 
   .ant-form-item-label > label {
     color: $accent-color;
     font-size: 0.75rem;
-
   }
 
   .ant-form-item-explain {

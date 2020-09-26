@@ -31,7 +31,6 @@ interface TasksState {
   }
 }
 
-
 const Check = (props: CheckProps) => {
   const {
     isVisible, hide, gradeValues, setGradeValues, form, taskId, selfGrade, totalPoints, setTotalPoints, changedValues, setChangedValues
@@ -49,13 +48,11 @@ const Check = (props: CheckProps) => {
   }
 
   const onFinish = (values: object) => {
-    console.log('Received values ofcheck form: ', values);
     hide();
     addGrade(values);
   };
 
   const onValuesChange = (changedValuesObject: any, allValues: any) : void => {
-    console.log(changedValuesObject);
     Object.keys(changedValuesObject).forEach(key => {
       if (!key.includes('review')) {
         if (selfGrade[key] !== changedValuesObject[key] && !changedValues.includes(key.slice(12))) {
@@ -67,10 +64,8 @@ const Check = (props: CheckProps) => {
         }
       }
     });
-    console.log(changedValues);
     setCurrentValue(allValues);
     form.setFieldsValue(allValues);
-    console.log(form.getFieldValue());
   }
 
   const setCurrentValue = (values: any) => {

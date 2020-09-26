@@ -51,13 +51,12 @@ const CheckInfo = (props: CheckInfoProps) => {
   }
 
   const onFinish = (values: any) => {
-    console.log('Received values of check info form: ', values);
-    console.log(gradeValues);
     checkForm.resetFields();
     setTotalPoints(0);
     props.onClose();
     firestore.collection('reviews').add({
       grade: gradeValues,
+      selfGrade: requests[key].selfGrade,
       task: taskId,
       ...values,
       id: `rev-${Object.keys(reviews).length + 1}`,

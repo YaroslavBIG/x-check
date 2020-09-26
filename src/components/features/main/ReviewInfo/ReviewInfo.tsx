@@ -6,11 +6,9 @@ import styles from '../CheckInfo/CheckInfo.module.scss';
 import FormHeader from '../FormHeader/FormHeader';
 import CheckInfoListItem from '../CheckInfo/CheckInfoListItem/CheckInfoListItem';
 import { useSelector } from 'react-redux';
-import { useFirestoreConnect, useFirestore } from 'react-redux-firebase';
+import { useFirestoreConnect } from 'react-redux-firebase';
 import { FormInstance } from 'antd/lib/form';
-import Check from '../Check/Check';
-import { toast } from 'react-toastify';
-import { IProfileState } from '../CustomHeader/CustomHeader';
+import  Review from './Review';
 
 const { Option } = Select;
 
@@ -29,54 +27,22 @@ interface ReviewInfoProps {
 }
 
 const ReviewInfo = (props: ReviewInfoProps) => {
-  // const [checkForm] = Form.useForm();
-  // const [isCheckVisible, setCheckVisibility] = useState(false);
-  // const [taskId, setTaskId] = useState('');
-  // const [totalPoints, setTotalPoints] = useState(0);
-  // const [gradeValues, setGradeValues] = useState({});
-  // const [changedValues, setChangedValues] = useState<Array<string>>([]);
+  const [reviewForm] = Form.useForm();
+  const [isReviewVisible, setReviewVisibility] = useState(false);
 
-  // const firestore = useFirestore();
   useFirestoreConnect([ { collection: 'reviews' }, { collection: 'tasks' } ]);
   const reviews = useSelector((state : any) => state.firestore.data.reviews);
   const tasks = useSelector((state : any) => state.firestore.data.tasks);
-  const key = 'hR52VRsf3Z3nFrxIrO69';
-
-  // const reviews = useSelector((state : any) => state.firestore.data.reviews);
-  // const profile = useSelector((state: IProfileState) => state.firebase.profile);
-
+  const key = 'maNNt4axYJtF6nzwBvHI';
 
   const handleClose = () => {
-    // checkForm.resetFields();
-    // setTotalPoints(0);
-    // setChangedValues([]);
+    // reviewForm.resetFields();
     props.onClose();
   }
 
-  // const onFinish = (values: any) => {
-  //   console.log('Received values of check info form: ', values);
-  //   console.log(gradeValues);
-  //   checkForm.resetFields();
-  //   setTotalPoints(0);
-  //   props.onClose();
-  //   firestore.collection('reviews').add({
-  //     grade: gradeValues,
-  //     task: taskId,
-  //     ...values,
-  //     id: `rev-${Object.keys(reviews).length + 1}`,
-  //     requestId: requests[key].id,
-  //     author: profile.displayName
-  //   });
-  //   toast.info('Review was successfully send');
-  // };
-
-  // const addCheck = () => {
-  //   if (!totalPoints) {
-  //     setTotalPoints(requests[key].selfGrade.totalPoints);
-  //   }
-  //   setTaskId(requests[key].taskId);
-  //   setCheckVisibility(true);
-  // }
+  const showReview = () => {
+    setReviewVisibility(true);
+  }
 
   return (
     <>
@@ -95,12 +61,12 @@ const ReviewInfo = (props: ReviewInfoProps) => {
               <CheckInfoListItem heading="Task" info={reviews && tasks && tasks[reviews[key].task].id}/>
               <CheckInfoListItem heading="Cross-check session" info={reviews && reviews[key].session}/>
               <CheckInfoListItem
-                heading="Total points"
-                info={reviews && tasks && `${reviews[key].grade.totalPoints}/${tasks[reviews[key].task].maxScore}`}
+                heading="Check points"
+                info={reviews && tasks && `${reviews[key].grade.checkPoints}/${tasks[reviews[key].task].maxScore}`}
               />
               <CheckInfoListItem
                 heading="Self-check points"
-                info={reviews && tasks && `${reviews[key].grade.checkPoints}/${tasks[reviews[key].task].maxScore}`}
+                info={reviews && tasks && `${reviews[key].grade.totalPoints}/${tasks[reviews[key].task].maxScore}`}
               />
               <CheckInfoListItem heading="Student">
                 <Avatar className={styles.avatar}
@@ -135,12 +101,20 @@ const ReviewInfo = (props: ReviewInfoProps) => {
                 <Option value="REJECTED">{ReviewStatus.REJECTED}</Option>
               </Select>
             </Form.Item>
-            <Button className={styles["check-info__button"]} size="large" /*onClick={addCheck}*/>
+            <Button className={styles["check-info__button"]} size="large" onClick={showReview} >
               <EyeOutlined />See review
             </Button>
           </div>
         </Form>
       </Drawer>
+      <Review
+        isVisible={isReviewVisible}
+        hide={() => setReviewVisibility(false)}
+        form={reviewForm}
+        grade={reviews && reviews[key].grade}
+        selfGrade={reviews && reviews[key].selfGrade}
+        task={tasks && tasks[reviews[key].task]}
+      />
    </>
   );
 }

@@ -65,13 +65,11 @@ const RequestForm = (props: CheckInfoProps) => {
     try {
       await form.validateFields();
       if ((!isRequired) || (isRequired && taskId && selfGradeValues.checkedRequirements === tasks[taskId].items.length)) {
-        console.log('Received values of form: ', values);
         Object.keys(values).forEach((key: string) => {
           if (values[key] === undefined) {
             delete values[key];
           }
         });
-        console.log(selfGradeValues);
         selfcheckForm.resetFields();
         setTotalPoints(0);
         setCheckedRequirements(0);
@@ -90,7 +88,6 @@ const RequestForm = (props: CheckInfoProps) => {
         toast.info("Make sure you checked all requirements");
       }
     } catch (errorInfo) {
-      console.log('Failed:', errorInfo);
       toast.error(errorInfo);
     }
   };
