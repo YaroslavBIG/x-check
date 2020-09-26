@@ -11,6 +11,8 @@ import { useSelector } from 'react-redux';
 import { TaskDrawerContext } from '../TaskDrawer/TaskDrawerContext';
 import { TaskExport } from './TaskExport/TaskExport';
 import { IProfileState }from '../../CustomHeader/CustomHeader';
+import { TaskImport } from './TaskExport/TaskImport';
+import { Group } from 'antd/lib/avatar';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -148,9 +150,14 @@ export const TaskCreateDefault: React.FC = () => {
 		<div className='task'>
 			<Form layout='vertical' form={form} name='Task Create' onFinish={onFinish} onFinishFailed={onFinishFailed}>
 				<TaskHeader onReset={onReset} handleSubmit={handleFormSubmit} title='Create Task' />
-          <Form.Item >
-            <TaskExport />
+         <div className="file-block">
+            <Form.Item >
+              <Group >
+                <TaskExport />
+                <TaskImport />
+              </Group>
           </Form.Item>
+         </div>
 				<div className='task-status'>
 					<Form.Item
 						label='Status'

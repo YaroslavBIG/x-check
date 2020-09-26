@@ -1,24 +1,26 @@
 import React from 'react';
 import { Drawer, Form, Collapse } from 'antd';
 import 'antd/dist/antd.css';
-import './Selfcheck.scss';
+import '../Selfcheck/Selfcheck.scss';
 import FormHeader from '../FormHeader/FormHeader';
 import { useSelector } from 'react-redux';
 import { useFirestoreConnect} from 'react-redux-firebase';
-import CategoryItem, { TaskItem } from './CategoryItem';
+import CategoryItem, { TaskItem } from '../Selfcheck/CategoryItem';
 
 const { Panel } = Collapse;
 
-interface SelfcheckProps {
+interface CheckProps {
   isVisible: boolean,
   hide: () => void,
-  setSelfGradeValues: (values: any) => void,
+  gradeValues: {},
+  setGradeValues: (values: any) => void,
   form: any,
+  selfGrade: any,
   taskId: string,
   totalPoints: number,
-  checkedRequirements: number,
   setTotalPoints: (number: number) => void,
-  setCheckedRequirements: (number: number) => void,
+  changedValues: Array<string>,
+  setChangedValues: (value: Array<string>) => void
 }
 
 interface TasksState {
@@ -29,56 +31,64 @@ interface TasksState {
   }
 }
 
-
-const Selfcheck = (props: SelfcheckProps) => {
-  const { isVisible, hide, setSelfGradeValues, form, taskId, totalPoints, setTotalPoints, checkedRequirements, setCheckedRequirements } = props;
+const Check = (props: CheckProps) => {
+  const {
+    isVisible, hide, gradeValues, setGradeValues, form, taskId, selfGrade, totalPoints, setTotalPoints, changedValues, setChangedValues
+  } = props;
   useFirestoreConnect([{ collection: 'tasks' }]);
   const tasks = useSelector((state : TasksState) => state.firestore.data.tasks);
 
   const handleClose = () => {
     hide();
-    form.resetFields();
-    setTotalPoints(0);
-    setCheckedRequirements(0);
+    if (!Object.keys(gradeValues).length) {
+      form.resetFields();
+      setTotalPoints(0);
+      setChangedValues([]);
+    }
   }
 
   const onFinish = (values: object) => {
-    console.log('Received values of selfcheck form: ', values);
     hide();
-    addSelfGrade(values);
+    addGrade(values);
   };
 
-  const onValuesChange = (changedValues: object, allValues: any) : void => {
-    console.log(allValues);
-    setCurrentValues(allValues);
+  const onValuesChange = (changedValuesObject: any, allValues: any) : void => {
+    Object.keys(changedValuesObject).forEach(key => {
+      if (!key.includes('review')) {
+        if (selfGrade[key] !== changedValuesObject[key] && !changedValues.includes(key.slice(12))) {
+          setChangedValues(changedValues.concat([key.slice(12)]));
+        }
+        else if (selfGrade[key] === changedValuesObject[key]) {
+          const index = changedValues.indexOf(key.slice(12));
+          changedValues.splice(index, 1);
+        }
+      }
+    });
+    setCurrentValue(allValues);
     form.setFieldsValue(allValues);
-    console.log(form.getFieldValue());
   }
 
-  const setCurrentValues = (values: any) => {
+  const setCurrentValue = (values: any) => {
     let totalPoints = 0;
-    let checkedRequirements = 0;
     Object.keys(values).forEach((key: string) => {
-      if (typeof values[key] === 'number') {
+      if (typeof values[key] === 'number' && key !== 'checkedRequirements' && key !== 'totalPoints') {
         totalPoints += values[key];
-        checkedRequirements++;
       }
     });
     setTotalPoints(totalPoints);
-    setCheckedRequirements(checkedRequirements);
   }
 
-  const addSelfGrade = (values: any) => {
+  const addGrade = (values: any) => {
     Object.keys(values).forEach((key: string) => {
       if (values[key] === undefined) {
         delete values[key];
       }
     });
 
-    setSelfGradeValues({
+    setGradeValues({
+      ...selfGrade,
       ...values,
-      totalPoints,
-      checkedRequirements
+      checkPoints: totalPoints,
     });
   }
 
@@ -90,7 +100,7 @@ const Selfcheck = (props: SelfcheckProps) => {
       placement='left'
       width={600}
       title={
-        <FormHeader title="Self-check" onClose={handleClose} form={form}/>
+        <FormHeader title="Check list" onClose={handleClose} form={form}/>
     }
     >
     <div className="self-check">
@@ -99,12 +109,12 @@ const Selfcheck = (props: SelfcheckProps) => {
           form={form}
           onFinish={onFinish}
           onValuesChange={onValuesChange}
-          initialValues={undefined}
+          initialValues={selfGrade}
           layout="vertical"
         >
           <div className="self-check__current-values">
               <h3>Total points: {totalPoints}/{isVisible && tasks[taskId].maxScore}</h3>
-              <h3>Checked requirements: {checkedRequirements}/{isVisible && tasks[taskId].items.length}</h3>
+              <h3>Self-check points: {isVisible && selfGrade.totalPoints}/{isVisible && tasks[taskId].maxScore}</h3>
           </div>
           <p>{(tasks && isVisible) && tasks[taskId].description}</p>
           <Collapse bordered={false} style={{backgroundColor: 'white'}}>
@@ -112,7 +122,7 @@ const Selfcheck = (props: SelfcheckProps) => {
                 tasks[taskId].categoriesOrder.map((category: string) => (
                   <Panel header={category} key={category}>
                     {tasks[taskId].items.map((item: TaskItem, ind: number) => {
-                      return item.category === category && <CategoryItem item={item} key={item.id} isSelfcheck={true}/>;
+                      return item.category === category && <CategoryItem item={item} key={item.id} isSelfcheck={false} selfGrade={selfGrade} changedValues={changedValues}/>;
                     }
                     )}
                   </Panel>
@@ -125,4 +135,4 @@ const Selfcheck = (props: SelfcheckProps) => {
   );
 }
 
-export default Selfcheck;
+export default Check;

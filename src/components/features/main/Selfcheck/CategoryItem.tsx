@@ -5,7 +5,11 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 const { TextArea } = Input;
 
 interface CategoryItemProps {
-  item: any
+  item: TaskItem,
+  isSelfcheck: boolean,
+  selfGrade?: any,
+  changedValues?: any,
+  grade?: any
 }
 
 export interface TaskItem {
@@ -20,8 +24,11 @@ export interface TaskItem {
 }
 
 const CategoryItem = (props: CategoryItemProps) => {
-  const { item } = props;
-
+  const { item, isSelfcheck, grade, selfGrade, changedValues } = props;
+console.log(changedValues);
+  const handleChange = (id: any) => {
+    console.log(id);
+  }
   return (
     <div className="item">
       <div className="requirement">
@@ -36,23 +43,66 @@ const CategoryItem = (props: CategoryItemProps) => {
           {item.minScore !== 0 && <Tag color='error'>{item.minScore}</Tag>}
           {item.mentorOnly && <Tag color='warning'>M</Tag>}
         </div>
-        <div className="mark">
-          <Form.Item name={`radio-group-${item.id}`}>
-            <InputNumber size="small" min={item.minScore} max={item.maxScore}/>
-          </Form.Item>
-          <Form.Item name={`radio-group-${item.id}`}>
-            <Radio.Group>
-              <Radio value={0}>not performed</Radio>
-              <Radio value={0.5*item.maxScore}>partially performed</Radio>
-              <Radio value={item.maxScore}>performed</Radio>
-            </Radio.Group>
-          </Form.Item>
-        </div>
+        {
+          !grade ?
+          <div className="mark">
+            <Form.Item name={`radio-group-${item.id}`}>
+              <InputNumber size="small" min={item.minScore} max={item.maxScore}/>
+            </Form.Item>
+            <Form.Item name={`radio-group-${item.id}`}>
+              <Radio.Group onChange={(e) => handleChange(item.id)}>
+                <Radio value={0}>not performed</Radio>
+                <Radio value={0.5*item.maxScore}>partially performed</Radio>
+                <Radio value={item.maxScore}>performed</Radio>
+              </Radio.Group>
+            </Form.Item>
+          </div>
+          :
+          <p className="result"><b>{grade[`radio-group-${item.id}`]}</b>
+          {grade[`radio-group-${item.id}`] !== selfGrade[`radio-group-${item.id}`] &&
+          <span> instead of <b>{selfGrade[`radio-group-${item.id}`]}</b></span>}</p>
+        }
+
       </div>
-      <p className="comment">Add comment</p>         
-      <Form.Item name={`textarea-${item.id}`}>
-        <TextArea autoSize />
-      </Form.Item>
+      {!isSelfcheck && selfGrade[`textarea-${item.id}`] && <p className="clarification comment"><b>Comment:</b> {selfGrade[`textarea-${item.id}`]}</p>}
+      {isSelfcheck ?
+        <Form.Item
+          name={`textarea-${item.id}`}
+          label="Add comment"
+        >
+          <TextArea autoSize />
+        </Form.Item>
+        :
+        ( !grade ?
+        <Form.Item
+          name={`review-${item.id}`}
+          label="Add review"
+          rules={[
+            {
+              required: changedValues?.includes(item.id),
+              message: 'Please add a review',
+            },
+          ]}
+        >
+          <TextArea autoSize />
+        </Form.Item>
+        :
+        <>
+          <p className="clarification comment">{grade[`review-${item.id}`] && <span><b>Grade:</b> {grade[`review-${item.id}`]}</span>}</p>
+          <Form.Item
+            name={`dispute-${item.id}`}
+            label="Dispute grade"
+            rules={[
+              {
+                required: false,
+              },
+            ]}
+          >
+            <TextArea autoSize />
+          </Form.Item>
+        </>
+        )
+      }
     </div>
   );
 }
