@@ -26,7 +26,6 @@ export const TaskContextState = (props: ITaskLayoutProps) => {
 	const [ collapsePanelNum, setCollapsePanelNum ] = useState<number>(0);
 	const [ collapsPanetId, setCollapsPanelId ] = useState<string | undefined>(undefined);
 	const [ newTask, setNewTask ] = useState<Itask | undefined>(initialState);
-
 	const [ items, setNewItems ] = useState<Array<Iitem> | Array<undefined>>([]);
 	const [ newTaskForSubmit, setNewTaskForSubmit ] = useState<Itask | object>(taskState || {});
 	const [ editCategory, setEditCategory ] = useState<string | Boolean>(false);
