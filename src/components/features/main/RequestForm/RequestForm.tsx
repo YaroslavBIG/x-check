@@ -80,6 +80,7 @@ const RequestForm = (props: CheckInfoProps) => {
           selfGrade: selfGradeValues,
           task: tasks[taskId].id,
           author: profile.displayName,
+          photo: profile.photoURL,
           ...values,
           id: `rev-req-${Object.keys(requests).length + 1}`
         });

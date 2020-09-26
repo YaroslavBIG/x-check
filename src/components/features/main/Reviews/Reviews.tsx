@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../Sessions/Sessions.module.scss';
-import { Table } from 'antd';
+import { Table, Button, Form } from 'antd';
 import { AppReviewInterface } from '../../../../interfaces/app-review.interface';
 import firebase from 'firebase';
 import { columnsRequests } from './reviewTableDefinition';
 import ReviewsToolBar from './ReviewsToolBar/ReviewsToolBar';
 import { ReviewStatusEnum } from '../../../../enum/review-status.enum';
-
-
+import ReviewInfo from '../ReviewInfo/ReviewInfo';
+import { EditOutlined } from '@ant-design/icons';
 
 const Reviews = () => {
+
+  const [isVisible, setVisibility] = useState(false);
+  const [form] = Form.useForm();
+
+  const handleClose = () => {
+    setVisibility(false);
+    form.resetFields();
+  }
 
   const [reviews, setReviews] = useState<AppReviewInterface[]>([]);
   const db = firebase.firestore();
@@ -49,6 +57,13 @@ const Reviews = () => {
       <ReviewsToolBar
         addRow={addRowHandler}
       />
+      <Button
+        className={styles.Requests__btn}
+        icon={<EditOutlined />}
+        onClick={() => setVisibility(true)}>
+        Show review info form
+      </Button>
+      <ReviewInfo isVisible={isVisible} onClose={handleClose} form={form} />
       <div className={styles.main}>
         <Table columns={columnsRequests} style={{ width: '100%' }}
                dataSource={reviews}

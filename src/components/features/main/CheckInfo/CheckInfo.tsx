@@ -37,7 +37,7 @@ const CheckInfo = (props: CheckInfoProps) => {
   const firestore = useFirestore();
   useFirestoreConnect([ { collection: 'requests' }, { collection: 'reviews' } ]);
   const requests = useSelector((state : any) => state.firestore.data.requests);
-  const key = 'rRxw0Q3rh4tHOC2uzgBy';
+  const key = 'MsKaXOBCgFqUveJSjU7b';
 
   const reviews = useSelector((state : any) => state.firestore.data.reviews);
   const profile = useSelector((state: IProfileState) => state.firebase.profile);
@@ -62,7 +62,11 @@ const CheckInfo = (props: CheckInfoProps) => {
       ...values,
       id: `rev-${Object.keys(reviews).length + 1}`,
       requestId: requests[key].id,
-      author: profile.displayName
+      author: profile.displayName,
+      photo: profile.photoURL,
+      student: requests[key].author,
+      studentPhoto: requests[key].photo,
+      session: requests[key].crossCheckSessionId
     });
     toast.info('Review was successfully send');
   };
@@ -102,8 +106,8 @@ const CheckInfo = (props: CheckInfoProps) => {
                   </a>
               </CheckInfoListItem>
               <CheckInfoListItem heading="Student">
-                <Avatar className={styles.avatar} src={profile.photoURL ? profile.photoURL : ''} icon={!profile.photoURL && <UserOutlined />}/>
-                <span>{profile.displayName}</span>
+                <Avatar className={styles.avatar} src={requests && (requests[key].photo || '')} icon={requests && !requests[key].photo && <UserOutlined />}/>
+                <span>{requests && requests[key].author}</span>
               </CheckInfoListItem>
               <CheckInfoListItem heading="Reviewer">
                 <Avatar className={styles.avatar} icon={<UserOutlined />} />
