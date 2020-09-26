@@ -34,7 +34,7 @@ const CustomHeader = () => {
       </Menu.Item>
       <Menu.Item>
         <div>
-          {profile.role}
+          **{profile.role}
         </div>
       </Menu.Item>
       <Menu.Item className={styles.name}>

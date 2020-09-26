@@ -1,54 +1,52 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from '../Sessions/Sessions.module.scss';
 import { Table, Button, Form } from 'antd';
 import { AppReviewInterface } from '../../../../interfaces/app-review.interface';
-import firebase from 'firebase';
 import { columnsRequests } from './reviewTableDefinition';
 import ReviewsToolBar from './ReviewsToolBar/ReviewsToolBar';
-import { ReviewStatusEnum } from '../../../../enum/review-status.enum';
 import ReviewInfo from '../ReviewInfo/ReviewInfo';
 import { EditOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
+import { ReviewState } from '../../../../interfaces/review-state.interface';
+import { useFirestoreConnect } from 'react-redux-firebase';
 
 const Reviews = () => {
 
   const [isVisible, setVisibility] = useState(false);
   const [form] = Form.useForm();
 
+
   const handleClose = () => {
     setVisibility(false);
     form.resetFields();
   }
 
-  const [reviews, setReviews] = useState<AppReviewInterface[]>([]);
-  const db = firebase.firestore();
-  let reviewCounter = 0;
+  const reviews: any = useSelector((state: ReviewState) => state.firestore.data.reviews)
+  useFirestoreConnect([
+    { collection: 'reviews' }
+  ]);
 
-  useEffect(() => {
-    const db = firebase.firestore();
-    db.collection('reviews').get()
-      .then((reviews) => {
-        let rvs: any[] = [];
-        reviews.forEach((r) => {
-          rvs.push(Object.assign({}, r.data(), {key: r.data().id + r.data().requestId}));
-        })
-        setReviews(rvs);
-      })
-
-  }, [reviewCounter])
+  function getModifiedData(): AppReviewInterface[] {
+    debugger
+    const modifiedData: AppReviewInterface[] = [];
+    if (reviews) {
+      Object.keys(reviews).forEach((el: string) => {
+        if (reviews[el]) {
+          const values: any = reviews[el];
+          modifiedData.push({
+            key: el,
+            id: el,
+            requestId: values?.requestId,
+            author: values.author,
+            state: values.state
+          });
+        }
+      });
+    }
+    return modifiedData;
+  }
 
   const addRowHandler = () => {
-    const newRow = {
-      key: "0007",
-    id: "0007",
-    requestId: "ddddd",
-    author: "Mr.Bean",
-    state: ReviewStatusEnum.REJECTED
-    }
-
-    db.collection('reviews').add(newRow)
-      .then(() => {
-        reviewCounter++;
-      });
   }
 
   return (
@@ -66,7 +64,7 @@ const Reviews = () => {
       <ReviewInfo isVisible={isVisible} onClose={handleClose} form={form} />
       <div className={styles.main}>
         <Table columns={columnsRequests} style={{ width: '100%' }}
-               dataSource={reviews}
+               dataSource={getModifiedData()}
                pagination={{ pageSize: 10 }}
         />
       </div>
