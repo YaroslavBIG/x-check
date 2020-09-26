@@ -40,5 +40,10 @@ export const columnsRequests: ColumnsType<AppReviewInterface> = [
     title: 'State',
     dataIndex: 'state',
     ellipsis: true,
+    sorter: (a: AppReviewInterface, b: AppReviewInterface) => {
+      const x = a.state.toUpperCase();
+      const y = b.state.toUpperCase();
+      return x < y ? -1 : x > y ? 1 : 0;
+    }
   }
 ];

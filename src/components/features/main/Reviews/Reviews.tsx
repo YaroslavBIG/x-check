@@ -1,22 +1,22 @@
-import React from 'react';
+import React, { ReactText } from 'react';
 import styles from '../Sessions/Sessions.module.scss';
 import { Table } from 'antd';
 import { AppReviewInterface } from '../../../../interfaces/app-review.interface';
 import { columnsRequests } from './reviewTableDefinition';
 import ReviewsToolBar from './ReviewsToolBar/ReviewsToolBar';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ReviewState } from '../../../../interfaces/review-state.interface';
 import { useFirestoreConnect } from 'react-redux-firebase';
+import { setRowSelection } from './ReviewReducer';
 
 const Reviews = () => {
-
+  const dispatch = useDispatch();
   const reviews: any = useSelector((state: ReviewState) => state.firestore.data.reviews)
   useFirestoreConnect([
     { collection: 'reviews' }
   ]);
 
   function getModifiedData(): AppReviewInterface[] {
-    debugger
     const modifiedData: AppReviewInterface[] = [];
     if (reviews) {
       Object.keys(reviews).forEach((el: string) => {
@@ -48,6 +48,10 @@ const Reviews = () => {
         <Table columns={columnsRequests} style={{ width: '100%' }}
                dataSource={getModifiedData()}
                pagination={{ pageSize: 10 }}
+               rowSelection={{onChange: (selectedRowKeys: ReactText[]) => {
+                  dispatch(setRowSelection(selectedRowKeys))
+                 }
+               }}
         />
       </div>
     </div>
