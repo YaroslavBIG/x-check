@@ -1,5 +1,5 @@
 import React, { ReactText } from 'react';
-import { DeleteOutlined, ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons/lib';
+import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons/lib';
 import { Button, Modal } from 'antd';
 import styles from "./ReviewsToolBar.module.scss"
 import { useFirestore } from 'react-redux-firebase';
@@ -27,6 +27,10 @@ export default function ReviewsToolBar(props: any) {
     });
   }
 
+  function openReview() {
+    dispatch(openReviewForm(null));
+  }
+
   async function deleteSession() {
     try {
       await selectedRows.forEach((row: ReactText) =>
@@ -38,17 +42,19 @@ export default function ReviewsToolBar(props: any) {
     }
   }
 
-  const addSession = () => {
-    dispatch(openReviewForm(null));
-  }
-
   return (
     <div className={styles.container}>
       <Button type='primary'
               icon={<PlusOutlined/>}
               className={styles.button}
-              onClick={addSession}
+              onClick={openReview}
       >Add</Button>
+      <Button
+        className={styles.button}
+        icon={<EditOutlined />}
+        onClick={openReview}>
+        Edit
+      </Button>
       <Button icon={<DeleteOutlined/>}
               className={styles.button}
               disabled={!selectedRows?.length}
