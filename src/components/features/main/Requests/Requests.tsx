@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styles from './Requests.module.scss';
 import './Requests';
 
-// import HeaderRequests from './HeaderRequests/HeaderRequests';
 import TopPanelRequests from './TopPanelRequests/TopPanelRequests';
 import TableRequests from './TableRequests/TableRequests';
 
