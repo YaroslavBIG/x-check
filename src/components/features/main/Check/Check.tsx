@@ -6,6 +6,7 @@ import FormHeader from '../FormHeader/FormHeader';
 import { useSelector } from 'react-redux';
 import { useFirestoreConnect} from 'react-redux-firebase';
 import CategoryItem, { TaskItem } from '../Selfcheck/CategoryItem';
+import { IProfileState } from '../CustomHeader/CustomHeader';
 
 const { Panel } = Collapse;
 
@@ -37,6 +38,7 @@ const Check = (props: CheckProps) => {
   } = props;
   useFirestoreConnect([{ collection: 'tasks' }]);
   const tasks = useSelector((state : TasksState) => state.firestore.data.tasks);
+  const profile = useSelector((state: IProfileState) => state.firebase.profile);
 
   const handleClose = () => {
     hide();
@@ -122,7 +124,11 @@ const Check = (props: CheckProps) => {
                 tasks[taskId].categoriesOrder.map((category: string) => (
                   <Panel header={category} key={category}>
                     {tasks[taskId].items.map((item: TaskItem, ind: number) => {
-                      return item.category === category && <CategoryItem item={item} key={item.id} isSelfcheck={false} selfGrade={selfGrade} changedValues={changedValues}/>;
+                      return item.category === category &&
+                      ((!item.mentorOnly || (item.mentorOnly && profile.role === 'Mentor')) ?
+                      <CategoryItem item={item} key={item.id} isSelfcheck={false} selfGrade={selfGrade} changedValues={changedValues}/>
+                      :
+                      <p key={item.id}>Checked by mentor</p>);
                     }
                     )}
                   </Panel>
