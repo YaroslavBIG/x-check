@@ -6,7 +6,7 @@ import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, InfoCircleOutl
 import RequestForm from '../../RequestForm/RequestForm';
 import confirm from 'antd/lib/modal/confirm';
 import { toast } from 'react-toastify';
-import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
+import { useFirestore } from 'react-redux-firebase';
 import { RequestsContext } from '../RequestsContext/RequestsContext';
 
 const TopPanelRequests = () => {
@@ -17,10 +17,7 @@ const TopPanelRequests = () => {
         setSelectedRequests,
 				} = useContext(RequestsContext)
 
-
-  useFirestoreConnect([ { collection: 'requests' } ]);
-
-	const updFirestore = useFirestore();
+  const updFirestore = useFirestore();
 
   const deleteFromFirebase = async (docName: string) => {
     try {

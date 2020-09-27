@@ -5,6 +5,8 @@ import { Table, Tag, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import firebase from 'firebase';
 import { RequestsContext } from '../RequestsContext/RequestsContext';
+import { useSelector } from 'react-redux';
+import { useFirestoreConnect } from 'react-redux-firebase';
 
 // TS-Interface
 export interface Requests {
@@ -13,6 +15,14 @@ export interface Requests {
   status: string;
   author: string;
   crossCheckSessionId: string;
+}
+
+interface store {
+  firestore:{
+    data:{
+    requests:{ [key: string]: Requests }
+    };
+  }
 }
 
 // Network
@@ -33,10 +43,8 @@ const TableRequests = () => {
   //Tasks block
   const [requests, setRequests] = useState<Requests[]>([]);
   const [ selectedRowKeys, setSelectedRowKeys ] = useState<(string | number)[]>([]);
-  const {
-        setSelectedRequests,
-        userRole} = useContext(RequestsContext)
-        console.log(selectedRowKeys)
+  const { setSelectedRequests } = useContext(RequestsContext)
+  useFirestoreConnect([ { collection: 'requests' } ]);
 
   useEffect(() => {
     if(setSelectedRequests.length){
@@ -46,6 +54,7 @@ const TableRequests = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     } }, [selectedRowKeys, setSelectedRowKeys])
 
+  const allRequests = useSelector((store: store) => store.firestore.data.requests);
 
   useEffect(() => {
     const db = firebase.firestore();
@@ -59,7 +68,7 @@ const TableRequests = () => {
         });
         setRequests(requests);
       });
-  }, []);
+  }, [allRequests]);
 
   //Block of Selected row logic
   const onSelectChange = (selectedRowKeys: (string | number)[]) => {
