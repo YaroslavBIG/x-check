@@ -32,7 +32,7 @@ export interface SessionsState {
     }
     data: {
       sessions: SessionsRecord;
-      publishedTasks: TaskRecord;
+      publishedTasks: TaskRecord | any;
     }
   }
 }

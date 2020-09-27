@@ -5,17 +5,18 @@ import React, { useContext } from 'react';
 import { TaskDrawerContext } from './TaskDrawer/TaskDrawerContext';
 import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
 import { toast } from 'react-toastify';
+import { Roles } from 'enum/roles.enum';
 
 export const TasksHeader = () => {
 	const { confirm } = Modal;
 
-	const { setStateShowDrawer, selectedTasks } = useContext(TaskDrawerContext);
+  const { setStateShowDrawer, selectedTasks, setSelectedTasks, userRole } = useContext(TaskDrawerContext);
 
-	const showDrawer = () => {
+  const showDrawer = () => {
 		setStateShowDrawer(true);
-	};
+  };
 
-	useFirestoreConnect([ { collection: 'tasks' } ]);
+  useFirestoreConnect([ { collection: 'tasks' } ]);
 
 	const updFirestore = useFirestore();
 
@@ -34,7 +35,7 @@ export const TasksHeader = () => {
     toast.success('Task deleted')
   }
 
-	function showConfirm() {
+	const showConfirm = () => {
 		confirm({
 			title: 'Delete Sessions',
 			icon: <ExclamationCircleOutlined />,
@@ -42,18 +43,24 @@ export const TasksHeader = () => {
 			onOk() {
 				if(selectedTasks?.length){
           deleteDocs(selectedTasks)
-				}
+        }
+        setSelectedTasks([]);
 			}
 		});
 	}
 
 	return (
 		<div className='tasks-header'>
-			<Button danger icon={<DeleteOutlined />} className={'tasks-header--button'} onClick={showConfirm}>
+			{userRole === Roles.ADMINISTRATOR ? <Button danger icon={<DeleteOutlined />} disabled={!selectedTasks?.length} className={'tasks-header--button'} onClick={showConfirm}>
 				Delete
-			</Button>
+			</Button> : null}
 			<Button type='primary' onClick={showDrawer}>
-			  <PlusOutlined /> Add / <EditOutlined /> Edit
+        {selectedTasks?.length ?
+          <EditOutlined />
+          :
+          <PlusOutlined />
+        }
+        {selectedTasks?.length ? 'Edit' : 'Add' }
 			</Button>
 		</div>
 	);

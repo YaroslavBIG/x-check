@@ -14,8 +14,9 @@ import { ItaskStore } from 'interfaces/TaskInterface';
 import { taskStatus } from 'enum/task.enums';
 import { SessionsState } from 'interfaces/sessions-state.interface';
 import { deleteTask, setTask, taskDescriptionVisible } from './TaskCreate/taskReducer/taskReducer';
-import { ToastContainer } from 'react-toastify';
 import { TaskDescription } from './TaskDrawer/TaskDescription/TaskDescription';
+import { Roles } from 'enum/roles.enum';
+import { IProfile } from 'interfaces/login-profile.interface';
 
 interface Tasks {
 	key: string | number;
@@ -42,6 +43,7 @@ const transformTasks = (tasks: any, docId: string) => {
 
 export const Tasks = () => {
   const dispatch = useDispatch();
+	const userRole = useSelector((state: IProfile) => state.firebase.profile.role);
   const isLoadingData: boolean = useSelector((state: SessionsState) => state.firestore.status.requesting.tasks);
 
   const [ tasks, setTasks ] = useState<Array<Tasks> | Array<object>>([ {key: '797984684'} ]);
@@ -252,23 +254,12 @@ export const Tasks = () => {
 
 	return (
 		<TaskDrawerContextState selectedRowKeys={selectedRowKeys}>
-      <ToastContainer
-      position="top-center"
-      autoClose={5000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-    />
 			<TaskDrawer>
 				<TaskLayout />
 			</TaskDrawer>
       <TaskDescription />
 			<div className='tasks'>
-				<TasksHeader />
+				{userRole === Roles.STUDENT ? null : <TasksHeader />}
 				<div className='tasks-table'>
           <Table
             loading={isLoadingData}

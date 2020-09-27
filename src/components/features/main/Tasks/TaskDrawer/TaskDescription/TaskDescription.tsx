@@ -32,8 +32,8 @@ export const TaskDescription: React.FC = () => {
 	return (
 		<Drawer placement='right' width={'640px'} closable={true} onClose={onClose} visible={visible || false}>
 			{id ?
-      <div className="discription">
-        <h3>Task Discription</h3>
+      <div className="description">
+        <h3>Task Description</h3>
         {visible ? allTask[id].description : null}
         <h3>Status</h3>
         {visible ? allTask[id].state : null}

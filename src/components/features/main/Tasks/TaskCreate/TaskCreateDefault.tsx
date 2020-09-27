@@ -2,13 +2,17 @@ import React, { useContext, useEffect } from 'react';
 import { Form, Select, Input, Button } from 'antd';
 import { TaskHeader } from './TaskHeader';
 import { taskStatus, Itask, Iitem, ItaskStore } from 'interfaces/TaskInterface';
-import { initialState, TaskContext } from './TaskContext';
+import { TaskContext } from './TaskContext';
 import { TaskAccordion } from './Accordion/TaskAccordion';
 import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
 import { toast } from 'react-toastify';
 import { PlusOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { TaskDrawerContext } from '../TaskDrawer/TaskDrawerContext';
+import { TaskExport } from './TaskExport/TaskExport';
+import { IProfileState }from '../../CustomHeader/CustomHeader';
+import { TaskImport } from './TaskExport/TaskImport';
+import { Group } from 'antd/lib/avatar';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -22,14 +26,16 @@ export const TaskCreateDefault: React.FC = () => {
 		setNewTaskForSubmit,
 		setAddTask,
 		oldTaskName,
-		setOldTaskName
+    setOldTaskName,
+    resetTaskToInitialState
 	} = useContext(TaskContext);
 
 	useFirestoreConnect([ { collection: 'tasks' } ]);
 
 	const updFirestore = useFirestore();
 
-	const allTask = useSelector((store: ItaskStore) => store.firestore.data.tasks);
+  const allTask = useSelector((store: ItaskStore) => store.firestore.data.tasks);
+  const profileName = useSelector((state: IProfileState) => state.firebase.profile.displayName);
 
 	const submitNewTaskInfirebase = async () => {
 		try {
@@ -76,13 +82,14 @@ export const TaskCreateDefault: React.FC = () => {
 			...prev,
 			...values,
 			items: items
-		}));
+    }));
+
 
 		setNewTaskForSubmit((prev: Itask) => ({
 			...prev,
       ...values,
       id: values.id || newTask.id,
-			author: 'Author', // TODO: 'Get Name from login'
+			author: profileName || 'Unknown author',
 			maxScore: items.reduce((acc: number, item: Iitem) => {
 				return acc + item.maxScore;
 			}, 0),
@@ -100,16 +107,19 @@ export const TaskCreateDefault: React.FC = () => {
 	};
 
 	const handleFormSubmit = async () => {
+    form.validateFields()
+    .then(() => toast.success('Task was submitted'))
+    .catch((e) => toast.error(e));
 		const values = form.getFieldsValue();
     await updateSubmitStore(values);
-    toast.success('Task was submited');
+
 	};
 
 	const onFinish = async (values: object) => {
     await submitOnFireBase();
     setStateShowDrawer(false);
-    setNewTask(initialState);
     form.resetFields();
+    resetTaskToInitialState()
 	};
 
 	const onFinishFailed = (errorInfo: object) => {
@@ -120,7 +130,8 @@ export const TaskCreateDefault: React.FC = () => {
 
 	const onReset = (): void => {
 		form.resetFields();
-		setStateShowDrawer(false);
+    setStateShowDrawer(false);
+    resetTaskToInitialState();
 	};
 
 	useEffect(
@@ -139,9 +150,17 @@ export const TaskCreateDefault: React.FC = () => {
 		<div className='task'>
 			<Form layout='vertical' form={form} name='Task Create' onFinish={onFinish} onFinishFailed={onFinishFailed}>
 				<TaskHeader onReset={onReset} handleSubmit={handleFormSubmit} title='Create Task' />
+         <div className="file-block">
+            <Form.Item >
+              <Group >
+                <TaskExport />
+                <TaskImport />
+              </Group>
+          </Form.Item>
+         </div>
 				<div className='task-status'>
 					<Form.Item
-						label='Satus'
+						label='Status'
 						name='state'
 						rules={[ { required: true, message: 'Please select status!' } ]}
 						initialValue={taskStatus.DRAFT}

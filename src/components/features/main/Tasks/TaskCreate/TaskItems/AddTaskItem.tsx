@@ -32,37 +32,38 @@ export const AddTaskItem = () => {
 	};
 
 	const handleItemSubmit = () => {
-		form.validateFields();
-		const values = form.getFieldsValue();
-
-		if (editItem) {
-			setNewItems((prev: Array<Iitem>) => [
-				...deleteItem(prev),
-				{
-					...values,
-					id: collapsPanetId,
-					category: newTask.categoriesOrder[panelNum],
-					mentorOnly: values.mentorOnly || null,
-					description: values.description || ''
+		form
+			.validateFields()
+			.then((values) => {
+				if (editItem) {
+					setNewItems((prev: Array<Iitem>) => [
+						...deleteItem(prev),
+						{
+							...values,
+							id: collapsPanetId,
+							category: newTask.categoriesOrder[panelNum],
+							mentorOnly: values.mentorOnly || null,
+							description: values.description || ''
+						}
+					]);
+				} else {
+					setNewItems((prev: Array<Iitem>) => [
+						...prev,
+						{
+							...values,
+							id: collapsPanetId,
+							category: newTask.categoriesOrder[panelNum],
+							mentorOnly: values.mentorOnly || null,
+							description: values.description || ''
+						}
+					]);
 				}
-			]);
-		} else {
-			setNewItems((prev: Array<Iitem>) => [
-				...prev,
-				{
-					...values,
-					id: collapsPanetId,
-					category: newTask.categoriesOrder[panelNum],
-					mentorOnly: values.mentorOnly || null,
-					description: values.description || ''
-				}
-			]);
-		}
+			})
+			.catch((e) => toast.error(e));
 	};
 	const panelNum = Number(collapsePanelNum);
 
 	const onFinish = () => {
-		toast.success('Saved');
 		setEditItem(false);
 		setItemAddPage(false);
 	};

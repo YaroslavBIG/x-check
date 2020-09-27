@@ -17,6 +17,10 @@ $accent-color: #1890ff;
     font-weight: bold;
   }
 
+  .ant-collapse {
+    margin-bottom: 1.5rem;
+  }
+
   .ant-collapse-content-box {
     color: #595959;
     padding-right: 0;
@@ -29,13 +33,24 @@ $accent-color: #1890ff;
 
   .item {
     margin-bottom: 1rem;
+
+    .ant-form-item-label {
+      margin-left: 28px;
+      padding-bottom: 0;
+    }
+
+    .ant-input {
+      width: calc(100% - 28px);
+      margin-left: 28px;
+      margin-top: 0.5rem;
+    }
   }
 
   .requirement {
     display: flex;
     align-items: center;
     justify-content: space-between;
-      
+
     .task-info {
       display: flex;
       align-items: center;
@@ -59,12 +74,12 @@ $accent-color: #1890ff;
       display: flex;
       align-items: center;
       justify-content: space-between;
-  
+
       .ant-input-number-sm {
         width: 60px;
         margin-right: 8px;
       }
-  
+
       .ant-radio-group {
         width: 145px;
 
@@ -79,18 +94,30 @@ $accent-color: #1890ff;
     }
   }
 
-  .comment {
-    color: $accent-color;
+  .result {
+    width: 100px;
+    margin-bottom: 0;
+    text-align: center;
+  }
+
+  .clarification {
     font-size: 0.75rem;
     margin-bottom: 0;
     margin-left: 28px;
-    cursor: pointer;
   }
 
-  .ant-input {
-    width: calc(100% - 28px);
-    margin-left: 28px;
+  .comment {
+    margin-bottom: 0.5rem;
     margin-top: 0.5rem;
   }
+
+  .ant-form-item-label > label {
+    color: $accent-color;
+    font-size: 0.75rem;
+  }
+
+  .ant-form-item-explain {
+    margin-left: 28px;
+  }
 }
- 
+
