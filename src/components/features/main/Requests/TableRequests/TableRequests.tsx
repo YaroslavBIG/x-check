@@ -15,10 +15,10 @@ interface Requests {
 }
 
 // Network
-const transformRequests = (request: any) => {
-  const {id, status, author, crossCheckSessionId, task } = request;
+const transformRequests = (request: any, docId: string) => {
+  const {status, author, crossCheckSessionId, task } = request;
   return {
-    key:id,
+    key: docId,
     crossCheckSessionId,
     task,
     status,
@@ -41,7 +41,7 @@ const TableRequests = () => {
       .get()
       .then((query) => {
         query.forEach((doc) => {
-          requests = [...requests, transformRequests(doc.data())];
+          requests = [...requests, transformRequests(doc.data(), doc.id)];
         });
         setRequests(requests);
       });
