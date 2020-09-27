@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { SearchOutlined } from '@ant-design/icons';
 import { Table, Tag, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import firebase from 'firebase';
+import { RequestsContext } from '../RequestsContext/RequestsContext';
 
 // TS-Interface
-interface Requests {
+export interface Requests {
   key: string | number;
   task: string;
   status: string;
@@ -31,7 +32,20 @@ const transformRequests = (request: any, docId: string) => {
 const TableRequests = () => {
   //Tasks block
   const [requests, setRequests] = useState<Requests[]>([]);
-  const [ selectedRowKeys, setSelectedRowKeys ] = useState<(string | number)[] | undefined>([]);
+  const [ selectedRowKeys, setSelectedRowKeys ] = useState<(string | number)[]>([]);
+  const {
+        setSelectedRequests,
+        userRole} = useContext(RequestsContext)
+        console.log(selectedRowKeys)
+
+  useEffect(() => {
+    if(setSelectedRequests.length){
+      setSelectedRequests([...selectedRowKeys])
+    } else {
+      setSelectedRequests([])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    } }, [selectedRowKeys, setSelectedRowKeys])
+
 
   useEffect(() => {
     const db = firebase.firestore();
@@ -48,7 +62,7 @@ const TableRequests = () => {
   }, []);
 
   //Block of Selected row logic
-  const onSelectChange = (selectedRowKeys: (string | number)[] | undefined) => {
+  const onSelectChange = (selectedRowKeys: (string | number)[]) => {
     setSelectedRowKeys(selectedRowKeys);
 	};
 
