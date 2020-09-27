@@ -21,7 +21,6 @@ export const Requests = () => {
 
 	return (
 		<div className={styles.Requests__container}>
-			{/* <HeaderRequests /> */}
 			<RequestsContextState>
 				<Button className={styles.Requests__btn} icon={<EditOutlined />} onClick={() => setVisibility(true)}>
 					Show check form

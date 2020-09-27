@@ -8,7 +8,6 @@ import { RequestsContext } from '../RequestsContext/RequestsContext';
 import { useSelector } from 'react-redux';
 import { useFirestoreConnect } from 'react-redux-firebase';
 
-// TS-Interface
 export interface Requests {
   key: string | number;
   task: string;
@@ -25,7 +24,6 @@ interface store {
   }
 }
 
-// Network
 const transformRequests = (request: any, docId: string) => {
   const {status, author, crossCheckSessionId, task } = request;
   return {
@@ -37,10 +35,7 @@ const transformRequests = (request: any, docId: string) => {
   };
 };
 
-/*<Requests[]>*/
-
 const TableRequests = () => {
-  //Tasks block
   const [requests, setRequests] = useState<Requests[]>([]);
   const [ selectedRowKeys, setSelectedRowKeys ] = useState<(string | number)[]>([]);
   const { setSelectedRequests } = useContext(RequestsContext)
@@ -51,7 +46,6 @@ const TableRequests = () => {
       setSelectedRequests([...selectedRowKeys])
     } else {
       setSelectedRequests([])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     } }, [selectedRowKeys, setSelectedRowKeys])
 
   const allRequests = useSelector((store: store) => store.firestore.data.requests);
@@ -70,7 +64,6 @@ const TableRequests = () => {
       });
   }, [allRequests]);
 
-  //Block of Selected row logic
   const onSelectChange = (selectedRowKeys: (string | number)[]) => {
     setSelectedRowKeys(selectedRowKeys);
 	};
@@ -80,7 +73,6 @@ const TableRequests = () => {
 		onChange: onSelectChange
 	};
 
-  //Block of search logic
   const [search, setSearch] = useState({
     searchText: '',
     searchedColumn: '',
@@ -160,7 +152,6 @@ const TableRequests = () => {
       ),
   });
 
-  // render-function for column-status
   const renderStatus = (status: string) => {
     let color;
     if (status === 'PUBLISHED') {
@@ -177,7 +168,7 @@ const TableRequests = () => {
       </Tag>
     );
   };
-  // collection of status for column-status
+
   const filtersStatus = [
     {
       text: 'Published',

@@ -6,7 +6,6 @@ import {
   DeleteOutlined,
   EditOutlined,
   ExclamationCircleOutlined,
-  InfoCircleOutlined,
 } from "@ant-design/icons";
 import RequestForm from "../../RequestForm/RequestForm";
 import confirm from "antd/lib/modal/confirm";
@@ -38,9 +37,9 @@ const TopPanelRequests = () => {
 
   const showConfirm = () => {
     confirm({
-      title: "Delete Sessions",
+      title: "Delete Requests",
       icon: <ExclamationCircleOutlined />,
-      content: "Are you sure you want to delete the selected sessions?",
+      content: "Are you sure you want to delete the selected requests?",
       onOk() {
         if (selectedRequests?.length) {
           deleteDocs(selectedRequests);
@@ -75,7 +74,6 @@ const TopPanelRequests = () => {
           Delete Request
         </Button>
         <RequestForm isVisible={isVisible} onClose={handleClose} form={form} />
-        {/* <InfoCircleOutlined className={styles.topPanelRequests__crud__info} /> */}
       </div>
     </div>
   );
