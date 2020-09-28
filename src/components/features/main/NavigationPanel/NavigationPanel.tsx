@@ -11,19 +11,19 @@ import {
 	SoundOutlined,
 	UsergroupAddOutlined
 } from '@ant-design/icons';
-import { Link, Switch} from 'react-router-dom';
+import { Link, Switch } from 'react-router-dom';
 import CustomHeader from '../CustomHeader/CustomHeader';
 import { Tasks } from '../Tasks/Tasks';
 import Logo from '../../login/Logo/Logo';
 import Reviews from '../Reviews/Reviews';
 import { Requests } from '../Requests/Requests';
 import { Debates } from '../Debates/Debates';
-import Sessions from '../Sessions/Sessions'
+import Sessions from '../Sessions/Sessions';
 import { useSelector } from 'react-redux';
 import { AuthRouteState } from '../../../app/App';
 import { isEmpty, isLoaded } from 'react-redux-firebase';
 import PrivateRoute from '../../../app/PrivateRoute';
-import { PathMap, XCheckPath  } from '../../../../enum/app-paths.enum';
+import { PathMap, XCheckPath } from '../../../../enum/app-paths.enum';
 
 const { Header, Sider, Content } = Layout;
 
@@ -46,7 +46,7 @@ const NavigationPanel = () => {
 				<div className={!status ? 'logo' : 'logo collapsed'}>
 					<Logo />
 				</div>
-				<Menu mode='inline' defaultSelectedKeys={[PathMap[defaultPath]]}>
+				<Menu mode='inline' defaultSelectedKeys={[ PathMap[defaultPath] ]}>
 					<Menu.Item key='1' icon={<AuditOutlined />}>
 						<Link to={XCheckPath.TASKS}>
 							<span>Tasks</span>
@@ -80,26 +80,49 @@ const NavigationPanel = () => {
 						className: 'trigger',
 						onClick: onToggleHandler
 					})}
+					<div className='nav-position'>{defaultPath.slice(1)}</div>
 					<CustomHeader />
 				</Header>
 				<Content className='site-layout-background'>
 					<div>
 						<Switch>
-              <PrivateRoute isAuth={isLoaded(auth) && !isEmpty(auth)} path={XCheckPath.TASKS} component={Tasks}
-                            exact/>
-              <PrivateRoute isAuth={isLoaded(auth) && !isEmpty(auth)} path={XCheckPath.SESSIONS}
-                            component={Sessions}
-                            exact/>
-              <PrivateRoute isAuth={isLoaded(auth) && !isEmpty(auth)} path={XCheckPath.REQUESTS}
-                            component={Requests}
-                            exact/>
-              <PrivateRoute isAuth={isLoaded(auth) && !isEmpty(auth)} path={XCheckPath.REVIEWS} component={Reviews}
-                            exact/>
-              <PrivateRoute isAuth={isLoaded(auth) && !isEmpty(auth)} path={XCheckPath.DEBATES} component={Debates}
-                            exact/>
-              <PrivateRoute isAuth={isLoaded(auth) && !isEmpty(auth)} path="*" component={Sessions}
-                            exact={false}/>
-            </Switch>
+							<PrivateRoute
+								isAuth={isLoaded(auth) && !isEmpty(auth)}
+								path={XCheckPath.TASKS}
+								component={Tasks}
+								exact
+							/>
+							<PrivateRoute
+								isAuth={isLoaded(auth) && !isEmpty(auth)}
+								path={XCheckPath.SESSIONS}
+								component={Sessions}
+								exact
+							/>
+							<PrivateRoute
+								isAuth={isLoaded(auth) && !isEmpty(auth)}
+								path={XCheckPath.REQUESTS}
+								component={Requests}
+								exact
+							/>
+							<PrivateRoute
+								isAuth={isLoaded(auth) && !isEmpty(auth)}
+								path={XCheckPath.REVIEWS}
+								component={Reviews}
+								exact
+							/>
+							<PrivateRoute
+								isAuth={isLoaded(auth) && !isEmpty(auth)}
+								path={XCheckPath.DEBATES}
+								component={Debates}
+								exact
+							/>
+							<PrivateRoute
+								isAuth={isLoaded(auth) && !isEmpty(auth)}
+								path='*'
+								component={Sessions}
+								exact={false}
+							/>
+						</Switch>
 					</div>
 				</Content>
 			</Layout>

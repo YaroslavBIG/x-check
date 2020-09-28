@@ -1,3 +1,4 @@
+import { LogoutOutlined } from '@ant-design/icons';
 import { Dropdown, Menu } from 'antd';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -34,11 +35,16 @@ const CustomHeader = () => {
       </Menu.Item>
       <Menu.Item>
         <div>
-          **{profile.role}
+          {profile.role}
         </div>
       </Menu.Item>
-      <Menu.Item className={styles.name}>
-        <a href="/" onClick={() => firebase.logout()}>Sign out</a>
+      <Menu.Item>
+        <div className={styles.rs}>
+          <a href="https://app.rs.school" target='blank'>Open RS App</a>
+        </div>
+      </Menu.Item>
+      <Menu.Item className={styles.logout}>
+        <a href="/" onClick={() => firebase.logout()}>Sign out&nbsp;<LogoutOutlined color='#EB5757' /></a>
       </Menu.Item>
     </Menu>
   );

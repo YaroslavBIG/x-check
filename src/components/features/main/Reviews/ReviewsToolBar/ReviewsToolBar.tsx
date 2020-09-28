@@ -47,7 +47,7 @@ export default function ReviewsToolBar(props: any) {
       await selectedRows.forEach((row: ReactText) =>
         firestore.delete({ collection: 'reviews', doc: row as string }),
       );
-      toast.info('Sessions successfully removed');
+      toast.info('Reviews successfully removed');
     } catch (e) {
       toast.error(e);
     }
