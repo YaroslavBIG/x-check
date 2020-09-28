@@ -38,17 +38,22 @@ const transformRequests = (request: any, docId: string) => {
 const TableRequests = () => {
   const [requests, setRequests] = useState<Requests[]>([]);
   const [ selectedRowKeys, setSelectedRowKeys ] = useState<(string | number)[]>([]);
-  const { setSelectedRequests } = useContext(RequestsContext)
+  const { setSelectedRequests, setCurrentRequest } = useContext(RequestsContext)
   useFirestoreConnect([ { collection: 'requests' } ]);
 
+  const allRequests = useSelector((store: store) => store.firestore.data.requests);
+
+
   useEffect(() => {
-    if(setSelectedRequests.length){
+    if(selectedRowKeys.length){
       setSelectedRequests([...selectedRowKeys])
+      setCurrentRequest({...allRequests[selectedRowKeys[0]]})
     } else {
       setSelectedRequests([])
-    } }, [selectedRowKeys, setSelectedRequests, setSelectedRowKeys])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    } }, [selectedRowKeys, setSelectedRowKeys])
 
-  const allRequests = useSelector((store: store) => store.firestore.data.requests);
+
 
   useEffect(() => {
     const db = firebase.firestore();

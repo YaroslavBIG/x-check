@@ -16,7 +16,7 @@ import { RequestsContext } from "../RequestsContext/RequestsContext";
 const TopPanelRequests = () => {
   const [isVisible, setVisibility] = useState(false);
   const [form] = Form.useForm();
-  const { selectedRequests, setSelectedRequests } = useContext(RequestsContext);
+  const { selectedRequests, setSelectedRequests, currentRequest } = useContext(RequestsContext);
 
   const updFirestore = useFirestore();
 
@@ -27,6 +27,10 @@ const TopPanelRequests = () => {
       toast.error(error);
     }
   };
+
+  console.log(currentRequest)
+
+  if(currentRequest) form.setFieldsValue(currentRequest)
 
   const deleteDocs = async (array: string[]) => {
     for (const item of array) {
@@ -61,6 +65,7 @@ const TopPanelRequests = () => {
         <Button
           icon={<EditOutlined />}
           className={styles.topPanelRequests__crud__edit}
+          onClick={() => setVisibility(!isVisible)}
         >
           Edit Request
         </Button>
