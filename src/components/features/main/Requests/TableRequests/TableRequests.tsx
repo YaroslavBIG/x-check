@@ -46,7 +46,7 @@ const TableRequests = () => {
       setSelectedRequests([...selectedRowKeys])
     } else {
       setSelectedRequests([])
-    } }, [selectedRowKeys, setSelectedRowKeys])
+    } }, [selectedRowKeys, setSelectedRequests, setSelectedRowKeys])
 
   const allRequests = useSelector((store: store) => store.firestore.data.requests);
 
