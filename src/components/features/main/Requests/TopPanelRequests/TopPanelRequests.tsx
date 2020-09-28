@@ -73,7 +73,7 @@ const TopPanelRequests = () => {
           className={styles.topPanelRequests__crud__edit}
           onClick={() => setVisibility(!isVisible)}
         >
-          Edit Request
+          {currentRequest ? 'Edit Request' : 'Add Request'}
         </Button>
         <Button
           danger
