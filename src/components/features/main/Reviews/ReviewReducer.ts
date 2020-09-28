@@ -1,4 +1,5 @@
 import { ReactText } from 'react';
+import { ReviewInterface } from '../../../../interfaces/app-review.interface';
 
 const SELECT_REVIEW_ROW = 'SELECT_REVIEW_ROW'
 const OPEN_REVIEW_FORM = 'OPEN_REVIEW_FORM'
@@ -16,7 +17,7 @@ export function setRowSelection(payload: ReactText[]) {
   };
 }
 
-export function openReviewForm(payload: any) {
+export function openReviewForm(payload: ReviewInterface | null) {
   return {
     type: OPEN_REVIEW_FORM,
     payload
@@ -31,7 +32,8 @@ export function closeReviewForm() {
 
 const initialState = {
   rows: [],
-  isFormOpen: false
+  isFormOpen: false,
+  currentReview: null
 };
 
 export default function ReviewReducer(state = initialState, action: ReviewActionType) {
@@ -44,12 +46,14 @@ export default function ReviewReducer(state = initialState, action: ReviewAction
     case OPEN_REVIEW_FORM:
       return {
         ...state,
-        isFormOpen: true
+        isFormOpen: true,
+        currentReview: action.payload
       }
     case CLOSE_REVIEW_FORM:
       return {
         ...state,
-        isFormOpen: false
+        isFormOpen: false,
+        currentReview: null
       }
     default:
       return state

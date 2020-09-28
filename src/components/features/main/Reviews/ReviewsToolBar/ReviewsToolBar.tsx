@@ -15,6 +15,7 @@ export default function ReviewsToolBar(props: any) {
   const firestore = useFirestore();
   const dispatch = useDispatch();
   const selectedRows = useSelector((state: ReviewState) => state.reviews.rows);
+  const reviews: any = useSelector((state: ReviewState) => state.firestore.data.reviews);
 
   function showConfirm() {
     confirm({
@@ -31,6 +32,16 @@ export default function ReviewsToolBar(props: any) {
     dispatch(openReviewForm(null));
   }
 
+  function editReview() {
+    if (selectedRows && selectedRows[0]) {
+      const dataForForm = {
+        ...reviews[selectedRows[0]],
+        id: selectedRows[0],
+      };
+      dispatch(openReviewForm(dataForForm));
+    }
+  }
+
   async function deleteSession() {
     try {
       await selectedRows.forEach((row: ReactText) =>
@@ -45,20 +56,22 @@ export default function ReviewsToolBar(props: any) {
   return (
     <div className={styles.container}>
       <Button type='primary'
-              icon={<PlusOutlined/>}
-              className={styles.button}
-              onClick={openReview}
+          icon={<PlusOutlined/>}
+          className={styles.button}
+          onClick={openReview}
       >Add</Button>
       <Button
-        className={styles.button}
-        icon={<EditOutlined />}
-        onClick={openReview}>
-        Edit
+          className={styles.button}
+          icon={<EditOutlined />}
+          onClick={editReview}
+          disabled={!selectedRows?.length}
+      >
+          Edit
       </Button>
       <Button icon={<DeleteOutlined/>}
-              className={styles.button}
-              disabled={!selectedRows?.length}
-              onClick={showConfirm}>
+          className={styles.button}
+          disabled={!selectedRows?.length}
+          onClick={showConfirm}>
       Delete</Button>
     </div>
   );
