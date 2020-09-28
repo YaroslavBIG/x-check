@@ -64,29 +64,29 @@ const ReviewInfo = (props: ReviewInfoProps) => {
          <Form name={styles['check-info']} layout="vertical" form={props.form} /*onFinish={onFinish}*/>
          <div className={styles['check-info']}>
              <ul>
-              <CheckInfoListItem heading="Task" info={reviews && tasks && tasks[reviews?.key?.task]?.id}/>
-              <CheckInfoListItem heading="Cross-check session" info={reviews?.key?.session}/>
+              <CheckInfoListItem heading="Task" info={reviews && tasks && tasks[reviews[key]?.task]?.id}/>
+              <CheckInfoListItem heading="Cross-check session" info={reviews && reviews[key]?.session}/>
               <CheckInfoListItem
                 heading="Check points"
-                info={reviews && tasks && `${reviews?.key?.grade.checkPoints}/${tasks[reviews?.key?.task]?.maxScore}`}
+                info={reviews && tasks && `${reviews[key]?.grade?.checkPoints}/${tasks[reviews[key]?.task]?.maxScore}`}
               />
               <CheckInfoListItem
                 heading="Self-check points"
-                info={reviews && tasks && `${reviews?.key?.grade.totalPoints}/${tasks[reviews?.key?.task]?.maxScore}`}
+                info={reviews && tasks && `${reviews[key]?.grade?.totalPoints}/${tasks[reviews[key]?.task]?.maxScore}`}
               />
               <CheckInfoListItem heading="Student">
                 <Avatar className={styles.avatar}
-                  src={reviews?.key?.studentPhoto || ''}
-                  icon={reviews?.key?.studentPhoto && <UserOutlined />}
+                  src={reviews && (reviews[key]?.studentPhoto || '')}
+                  icon={reviews && !reviews[key]?.studentPhoto && <UserOutlined />}
                 />
-                <span>{reviews?.key?.student}</span>
+                <span>{reviews && reviews[key]?.student}</span>
               </CheckInfoListItem>
               <CheckInfoListItem heading="Reviewer">
                 <Avatar className={styles.avatar}
-                  src={reviews?.key?.photo || ''}
-                  icon={reviews?.key?.photo && <UserOutlined />}
+                  src={reviews && (reviews[key]?.photo || '')}
+                  icon={reviews && !reviews[key]?.photo && <UserOutlined />}
                 />
-                <span>{reviews?.key?.author}</span>
+                <span>{reviews && reviews[key]?.author}</span>
               </CheckInfoListItem>
             </ul>
             <Form.Item
@@ -117,9 +117,9 @@ const ReviewInfo = (props: ReviewInfoProps) => {
         isVisible={isReviewVisible}
         hide={() => setReviewVisibility(false)}
         form={reviewForm}
-        grade={reviews?.key?.grade}
-        selfGrade={reviews?.key?.selfGrade}
-        task={tasks && tasks[reviews?.key?.task]}
+        grade={reviews && reviews[key]?.grade}
+        selfGrade={reviews && reviews[key]?.selfGrade}
+        task={tasks && tasks[reviews[key]?.task]}
       />
    </>
   );
