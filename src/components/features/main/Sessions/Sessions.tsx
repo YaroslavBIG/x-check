@@ -13,6 +13,7 @@ import { setRowSelection } from './SessionsReducer';
 import { SessionHost } from '../../../../interfaces/session-host.interface';
 import SessionForm from './SessionForm/SessionForm';
 import { SessionsRecord, SessionsState } from '../../../../interfaces/sessions-state.interface';
+import { taskStatus } from 'interfaces/TaskInterface';
 
 const columns: ColumnsType<Session> = [
   {
@@ -91,7 +92,7 @@ export default function Sessions() {
     {
       collection: 'tasks',
       where: [
-        ['state', '==', 'PUBLISHED']
+        ['state', '==', taskStatus.PUBLISHED]
       ],
       storeAs: 'publishedTasks'
     }, {
