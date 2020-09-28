@@ -50,8 +50,9 @@ const TableRequests = () => {
       setCurrentRequest({...allRequests[selectedRowKeys[0]]})
     } else {
       setSelectedRequests([])
+      setCurrentRequest(null)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    } }, [selectedRowKeys, setSelectedRowKeys])
+    } }, [selectedRowKeys])
 
 
 

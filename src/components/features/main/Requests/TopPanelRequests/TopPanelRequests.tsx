@@ -16,7 +16,7 @@ import { RequestsContext } from "../RequestsContext/RequestsContext";
 const TopPanelRequests = () => {
   const [isVisible, setVisibility] = useState(false);
   const [form] = Form.useForm();
-  const { selectedRequests, setSelectedRequests, currentRequest } = useContext(RequestsContext);
+  const { selectedRequests, setSelectedRequests, currentRequest, setCurrentRequest } = useContext(RequestsContext);
 
   const updFirestore = useFirestore();
 
@@ -28,9 +28,15 @@ const TopPanelRequests = () => {
     }
   };
 
-  console.log(currentRequest)
+  const setForm = async () => {
+    await form.setFieldsValue(currentRequest)
+  }
 
-  if(currentRequest) form.setFieldsValue(currentRequest)
+  if(currentRequest) {
+    setForm()
+  } else {
+    form.resetFields();
+  }
 
   const deleteDocs = async (array: string[]) => {
     for (const item of array) {
@@ -55,7 +61,7 @@ const TopPanelRequests = () => {
 
   const handleClose = () => {
     setVisibility(false);
-    form.resetFields();
+    setCurrentRequest(null)
   };
 
   return (
