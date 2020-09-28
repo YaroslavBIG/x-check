@@ -37,9 +37,9 @@ export const TasksHeader = () => {
 
 	const showConfirm = () => {
 		confirm({
-			title: 'Delete Sessions',
+			title: 'Delete Tasks',
 			icon: <ExclamationCircleOutlined />,
-			content: 'Are you sure you want to delete the selected sessions?',
+			content: 'Are you sure you want to delete the selected tasks?',
 			onOk() {
 				if(selectedTasks?.length){
           deleteDocs(selectedTasks)

@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { SearchOutlined } from '@ant-design/icons';
 import { Table, Tag, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import firebase from 'firebase';
+import { RequestsContext } from '../RequestsContext/RequestsContext';
+import { useSelector } from 'react-redux';
+import { useFirestoreConnect } from 'react-redux-firebase';
 
-// TS-Interface
-interface Requests {
+export interface Requests {
   key: string | number;
   task: string;
   status: string;
@@ -14,11 +16,18 @@ interface Requests {
   crossCheckSessionId: string;
 }
 
-// Network
-const transformRequests = (request: any) => {
-  const {id, status, author, crossCheckSessionId, task } = request;
+interface store {
+  firestore:{
+    data:{
+    requests:{ [key: string]: Requests }
+    };
+  }
+}
+
+const transformRequests = (request: any, docId: string) => {
+  const {status, author, crossCheckSessionId, task } = request;
   return {
-    key:id,
+    key: docId,
     crossCheckSessionId,
     task,
     status,
@@ -26,12 +35,20 @@ const transformRequests = (request: any) => {
   };
 };
 
-/*<Requests[]>*/
-
 const TableRequests = () => {
-  //Tasks block
   const [requests, setRequests] = useState<Requests[]>([]);
-  const [ selectedRowKeys, setSelectedRowKeys ] = useState<(string | number)[] | undefined>([]);
+  const [ selectedRowKeys, setSelectedRowKeys ] = useState<(string | number)[]>([]);
+  const { setSelectedRequests } = useContext(RequestsContext)
+  useFirestoreConnect([ { collection: 'requests' } ]);
+
+  useEffect(() => {
+    if(setSelectedRequests.length){
+      setSelectedRequests([...selectedRowKeys])
+    } else {
+      setSelectedRequests([])
+    } }, [selectedRowKeys, setSelectedRequests, setSelectedRowKeys])
+
+  const allRequests = useSelector((store: store) => store.firestore.data.requests);
 
   useEffect(() => {
     const db = firebase.firestore();
@@ -41,14 +58,13 @@ const TableRequests = () => {
       .get()
       .then((query) => {
         query.forEach((doc) => {
-          requests = [...requests, transformRequests(doc.data())];
+          requests = [...requests, transformRequests(doc.data(), doc.id)];
         });
         setRequests(requests);
       });
-  }, []);
+  }, [allRequests]);
 
-  //Block of Selected row logic
-  const onSelectChange = (selectedRowKeys: (string | number)[] | undefined) => {
+  const onSelectChange = (selectedRowKeys: (string | number)[]) => {
     setSelectedRowKeys(selectedRowKeys);
 	};
 
@@ -57,7 +73,6 @@ const TableRequests = () => {
 		onChange: onSelectChange
 	};
 
-  //Block of search logic
   const [search, setSearch] = useState({
     searchText: '',
     searchedColumn: '',
@@ -137,7 +152,6 @@ const TableRequests = () => {
       ),
   });
 
-  // render-function for column-status
   const renderStatus = (status: string) => {
     let color;
     if (status === 'PUBLISHED') {
@@ -154,7 +168,7 @@ const TableRequests = () => {
       </Tag>
     );
   };
-  // collection of status for column-status
+
   const filtersStatus = [
     {
       text: 'Published',
