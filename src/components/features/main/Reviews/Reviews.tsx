@@ -27,7 +27,7 @@ const Reviews = () => {
   ]);
 
   function getModifiedData(): AppReviewInterface[] {
-    debugger
+    // debugger
     const modifiedData: AppReviewInterface[] = [];
     if (reviews) {
       Object.keys(reviews).forEach((el: string) => {

@@ -113,7 +113,7 @@ const ReviewInfo = (props: ReviewInfoProps) => {
         form={reviewForm}
         grade={reviews && reviews[key].grade}
         selfGrade={reviews && reviews[key].selfGrade}
-        task={tasks && tasks[reviews[key].task]}
+        task={tasks && reviews && tasks[reviews[key].task]}
       />
    </>
   );
