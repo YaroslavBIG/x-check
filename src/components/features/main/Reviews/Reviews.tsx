@@ -1,7 +1,7 @@
 import React, { ReactText } from 'react';
 import styles from '../Sessions/Sessions.module.scss';
 import { Table, Form } from 'antd';
-import { AppReviewInterface } from '../../../../interfaces/app-review.interface';
+import { ReviewInterface } from '../../../../interfaces/app-review.interface';
 import { columnsRequests } from './reviewTableDefinition';
 import ReviewsToolBar from './ReviewsToolBar/ReviewsToolBar';
 import ReviewInfo from '../ReviewInfo/ReviewInfo';
@@ -15,19 +15,20 @@ const Reviews = () => {
   const [form] = Form.useForm();
 
   const dispatch = useDispatch();
-  const reviews: any = useSelector((state: ReviewState) => state.firestore.data.reviews)
+  const reviews: any = useSelector((state: ReviewState) => state.firestore.data.reviews);
   const isVisible = useSelector((state: ReviewState) => state.reviews.isFormOpen);
   useFirestoreConnect([
-    { collection: 'reviews' }
+    { collection: 'reviews' },
+    {collection: 'requests'}
   ]);
 
   const handleClose = () => {
-    dispatch(closeReviewForm());
     form.resetFields();
+    dispatch(closeReviewForm());
   }
 
-  function getModifiedData(): AppReviewInterface[] {
-    const modifiedData: AppReviewInterface[] = [];
+  function getModifiedData(): ReviewInterface[] {
+    const modifiedData: ReviewInterface[] = [];
     if (reviews) {
       Object.keys(reviews).forEach((el: string) => {
         if (reviews[el]) {
