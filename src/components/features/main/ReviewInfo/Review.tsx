@@ -56,15 +56,15 @@ const Review = (props: CheckProps) => {
           layout="vertical"
         >
           <div className="self-check__current-values">
-              <h3>Check points: {isVisible && grade.checkPoints}/{isVisible && task.maxScore}</h3>
-              <h3>Self-check points: {isVisible && grade.totalPoints}/{isVisible && task.maxScore}</h3>
+              <h3>Check points: {isVisible && grade?.checkPoints}/{isVisible && task?.maxScore}</h3>
+              <h3>Self-check points: {isVisible && grade?.totalPoints}/{isVisible && task?.maxScore}</h3>
           </div>
-          <p>{isVisible && task.description}</p>
+          <p>{isVisible && task?.description}</p>
           <Collapse bordered={false} style={{backgroundColor: 'white'}}>
             {isVisible &&
-                task.categoriesOrder.map((category: string) => (
+                task?.categoriesOrder.map((category: string) => (
                   <Panel header={category} key={category}>
-                    {task.items.map((item: TaskItem, ind: number) => {
+                    {task?.items.map((item: TaskItem, ind: number) => {
                       return item.category === category &&
                       <CategoryItem item={item} key={item.id} isSelfcheck={false} grade={grade} selfGrade={selfGrade}/>;
                     }

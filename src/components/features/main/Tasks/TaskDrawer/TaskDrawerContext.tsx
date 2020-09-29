@@ -8,6 +8,7 @@ export const TaskDraweronsumer = TaskDrawerContext.Consumer;
 
 interface TaskDrawerContextStateProps {
 	selectedRowKeys?: ReactText[] | undefined;
+	setSelectedRowKeys: any;
 	children?: React.ReactNode;
 }
 
@@ -30,6 +31,7 @@ export const TaskDrawerContextState = (props: TaskDrawerContextStateProps) => {
 				setStateShowDrawer: setStateShowDrawer,
 				selectedTasks: selectedTasks,
 				setSelectedTasks: setSelectedTasks,
+				setSelectedRowKeys: props.setSelectedRowKeys,
 				userRole
 			}}
 		>

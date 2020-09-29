@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { useFirestoreConnect } from 'react-redux-firebase';
 import { FormInstance } from 'antd/lib/form';
 import  Review from './Review';
+import { ReviewState } from '../../../../interfaces/review-state.interface';
 
 const { Option } = Select;
 
@@ -27,13 +28,18 @@ interface ReviewInfoProps {
 }
 
 const ReviewInfo = (props: ReviewInfoProps) => {
+
   const [reviewForm] = Form.useForm();
   const [isReviewVisible, setReviewVisibility] = useState(false);
 
   useFirestoreConnect([ { collection: 'reviews' }, { collection: 'tasks' } ]);
   const reviews = useSelector((state : any) => state.firestore.data.reviews);
   const tasks = useSelector((state : any) => state.firestore.data.tasks);
-  const key = 'maNNt4axYJtF6nzwBvHI';
+
+
+  const currentReview = useSelector((state: ReviewState) => state.reviews.currentReview);
+  const key = currentReview?.id;
+
 
   const handleClose = () => {
     // reviewForm.resetFields();
@@ -58,29 +64,29 @@ const ReviewInfo = (props: ReviewInfoProps) => {
          <Form name={styles['check-info']} layout="vertical" form={props.form} /*onFinish={onFinish}*/>
          <div className={styles['check-info']}>
              <ul>
-              <CheckInfoListItem heading="Task" info={reviews && tasks && tasks[reviews[key].task].id}/>
-              <CheckInfoListItem heading="Cross-check session" info={reviews && reviews[key].session}/>
+              <CheckInfoListItem heading="Task" info={reviews && tasks && tasks[reviews[key]?.task]?.id}/>
+              <CheckInfoListItem heading="Cross-check session" info={reviews && reviews[key]?.session}/>
               <CheckInfoListItem
                 heading="Check points"
-                info={reviews && tasks && `${reviews[key].grade.checkPoints}/${tasks[reviews[key].task].maxScore}`}
+                info={reviews && tasks && `${reviews[key]?.grade?.checkPoints}/${tasks[reviews[key]?.task]?.maxScore}`}
               />
               <CheckInfoListItem
                 heading="Self-check points"
-                info={reviews && tasks && `${reviews[key].grade.totalPoints}/${tasks[reviews[key].task].maxScore}`}
+                info={reviews && tasks && `${reviews[key]?.grade?.totalPoints}/${tasks[reviews[key]?.task]?.maxScore}`}
               />
               <CheckInfoListItem heading="Student">
                 <Avatar className={styles.avatar}
-                  src={reviews && (reviews[key].studentPhoto || '')}
-                  icon={reviews && !reviews[key].studentPhoto && <UserOutlined />}
+                  src={reviews && (reviews[key]?.studentPhoto || '')}
+                  icon={reviews && !reviews[key]?.studentPhoto && <UserOutlined />}
                 />
-                <span>{reviews && reviews[key].student}</span>
+                <span>{reviews && reviews[key]?.student}</span>
               </CheckInfoListItem>
               <CheckInfoListItem heading="Reviewer">
                 <Avatar className={styles.avatar}
-                  src={reviews && (reviews[key].photo || '')}
-                  icon={reviews && !reviews[key].photo && <UserOutlined />}
+                  src={reviews && (reviews[key]?.photo || '')}
+                  icon={reviews && !reviews[key]?.photo && <UserOutlined />}
                 />
-                <span>{reviews && reviews[key].author}</span>
+                <span>{reviews && reviews[key]?.author}</span>
               </CheckInfoListItem>
             </ul>
             <Form.Item
@@ -111,9 +117,9 @@ const ReviewInfo = (props: ReviewInfoProps) => {
         isVisible={isReviewVisible}
         hide={() => setReviewVisibility(false)}
         form={reviewForm}
-        grade={reviews && reviews[key].grade}
-        selfGrade={reviews && reviews[key].selfGrade}
-        task={tasks && reviews && tasks[reviews[key].task]}
+        grade={reviews && reviews[key]?.grade}
+        selfGrade={reviews && reviews[key]?.selfGrade}
+        task={tasks && tasks[reviews[key]?.task]}
       />
    </>
   );
