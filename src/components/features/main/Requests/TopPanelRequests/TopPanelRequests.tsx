@@ -22,7 +22,7 @@ const TopPanelRequests = () => {
 
   const deleteFromFirebase = async (docName: string) => {
     try {
-      updFirestore.collection("requests").doc(docName).delete();
+      await  updFirestore.collection("requests").doc(docName).delete();
     } catch (error) {
       toast.error(error);
     }
