@@ -42,7 +42,7 @@ export const TaskImport = () => {
 		<Button type='default' className={'button-import'} disabled={!task && !newTaskForSubmit?.id} icon={<SaveFilled />} onClick={() => saveToJson(newTaskForSubmit)}>
 			Save to JSON
 		</Button>
-    <Button type='default' className={'button-import'} disabled={!newTaskForSubmit?.id} icon={<SaveFilled />} onClick={convertToRss}>
+    <Button type='default' className={'button-import'} disabled={!task && !newTaskForSubmit?.id} icon={<SaveFilled />} onClick={convertToRss}>
       Save to RRS
     </Button>
     </>
