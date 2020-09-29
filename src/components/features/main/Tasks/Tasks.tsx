@@ -253,7 +253,7 @@ export const Tasks = () => {
 	];
 
 	return (
-		<TaskDrawerContextState selectedRowKeys={selectedRowKeys}>
+		<TaskDrawerContextState selectedRowKeys={selectedRowKeys} setSelectedRowKeys={setSelectedRowKeys}>
 			<TaskDrawer>
 				<TaskLayout />
 			</TaskDrawer>
