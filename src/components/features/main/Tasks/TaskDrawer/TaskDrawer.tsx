@@ -3,10 +3,11 @@ import { Drawer } from 'antd';
 import { TaskDrawerContext } from './TaskDrawerContext';
 
 export const TaskDrawer: React.FC = (props) => {
-	const { stateShowDrawer, setStateShowDrawer } = useContext(TaskDrawerContext);
+	const { stateShowDrawer, setStateShowDrawer, setSelectedRowKeys } = useContext(TaskDrawerContext);
 
 	const onClose = () => {
 		setStateShowDrawer(false);
+		setSelectedRowKeys([]);
 	};
 
 	return (
