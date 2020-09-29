@@ -143,7 +143,7 @@ export const TaskCreateDefault: React.FC = () => {
 				items: items
 			}));
 		},
-		[ newTask, items, setNewTaskForSubmit, form ]
+		[ newTask, setNewTask, items, setNewTaskForSubmit, form ]
   );
 
 	return (
