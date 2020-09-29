@@ -11,10 +11,6 @@ import NavigationPanel from '../features/main/NavigationPanel/NavigationPanel';
 import { setRowSelection } from '../features/main/Sessions/SessionsReducer';
 import { ToastContainer } from 'react-toastify';
 
-/*const App = () => {
-	return <NavigationPanel />;
-};*/
-
 export interface AuthRouteState {
   login: { defaultPath: string },
   firebase: {
