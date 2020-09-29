@@ -22,7 +22,7 @@ export const TasksHeader = () => {
 
   const deleteFromFirebase = async (docName: string) => {
     try {
-      updFirestore.collection('tasks').doc(docName).delete()
+     await updFirestore.collection('tasks').doc(docName).delete()
     } catch (error) {
       toast.error(error)
     }
