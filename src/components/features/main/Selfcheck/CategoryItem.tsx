@@ -25,9 +25,7 @@ export interface TaskItem {
 
 const CategoryItem = (props: CategoryItemProps) => {
   const { item, isSelfcheck, grade, selfGrade, changedValues } = props;
-console.log(changedValues);
   const handleChange = (id: any) => {
-    console.log(id);
   }
   return (
     <div className="item">
