@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux';
 export const TaskImport = () => {
   const { newTaskForSubmit } = useContext(TaskContext);
   const task = useSelector((store: any) => store.taskStore)
-  console.log(task)
 
   const saveToJson = (obj: any) => {
 		const str = JSON.stringify(obj, null, 2);
