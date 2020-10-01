@@ -2,7 +2,7 @@
 [Техническое задание X-Check](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/xcheck/xcheck.md)
 
 ## Deploy
-(https://app-x-check.web.app)[https://app-x-check.web.app]
+[https://app-x-check.web.app](https://app-x-check.web.app)
 
 ## Запуск проекта
 
