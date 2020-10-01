@@ -96,7 +96,6 @@ export default function SessionForm() {
       dispatch(closeSessionForm());
       toast.info('Session has been successfully added');
     } catch (e) {
-      console.log(e);
       toast.error(e);
     }
   }
