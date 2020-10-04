@@ -37,11 +37,10 @@ const CheckInfo = (props: CheckInfoProps) => {
   const firestore = useFirestore();
   useFirestoreConnect([ { collection: 'requests' }, { collection: 'reviews' } ]);
   const requests = useSelector((state : any) => state.firestore.data.requests);
-  const key = 'MsKaXOBCgFqUveJSjU7b';
+  const key = 'RdeKgNU6hNymmWkdyWur';
 
   const reviews = useSelector((state : any) => state.firestore.data.reviews);
   const profile = useSelector((state: IProfileState) => state.firebase.profile);
-
 
   const handleClose = () => {
     checkForm.resetFields();
@@ -105,12 +104,18 @@ const CheckInfo = (props: CheckInfoProps) => {
                   </a>
               </CheckInfoListItem>
               <CheckInfoListItem heading="Student">
-                <Avatar className={styles.avatar} src={requests && (requests[key].photo || '')} icon={requests && !requests[key].photo && <UserOutlined />}/>
+                <Avatar
+                  className={styles.avatar} src={requests && (requests[key].photo || '')}
+                  icon={requests && !requests[key].photo && <UserOutlined />}
+                />
                 <span>{requests && requests[key].author}</span>
               </CheckInfoListItem>
               <CheckInfoListItem heading="Reviewer">
-                <Avatar className={styles.avatar} icon={<UserOutlined />} />
-                <span>Jennie Cooper</span>
+                <Avatar className={styles.avatar}
+                  src={profile.photoURL}
+                  icon={!profile.photoURL && <UserOutlined />}
+                />
+                <span>{profile.displayName}</span>
               </CheckInfoListItem>
             </ul>
             <Form.Item

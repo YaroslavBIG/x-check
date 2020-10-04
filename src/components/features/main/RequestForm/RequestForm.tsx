@@ -64,7 +64,7 @@ const RequestForm = (props: CheckInfoProps) => {
   const onFinish = async (values: any) => {
     try {
       await form.validateFields();
-      if ((!isRequired) || (isRequired && taskId)) {
+      if ((!isRequired) || (isRequired && taskId && selfGradeValues.checkedRequirements === tasks[taskId].items.length)) {
         Object.keys(values).forEach((key: string) => {
           if (values[key] === undefined) {
             delete values[key];

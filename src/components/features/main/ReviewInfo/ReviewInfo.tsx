@@ -61,11 +61,11 @@ const ReviewInfo = (props: ReviewInfoProps) => {
           <FormHeader title="Review Info" onClose={handleClose} form={props.form}/>
         }
       >
-         <Form name={styles['check-info']} layout="vertical" form={props.form} /*onFinish={onFinish}*/>
+         <Form name={styles['check-info']} layout="vertical" form={props.form}>
          <div className={styles['check-info']}>
              <ul>
               <CheckInfoListItem heading="Task" info={reviews && tasks && tasks[reviews[key]?.task]?.id}/>
-              <CheckInfoListItem heading="Cross-check session" info={reviews && reviews[key]?.session}/>
+              <CheckInfoListItem heading="Cross-check session" info={reviews && tasks && reviews[key]?.session}/>
               <CheckInfoListItem
                 heading="Check points"
                 info={reviews && tasks && `${reviews[key]?.grade?.checkPoints}/${tasks[reviews[key]?.task]?.maxScore}`}

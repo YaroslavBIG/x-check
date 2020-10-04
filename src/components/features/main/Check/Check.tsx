@@ -115,8 +115,8 @@ const Check = (props: CheckProps) => {
           layout="vertical"
         >
           <div className="self-check__current-values">
-              <h3>Total points: {totalPoints}/{isVisible && tasks[taskId].maxScore}</h3>
-              <h3>Self-check points: {isVisible && selfGrade.totalPoints}/{isVisible && tasks[taskId].maxScore}</h3>
+              <h3>Total points: {totalPoints}/{isVisible && tasks && tasks[taskId].maxScore}</h3>
+              <h3>Self-check points: {isVisible && selfGrade.totalPoint}/{isVisible && tasks && tasks[taskId].maxScore}</h3>
           </div>
           <p>{(tasks && isVisible) && tasks[taskId].description}</p>
           <Collapse bordered={false} style={{backgroundColor: 'white'}}>
