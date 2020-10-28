@@ -4,13 +4,13 @@ import 'firebase/auth';
 import 'firebase/storage';
 
 const config = {
-  apiKey: "AIzaSyDEuwssH0PSsk0KiMvkDdDacBkFllV8MXA",
-  authDomain: "app-x-check.firebaseapp.com",
-  databaseURL: "https://app-x-check.firebaseio.com",
-  projectId: "app-x-check",
-  storageBucket: "app-x-check.appspot.com",
-  messagingSenderId: "374080355837",
-  appId: "1:374080355837:web:adf558906d19174084ed94"
+  apiKey: "AIzaSyDPZEfDNzigVDdlq4oPuazwr9sskyHZDPc",
+  authDomain: "x-check-b1d40.firebaseapp.com",
+  databaseURL: "https://x-check-b1d40.firebaseio.com",
+  projectId: "x-check-b1d40",
+  storageBucket: "x-check-b1d40.appspot.com",
+  messagingSenderId: "746311705587",
+  appId: "1:746311705587:web:e11658b6cbfdb4ab8ee886",
 };
 
 
